@@ -1,0 +1,6 @@
+<div class="flex min-h-screen">
+  <app-sidebar [role]="auth.getRole() || 'USER'"></app-sidebar>
+  <main class="flex-1 bg-gray-50 p-6">
+    <router-outlet></router-outlet>
+  </main>
+</div>

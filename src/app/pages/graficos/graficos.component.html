@@ -1,0 +1,133 @@
+<div class="bg-white rounded-xl shadow-lg p-6 flex flex-col">
+    <h2 class="text-xl font-semibold text-gray-700 mb-4">Traslados Mensuales</h2>
+  
+   <div class="mb-6 flex flex-col md:flex-row items-center gap-4">
+    <div class="flex flex-col">
+      <label for="fechaInicio" class="text-sm font-medium text-gray-700">Fecha inicial:</label>
+      <input type="date"
+             id="fechaInicio"
+             [(ngModel)]="fechaInicio"
+             class="p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" />
+    </div>
+  
+    <div class="flex flex-col">
+      <label for="fechaFin" class="text-sm font-medium text-gray-700">Fecha final:</label>
+      <input type="date"
+             id="fechaFin"
+             [(ngModel)]="fechaFin"
+             class="p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" />
+    </div>
+  
+    <button (click)="buscarPorFechas()"
+            class="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 transition">
+      Buscar
+    </button>
+  </div>
+  
+    <div class="w-full grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 p-4">
+    <!-- Gráfica 1: Traslados locales vs foráneos -->
+    <div class="bg-white rounded-lg shadow-md p-3">
+      <h3 class="text-md font-semibold text-center mb-2">Traslados Locales vs Foráneos</h3>
+      <canvas baseChart
+              [data]="trasladoChartData"
+              [options]="trasladoChartOptions"
+              [type]="trasladoChartType"
+              class="max-h-[200px]">
+      </canvas>
+      <button 
+      (click)="imprimirGrafica('grafica-local-vs-foraneo')" 
+      class="text-sm px-3 py-1 bg-blue-500 text-white rounded shadow hover:bg-blue-600 hover:scale-105 transition-transform duration-300">
+      Imprimir
+    </button>
+    <button 
+      (click)="descargarGrafica('grafica-local-vs-foraneo')" 
+      class="text-sm px-3 py-1 bg-green-500 text-white rounded shadow hover:bg-green-600 hover:scale-105 transition-transform duration-300">
+      Descargar
+    </button>
+    </div>
+  
+    <!-- Gráfica 2: Traslados por ambulancia -->
+    <div class="bg-white rounded-lg shadow-md p-3">
+      <h3 class="text-md font-semibold text-center mb-2">Traslados por Ambulancia</h3>
+      <canvas baseChart
+              [data]="ambulanciaChartData"
+              [options]="trasladoChartOptions"
+              [type]="ambulanciaChartType"
+              class="max-h-[200px]">
+      </canvas>
+      <button 
+      (click)="imprimirGrafica('grafica-local-vs-foraneo')" 
+      class="text-sm px-3 py-1 bg-blue-500 text-white rounded shadow hover:bg-blue-600 hover:scale-105 transition-transform duration-300">
+      Imprimir
+    </button>
+    <button 
+      (click)="descargarGrafica('grafica-local-vs-foraneo')" 
+      class="text-sm px-3 py-1 bg-green-500 text-white rounded shadow hover:bg-green-600 hover:scale-105 transition-transform duration-300">
+      Descargar
+    </button>
+    </div>
+  
+    <!-- Gráfica 3: Traslados por operador -->
+    <div class="bg-white rounded-lg shadow-md p-3">
+      <h3 class="text-md font-semibold text-center mb-2">Traslados por Operador</h3>
+      <canvas baseChart
+              [data]="operadorChartData"
+              [options]="trasladoChartOptions"
+              [type]="operadorChartType"
+              class="max-h-[200px]">
+      </canvas>
+      <button 
+      (click)="imprimirGrafica('grafica-local-vs-foraneo')" 
+      class="text-sm px-3 py-1 bg-blue-500 text-white rounded shadow hover:bg-blue-600 hover:scale-105 transition-transform duration-300">
+      Imprimir
+    </button>
+    <button 
+      (click)="descargarGrafica('grafica-local-vs-foraneo')" 
+      class="text-sm px-3 py-1 bg-green-500 text-white rounded shadow hover:bg-green-600 hover:scale-105 transition-transform duration-300">
+      Descargar
+    </button>
+     
+    </div>
+  
+    <!-- Gráfica 4: Traslados por especialidad -->
+    <div class="bg-white rounded-lg shadow-md p-3">
+      <h3 class="text-md font-semibold text-center mb-2">Traslados por Especialidad</h3>
+      <canvas baseChart
+              [data]="especialidadChartData"
+              [options]="trasladoChartOptions"
+              [type]="especialidadChartType"
+              class="max-h-[200px]">
+      </canvas>
+      <button 
+  (click)="imprimirGrafica('grafica-local-vs-foraneo')" 
+  class="text-sm px-3 py-1 bg-blue-500 text-white rounded shadow hover:bg-blue-600 hover:scale-105 transition-transform duration-300">
+  Imprimir
+</button>
+<button 
+  (click)="descargarGrafica('grafica-local-vs-foraneo')" 
+  class="text-sm px-3 py-1 bg-green-500 text-white rounded shadow hover:bg-green-600 hover:scale-105 transition-transform duration-300">
+  Descargar
+</button>
+    </div>
+  
+    <!-- Gráfica 5: Traslados por hospital -->
+    <div class="bg-white rounded-lg shadow-md p-3">
+      <h3 class="text-md font-semibold text-center mb-2">Traslados por Hospital</h3>
+      <canvas baseChart
+              [data]="hospitalChartData"
+              [options]="trasladoChartOptions"
+              [type]="hospitalChartType"
+              class="max-h-[200px]">
+      </canvas>
+      <button 
+  (click)="imprimirGrafica('grafica-local-vs-foraneo')" 
+  class="text-sm px-3 py-1 bg-blue-500 text-white rounded shadow hover:bg-blue-600 hover:scale-105 transition-transform duration-300">
+  Imprimir
+</button>
+<button 
+  (click)="descargarGrafica('grafica-local-vs-foraneo')" 
+  class="text-sm px-3 py-1 bg-green-500 text-white rounded shadow hover:bg-green-600 hover:scale-105 transition-transform duration-300">
+  Descargar
+</button>
+    </div>
+  </div>
