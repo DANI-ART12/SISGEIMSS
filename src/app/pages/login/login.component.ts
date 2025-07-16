@@ -56,6 +56,7 @@ intervalo: any;
       this.error = 'Credenciales inválidas';
     }
   }
+  
 }
 
 

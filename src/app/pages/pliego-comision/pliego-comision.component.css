@@ -1,0 +1,32 @@
+@media print {
+    body {
+      margin: 0;
+      padding: 0;
+      color: black;
+      font-size: 10px;
+      font-family: "Times New Roman", serif;
+    }
+  
+    .no-print {
+      display: none !important;
+    }
+  
+    .page-break {
+      page-break-before: always;
+    }
+  
+    .bg-white, .shadow, .rounded, .border, .max-w-5xl {
+      all: unset;
+    }
+  
+    * {
+      -webkit-print-color-adjust: exact;
+      print-color-adjust: exact;
+    }
+  
+    img {
+      max-width: 100%;
+      height: auto;
+    }
+  }
+  

@@ -22,12 +22,19 @@ export class RegistroKmComponent {
     { nombre: 'Ambulancia C', kmMantenimiento: 250 }
   ];
 
+  pliegosDisponibles: string[] = [
+    'L1232025', 'F1242025', 'L0052024', 'L2302025', 'L2302024', 'F1502023'
+  ];
+  pliegoFiltrado: string[] = [];
+  mostrarSugerencias = false;
+
   totalRecorrido = 0;
   alerta = false;
   umbral = 50;
 
   constructor(private fb: FormBuilder) {
     this.kmForm = this.fb.group({
+      numeroPliego: ['', Validators.required],
       ambulancia: ['', Validators.required],
       kmFaltante: [{ value: 0, disabled: true }, Validators.required],
       kmInicial: [0, [Validators.required, Validators.min(0)]],
@@ -48,6 +55,25 @@ export class RegistroKmComponent {
 
     this.kmForm.get('kmInicial')?.valueChanges.subscribe(() => this.updateTotales());
     this.kmForm.get('kmFinal')?.valueChanges.subscribe(() => this.updateTotales());
+  }
+
+  filtrarPliegos(termino: string) {
+    if (!termino) {
+      this.pliegoFiltrado = [];
+      this.mostrarSugerencias = false;
+      return;
+    }
+
+    this.pliegoFiltrado = this.pliegosDisponibles.filter(p =>
+      p.toLowerCase().includes(termino.toLowerCase())
+    );
+
+    this.mostrarSugerencias = this.pliegoFiltrado.length > 0;
+  }
+
+  seleccionarPliego(pliego: string) {
+    this.kmForm.get('numeroPliego')?.setValue(pliego);
+    this.mostrarSugerencias = false;
   }
 
   private updateTotales() {
@@ -76,6 +102,7 @@ export class RegistroKmComponent {
     alert('¡Kilometraje registrado correctamente!');
 
     this.kmForm.reset({
+      numeroPliego: '',
       ambulancia: '',
       kmFaltante: 0,
       kmInicial: 0,
@@ -89,5 +116,7 @@ export class RegistroKmComponent {
     });
     this.totalRecorrido = 0;
     this.alerta = false;
+    this.mostrarSugerencias = false;
+    this.pliegoFiltrado = [];
   }
 }

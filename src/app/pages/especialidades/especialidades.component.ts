@@ -1,7 +1,6 @@
-import { Component } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Component, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { CommonModule } from '@angular/common';
-import { ReactiveFormsModule } from '@angular/forms';
 import { FormsModule } from '@angular/forms';
 
 interface LugarComision {
@@ -10,21 +9,39 @@ interface LugarComision {
   nombreHospital: string;
   direccion: string;
   altoCosteVida: boolean;
-  porcentaje: number;
+  porcentaje?: number;
 }
 
 @Component({
   selector: 'app-especialidades',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule,FormsModule],
+  imports: [CommonModule, FormsModule, ReactiveFormsModule],
   templateUrl: './especialidades.component.html',
 })
-export class EspecialidadesComponent {
+export class EspecialidadesComponent implements OnInit {
   form: FormGroup;
-  registros: LugarComision[] = [];
+  registros: LugarComision[] = [
+    {
+      estado: 'Jalisco',
+      region: 'Occidente',
+      nombreHospital: 'Hospital Civil de Guadalajara',
+      direccion: 'Av. Hospital 123',
+      altoCosteVida: true,
+      porcentaje: 25,
+    },
+    {
+      estado: 'CDMX',
+      region: 'Centro',
+      nombreHospital: 'INCMNSZ',
+      direccion: 'Insurgentes Sur 1234',
+      altoCosteVida: false,
+    },
+  ];
+
   filtrarEstado = '';
   filtrarRegion = '';
   mostrandoFormulario = false;
+  indiceEditando: number | null = null;
 
   constructor(private fb: FormBuilder) {
     this.form = this.fb.group({
@@ -33,38 +50,84 @@ export class EspecialidadesComponent {
       nombreHospital: ['', Validators.required],
       direccion: ['', Validators.required],
       altoCosteVida: [false],
-      porcentaje: [{ value: 0, disabled: true }, [Validators.min(0), Validators.max(100)]]
-    });
-
-    this.form.get('altoCosteVida')?.valueChanges.subscribe(val => {
-      const pct = this.form.get('porcentaje');
-      val ? pct?.enable() : (pct?.disable(), pct?.setValue(0));
+      porcentaje: [{ value: '', disabled: true }],
     });
   }
 
-  nuevoRegistro() {
-    this.mostrandoFormulario = true;
-    this.form.reset({ altoCosteVida: false, porcentaje: 0 });
+  ngOnInit(): void {
+    this.form.get('altoCosteVida')?.valueChanges.subscribe((valor: boolean) => {
+      const porcentajeControl = this.form.get('porcentaje');
+      if (valor) {
+        porcentajeControl?.enable();
+        porcentajeControl?.setValidators([Validators.required, Validators.min(1), Validators.max(100)]);
+      } else {
+        porcentajeControl?.disable();
+        porcentajeControl?.clearValidators();
+        porcentajeControl?.setValue(null);
+      }
+      porcentajeControl?.updateValueAndValidity();
+    });
   }
 
-  cancelar() {
-    this.mostrandoFormulario = false;
-  }
-
-  guardar() {
-    if (this.form.invalid) {
-      this.form.markAllAsTouched();
-      return;
-    }
-    this.registros.push(this.form.getRawValue());
-    this.mostrandoFormulario = false;
-  }
-
-  get registrosFiltrados() {
-    return this.registros.filter(r =>
+  get registrosFiltrados(): LugarComision[] {
+    return this.registros.filter((r) =>
       (!this.filtrarEstado || r.estado.toLowerCase().includes(this.filtrarEstado.toLowerCase())) &&
       (!this.filtrarRegion || r.region.toLowerCase().includes(this.filtrarRegion.toLowerCase()))
     );
+  }
+
+  nuevoRegistro(): void {
+    this.form.reset({ altoCosteVida: false });
+    this.indiceEditando = null;
+    this.mostrandoFormulario = true;
+  }
+
+  cancelar(): void {
+    this.form.reset({ altoCosteVida: false });
+    this.mostrandoFormulario = false;
+    this.indiceEditando = null;
+  }
+
+  guardar(): void {
+    if (this.form.invalid) return;
+
+    const nuevo = this.form.getRawValue();
+
+    if (this.indiceEditando !== null) {
+      this.registros[this.indiceEditando] = nuevo;
+    } else {
+      this.registros.push(nuevo);
+    }
+
+    this.cancelar();
+  }
+
+  editar(index: number): void {
+    const r = this.registros[index];
+    this.form.setValue({
+      estado: r.estado,
+      region: r.region,
+      nombreHospital: r.nombreHospital,
+      direccion: r.direccion,
+      altoCosteVida: r.altoCosteVida,
+      porcentaje: r.altoCosteVida ? r.porcentaje : null,
+    });
+
+    if (r.altoCosteVida) {
+      this.form.get('porcentaje')?.enable();
+    } else {
+      this.form.get('porcentaje')?.disable();
+    }
+
+    this.indiceEditando = index;
+    this.mostrandoFormulario = true;
+  }
+
+  eliminar(index: number): void {
+    const confirmacion = confirm('¿Deseas eliminar este registro?');
+    if (confirmacion) {
+      this.registros.splice(index, 1);
+    }
   }
 }
 

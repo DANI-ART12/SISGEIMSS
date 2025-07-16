@@ -1,1 +1,84 @@
-<div class="text-2xl font-bold">Bienvenido </div>
+<div class="bg-white p-6 rounded-xl font-sans">
+    <h2 class="text-2xl font-bold text-blue-600 mb-4">Traslados Vigentes (Hoy)</h2>
+    <table class="w-full text-sm text-left mb-8">
+      <thead class="bg-green-100 text-green-800 font-semibol">
+        <tr>
+          <th class="p-2">Hora cita</th>
+          <th class="p-2">Paciente</th>
+          <th class="p-2">Lugar</th>
+          <th class="p-2">Operador</th>
+          <th class="p-2">Estado</th>
+          <th class="p-2">Acción</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let traslado of trasladosHoy">
+          <td class="p-2">{{ traslado.hora }}</td>
+          <td class="p-2">{{ traslado.paciente }}</td>
+          <td class="p-2">{{ traslado.lugar }}</td>
+          <td class="p-2">
+            <input
+              [(ngModel)]="traslado.operador"
+              class="border rounded p-1 w-full"
+              placeholder="Asignar operador"
+            />
+          </td>
+          <td class="p-2">{{ traslado.estado }}</td>
+          <td class="p-2">
+            <button
+              class="px-3 py-1 rounded text-white"
+              [ngClass]="{
+                'bg-green-500': traslado.estado === 'Pendiente',
+                'bg-yellow-500': traslado.estado === 'En curso',
+                'bg-gray-500': traslado.estado === 'Finalizado'
+              }"
+              (click)="cambiarEstado(traslado)"
+              [disabled]="traslado.estado === 'Finalizado'"
+            >
+              {{ traslado.estado === 'Pendiente' ? 'Iniciar' : traslado.estado === 'En curso' ? 'Finalizar' : 'Finalizado' }}
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  
+    <h2 class="text-2xl font-bold text-blue-600 mb-4">Traslados Próximos</h2>
+    <table class="w-full text-sm text-left">
+      <thead class="bg-green-100 text-green-800 font-semibol">
+        <tr>
+          <th class="p-2">Fecha</th>
+          <th class="p-2">Hora cita</th>
+          <th class="p-2">Paciente</th>
+          <th class="p-2">Lugar</th>
+          <th class="p-2">Operador</th>
+          <th class="p-2">Estado</th>
+          <th class="p-2">Acción</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let traslado of trasladosProximos">
+          <td class="p-2">{{ traslado.fecha }}</td>
+          <td class="p-2">{{ traslado.hora }}</td>
+          <td class="p-2">{{ traslado.paciente }}</td>
+          <td class="p-2">{{ traslado.lugar }}</td>
+          <td class="p-2">
+            <input
+              [(ngModel)]="traslado.operador"
+              class="border rounded p-1 w-full"
+              placeholder="Asignar operador"
+            />
+          </td>
+          <td class="p-2">{{ traslado.estado }}</td>
+          <td class="p-2">
+            <button
+              class="px-3 py-1 rounded text-white bg-green-500"
+              (click)="cambiarEstado(traslado)"
+            >
+              Iniciar
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  

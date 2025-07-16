@@ -7,8 +7,9 @@ import { UserRole } from '../../core/auth/user.model';
 import {
   LucideAngularModule,
   Car, Users, Route as RouteIcon, File, Settings, 
-  HelpCircle, LogOut, Search, History, FileSearch, ScrollText,FileText, ChartBar,            // botones al pie
+  HelpCircle, LogOut, Search, History, FileSearch, ScrollText,FileText, ChartBar, BookOpenText,           // botones al pie
   HospitalIcon, FilePen, FilePenLine, FileMinus,
+  ContactRound, BadgeDollarSign,
 } from 'lucide-angular';
 
 const iconMap = {
@@ -28,8 +29,10 @@ const iconMap = {
   HospitalIcon,
   FilePen,
   FilePenLine,
-  FileMinus
-  
+  FileMinus,
+  BookOpenText,
+  ContactRound,
+  BadgeDollarSign
 };
 
 interface SidebarLink {
@@ -43,41 +46,39 @@ const LINKS: Record<UserRole, SidebarLink[]> = {
     { label: 'Traslados Programados', icon: 'FileText', route: '/traslados' },
     { label: 'Informe Comisión', icon: 'FileSearch', route: '/informecomision' },
     { label: 'Pliego Comisión', icon: 'ScrollText', route: '/pliego-comision' },
-    {label: 'Registro de funcionarios', icon: 'FilePenLine', route:'/registro-funcionarios'},
-    {label: 'Solicitud de viaticos y pasajes', icon: 'FileMinus', route:'viaticos-pasajes'},
-    {label: 'Comprobacion del pliego de comision', icon:'FilePen', route:'comprobacion'},
     { label: 'Registro KM', icon: 'Car', route: '/registro-km' },
+    {label:'Pliego comision B', icon:'BookOpenText', route:'/pliegoactual'},
+    {label:'Registro de Pacientes',icon:'ContactRound',route:'/registropacientes'},
     { label: 'Traslados Viajes', icon: 'Route', route: '/viajes' },
     { label: 'Gráficos', icon: 'ChartBar', route: '/graficos' },
-     { label: 'Especialidades', icon: 'HospitalIcon', route: '/especialidades' },
+    { label: 'Especialidades', icon: 'HospitalIcon', route: '/especialidades' },
     { label: 'Historial', icon: 'History', route: '/historial' },
+    {label:'Historial Pagos',icon:'BadgeDollarSign',route:'/historialpagos'},
     { label: 'Configuración', icon: 'Settings', route: '/configuracion' }
-    
   ],
+
   SUBADMIN: [
     { label: 'Traslados Programados', icon: 'FileText', route: '/traslados' },
     { label: 'Informe Comisión', icon: 'FileSearch', route: '/informecomision' },
     { label: 'Pliego Comisión', icon: 'ScrollText', route: '/pliego-comision' },
-    {label: 'Registro de funcionarios', icon: 'FilePenLine', route:'/registro-funcionarios'},
-    {label: 'Solicitud de viaticos y pasajes', icon: 'FileMinus', route:'viaticos-pasajes'},
-    {label: 'Comprobacion del pliego de comision', icon:'FilePen', route:'comprobacion'},
+    {label:'Pliego comision B', icon:'BookOpenText', route:'/pliegoactual'},
+    {label:'Registro de Pacientes',icon:'ContactRound',route:'/registropacientes'},
     { label: 'Registro KM', icon: 'Car', route: '/registro-km' },
     { label: 'Traslados Viajes', icon: 'Route', route: '/viajes' },
-    { label: 'Historial', icon: 'History', route: '/historial' }
+    { label: 'Historial', icon: 'History', route: '/historial' },
+    {label:'Historial Pagos',icon:'BadgeDollarSign',route:'/historialpagos'}
   ],
-  
+
   USER: [
     { label: 'Solicitud traslados', icon: 'FileText', route: '/formatos' },
     { label: 'Informe Comisión', icon: 'FileSearch', route: '/informecomision' },
     { label: 'Pliego Comisión', icon: 'ScrollText', route: '/pliego-comision' },
-    {label: 'Registro de funcionarios', icon: 'FilePenLine', route:'/registro-funcionarios'},
-    {label: 'Solicitud de viaticos y pasajes', icon: 'FileMinus', route:'viaticos-pasajes'},
-    {label: 'Comprobacion del pliego de comision', icon:'FilePen', route:'comprobacion'},
+   {label:'Pliego comision B', icon:'BookOpenText', route:'/pliegoactual'},
     { label: 'Registro KM', icon: 'Car', route: '/registro-km' },
     { label: 'Historial', icon: 'History', route: '/historial' }
-  ],
-  
+  ]
 };
+
 @Component({
   selector: 'app-sidebar',
   standalone: true,

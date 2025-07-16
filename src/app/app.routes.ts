@@ -1,4 +1,5 @@
-import { RegistroFuncionariosComponent } from './pages/registro-funcionarios/registro-funcionarios.component';
+
+
 import { Routes } from '@angular/router';
 import { AuthGuard } from './core/auth/auth.guard';
 
@@ -50,7 +51,7 @@ export const routes: Routes = [
         {
           path: 'informecomision',
           loadComponent: () =>
-            import('./pages/informecomision/informecomision.component').then(m => m.InformecomisionComponent)
+            import('./pages/informecomision/informecomision.component').then(m => m.InformeComisionComponent)
         },
         {
           path: 'historial',
@@ -68,20 +69,22 @@ export const routes: Routes = [
             import('./pages/graficos/graficos.component').then(m => m.GraficosComponent)
         },
         {
-          path: 'comprobacion',
+          path: 'pliegoactual',
           loadComponent: () =>
-          import ('./pages/comprobacion/comprobacion.component').then(m => m.ComprobacionComponent)
+            import('./pages/pliegoactual/pliegoactual.component').then(m => m.PliegoactualComponent)
         },
         {
-          path: 'registro-funcionarios',
-          loadComponent: () =>
-          import ('./pages/registro-funcionarios/registro-funcionarios.component').then(m => m.RegistroFuncionariosComponent)
+          path:'historialpagos',
+          loadComponent:() =>
+            import('./pages/historialpagos/historialpagos.component').then(m => m.HistorialpagosComponent)
         },
         {
-          path:'viaticos-pasajes',
+          path: 'registropacientes',
           loadComponent: () =>
-          import('./pages/viaticos-pasajes/viaticos-pasajes.component').then(m => m.ViaticosPasajesComponent)
+            import('./pages/registropacientes/registropacientes.component').then(m => m.RegistropacientesComponent)
         },
+      
+
         // Fin nuevas rutas
         {
           path: '403',

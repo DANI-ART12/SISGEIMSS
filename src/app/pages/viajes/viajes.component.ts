@@ -1,20 +1,19 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 
 interface Viaje {
-  matricula: string;
   folio: string;
   fecha: string;
+  matricula: string;
   paciente: string;
-  numeroSeguridadSocial: string;
   origen: string;
   destino: string;
-  ambulancia: string | null;
-  kmInicial: number;
-  kmFinal: number;
-  observaciones: string;
-  archivo?: File | null;
+  ambulancia?: string;
+  kmInicial?: number;
+  kmFinal?: number;
+  observaciones?: string;
+  archivo?: File;
 }
 
 @Component({
@@ -22,173 +21,98 @@ interface Viaje {
   standalone: true,
   imports: [CommonModule, FormsModule],
   templateUrl: './viajes.component.html',
-  styleUrls: ['./viajes.component.css'],
 })
-export class ViajesComponent implements OnInit {
-  viajes: Viaje[] = [];
-  viajesFiltrados: Viaje[] = [];
+export class ViajesComponent {
+  filtro = { matricula: '', folio: '', fechaInicio: '', fechaFin: '' };
+  
+  viajes: Viaje[] = [
+    {
+      folio: 'V001',
+      fecha: '2025-06-15',
+      matricula: 'A123',
+      paciente: 'Juan Pérez',
+      origen: 'Hosp A',
+      destino: 'Clin B',
+      ambulancia: 'AMB-01',
+      kmInicial: 12000,
+      kmFinal: 12300,
+      observaciones: 'Todo ok'
+    },
+    {
+      folio: 'V002',
+      fecha: '2025-06-20',
+      matricula: 'B456',
+      paciente: 'María López',
+      origen: 'Clin C',
+      destino: 'Hosp D',
+      ambulancia: 'AMB-02',
+      kmInicial: 8000,
+      kmFinal: 8300,
+      observaciones: ''
+    },
+  ];
+  
+  viajesFiltrados = [...this.viajes];
+  ambulancias = ['AMB-01', 'AMB-02', 'AMB-03'];
+
   viajeSeleccionado: Viaje | null = null;
+  enEdicion = false;
+  kmTotal = 0;
+  kmRestantesParaMantenimiento = 0;
 
-  kmTotal: number = 0;
-  kmRestantesParaMantenimiento: number = 0;
-
-  filtro = {
-    matricula: '',
-    folio: '',
-    fechaInicio: '',
-    fechaFin: '',
-  };
-
-  ambulancias: string[] = ['AMB-01', 'AMB-02', 'AMB-03', 'AMB-04'];
-
-  // Km límite para mantenimiento por ambulancia
-  kmMantenimientoPorAmbulancia: { [key: string]: number } = {
-    'AMB-01': 5000,
-    'AMB-02': 6000,
-    'AMB-03': 4500,
-    'AMB-04': 7000,
-  };
-
-  // Km acumulados por ambulancia (simulado, normalmente vendría de backend)
-  kmAcumuladosPorAmbulancia: { [key: string]: number } = {
-    'AMB-01': 4800,
-    'AMB-02': 3200,
-    'AMB-03': 4200,
-    'AMB-04': 1000,
-  };
-
-  // Umbral para notificación (ej. 90% del mantenimiento)
-  umbralNotificacion = 0.9;
-
-  ngOnInit(): void {
-    this.viajes = [
-      {
-        matricula: 'A123',
-        folio: 'F001',
-        fecha: '2025-06-01',
-        paciente: 'Juan Pérez',
-        numeroSeguridadSocial: '1234567890',
-        origen: 'Clínica Norte',
-        destino: 'Hospital Central',
-        ambulancia: 'AMB-01',
-        kmInicial: 100,
-        kmFinal: 150,
-        observaciones: 'Paciente estable',
-        archivo: null,
-      },
-      {
-        matricula: 'B456',
-        folio: 'F002',
-        fecha: '2025-06-08',
-        paciente: 'Ana Ruiz',
-        numeroSeguridadSocial: '0987654321',
-        origen: 'Clínica Sur',
-        destino: 'IMSS Zona 5',
-        ambulancia: 'AMB-03',
-        kmInicial: 80,
-        kmFinal: 120,
-        observaciones: 'Urgencia leve',
-        archivo: null,
-      },
-    ];
-    this.viajesFiltrados = [...this.viajes];
+  aplicarFiltro() {
+    this.viajesFiltrados = this.viajes.filter(v =>
+      (!this.filtro.matricula || v.matricula.includes(this.filtro.matricula)) &&
+      (!this.filtro.folio || v.folio.includes(this.filtro.folio)) &&
+      (!this.filtro.fechaInicio || v.fecha >= this.filtro.fechaInicio) &&
+      (!this.filtro.fechaFin || v.fecha <= this.filtro.fechaFin)
+    );
   }
 
-  aplicarFiltro(): void {
-    this.viajesFiltrados = this.viajes.filter((v) => {
-      const fechaViaje = new Date(v.fecha);
-      const fechaInicio = this.filtro.fechaInicio
-        ? new Date(this.filtro.fechaInicio)
-        : null;
-      const fechaFin = this.filtro.fechaFin ? new Date(this.filtro.fechaFin) : null;
-
-      return (
-        (!this.filtro.matricula ||
-          v.matricula.toLowerCase().includes(this.filtro.matricula.toLowerCase())) &&
-        (!this.filtro.folio ||
-          v.folio.toLowerCase().includes(this.filtro.folio.toLowerCase())) &&
-        (!fechaInicio || fechaViaje >= fechaInicio) &&
-        (!fechaFin || fechaViaje <= fechaFin)
-      );
-    });
-  }
-
-  verDetalles(viaje: Viaje): void {
-    this.viajeSeleccionado = viaje;
+  verDetalles(v: Viaje) {
+    this.viajeSeleccionado = { ...v };
+    this.enEdicion = false;
     this.actualizarKmTotal();
   }
 
-  cerrarDetalles(): void {
-    this.viajeSeleccionado = null;
-    this.kmTotal = 0;
-    this.kmRestantesParaMantenimiento = 0;
+  activarEdicion(v: Viaje) {
+    this.viajeSeleccionado = { ...v };
+    this.enEdicion = true;
+    this.actualizarKmTotal();
   }
 
-  actualizarKmTotal(): void {
+  actualizarKmTotal() {
     if (this.viajeSeleccionado) {
-      const kmIni = this.viajeSeleccionado.kmInicial || 0;
-      const kmFin = this.viajeSeleccionado.kmFinal || 0;
-      const kmViaje = kmFin >= kmIni ? kmFin - kmIni : 0;
-
-      this.kmTotal = kmViaje;
-
-      const ambulancia = this.viajeSeleccionado.ambulancia;
-
-      if (ambulancia && this.kmMantenimientoPorAmbulancia[ambulancia] !== undefined) {
-        const kmAcumuladoAntes = this.kmAcumuladosPorAmbulancia[ambulancia] || 0;
-        const kmAcumuladoDespues = kmAcumuladoAntes + kmViaje;
-
-        this.kmRestantesParaMantenimiento = Math.max(
-          this.kmMantenimientoPorAmbulancia[ambulancia] - kmAcumuladoDespues,
-          0
-        );
-
-        const limite = this.kmMantenimientoPorAmbulancia[ambulancia];
-        if (
-          kmAcumuladoDespues >= limite * this.umbralNotificacion &&
-          kmAcumuladoDespues < limite
-        ) {
-          alert(
-            `⚠️ La ambulancia ${ambulancia} se acerca a su mantenimiento. Km acumulados: ${kmAcumuladoDespues}`
-          );
-        } else if (kmAcumuladoDespues >= limite) {
-          alert(
-            `🚨 La ambulancia ${ambulancia} necesita mantenimiento URGENTE. Km acumulados: ${kmAcumuladoDespues}`
-          );
-        }
-      } else {
-        this.kmRestantesParaMantenimiento = 0;
-      }
+      const ki = this.viajeSeleccionado.kmInicial || 0;
+      const kf = this.viajeSeleccionado.kmFinal || 0;
+      this.kmTotal = kf >= ki ? kf - ki : 0;
+      this.kmRestantesParaMantenimiento = 10000 - (kf || 0);
     }
   }
 
-  onArchivoSeleccionado(event: Event): void {
-    const input = event.target as HTMLInputElement;
-    if (input.files && input.files.length > 0 && this.viajeSeleccionado) {
+  onArchivoSeleccionado(e: Event) {
+    const input = e.target as HTMLInputElement;
+    if (input.files && input.files.length && this.viajeSeleccionado) {
       this.viajeSeleccionado.archivo = input.files[0];
-      console.log('Archivo seleccionado:', this.viajeSeleccionado.archivo.name);
     }
   }
 
-  guardarViaje(): void {
-    if (this.viajeSeleccionado) {
-      const ambulancia = this.viajeSeleccionado.ambulancia;
-      if (ambulancia) {
-        const kmIni = this.viajeSeleccionado.kmInicial || 0;
-        const kmFin = this.viajeSeleccionado.kmFinal || 0;
-        const kmViaje = kmFin >= kmIni ? kmFin - kmIni : 0;
+  guardarViaje() {
+    if (!this.viajeSeleccionado) return;
 
-        // Actualizar kilómetros acumulados para la ambulancia
-        this.kmAcumuladosPorAmbulancia[ambulancia] =
-          (this.kmAcumuladosPorAmbulancia[ambulancia] || 0) + kmViaje;
-      }
-
-      console.log('Guardando viaje:', this.viajeSeleccionado);
-      alert('✅ Viaje guardado correctamente.');
-
-      // Actualizar km restantes luego de guardar
-      this.actualizarKmTotal();
+    const idx = this.viajes.findIndex(it => it.folio === this.viajeSeleccionado!.folio);
+    if (idx !== -1) {
+      this.viajes[idx] = { ...this.viajeSeleccionado! };
     }
+
+    alert(`Viaje ${this.viajeSeleccionado.folio} guardado con éxito 😊`);
+    this.enEdicion = false;
+    this.cerrarDetalles();
+    this.aplicarFiltro(); // actualiza lista
+  }
+
+  cerrarDetalles() {
+    this.viajeSeleccionado = null;
+    this.enEdicion = false;
   }
 }
-
