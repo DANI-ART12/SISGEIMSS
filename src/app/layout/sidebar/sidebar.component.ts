@@ -43,37 +43,37 @@ interface SidebarLink {
 
 const LINKS: Record<UserRole, SidebarLink[]> = {
   ADMIN: [
-    { label: 'Traslados Programados', icon: 'FileText', route: '/traslados' },
+    { label: 'Traslados Locales', icon: 'FileText', route: '/traslados' },
     { label: 'Informe Comisión', icon: 'FileSearch', route: '/informecomision' },
     { label: 'Pliego Comisión', icon: 'ScrollText', route: '/pliego-comision' },
     { label: 'Registro KM', icon: 'Car', route: '/registro-km' },
-    {label:'Pliego comision B', icon:'BookOpenText', route:'/pliegoactual'},
-    {label:'Registro de Pacientes',icon:'ContactRound',route:'/registropacientes'},
+    {label:'Pliego Confianza', icon:'BookOpenText', route:'/pliegoactual'},
+    {label:'Historial de Pacientes',icon:'ContactRound',route:'/registropacientes'},
     { label: 'Traslados Viajes', icon: 'Route', route: '/viajes' },
     { label: 'Gráficos', icon: 'ChartBar', route: '/graficos' },
-    { label: 'Especialidades', icon: 'HospitalIcon', route: '/especialidades' },
+    { label: 'Hospitales', icon: 'HospitalIcon', route: '/especialidades' },
     { label: 'Historial', icon: 'History', route: '/historial' },
-    {label:'Historial Pagos',icon:'BadgeDollarSign',route:'/historialpagos'},
+    {label:'Pagados',icon:'BadgeDollarSign',route:'/historialpagos'},
     { label: 'Configuración', icon: 'Settings', route: '/configuracion' }
   ],
 
   SUBADMIN: [
-    { label: 'Traslados Programados', icon: 'FileText', route: '/traslados' },
+    { label: 'Traslados Locales', icon: 'FileText', route: '/traslados' },
     { label: 'Informe Comisión', icon: 'FileSearch', route: '/informecomision' },
     { label: 'Pliego Comisión', icon: 'ScrollText', route: '/pliego-comision' },
-    {label:'Pliego comision B', icon:'BookOpenText', route:'/pliegoactual'},
-    {label:'Registro de Pacientes',icon:'ContactRound',route:'/registropacientes'},
+    {label:'Pliego Confianza', icon:'BookOpenText', route:'/pliegoactual'},
+    {label:'Historial de Pacientes',icon:'ContactRound',route:'/registropacientes'},
     { label: 'Registro KM', icon: 'Car', route: '/registro-km' },
     { label: 'Traslados Viajes', icon: 'Route', route: '/viajes' },
     { label: 'Historial', icon: 'History', route: '/historial' },
-    {label:'Historial Pagos',icon:'BadgeDollarSign',route:'/historialpagos'}
+    {label:'Pagados',icon:'BadgeDollarSign',route:'/historialpagos'}
   ],
 
   USER: [
     { label: 'Solicitud traslados', icon: 'FileText', route: '/formatos' },
     { label: 'Informe Comisión', icon: 'FileSearch', route: '/informecomision' },
     { label: 'Pliego Comisión', icon: 'ScrollText', route: '/pliego-comision' },
-   {label:'Pliego comision B', icon:'BookOpenText', route:'/pliegoactual'},
+   {label:'Pliego Confianza', icon:'BookOpenText', route:'/pliegoactual'},
     { label: 'Registro KM', icon: 'Car', route: '/registro-km' },
     { label: 'Historial', icon: 'History', route: '/historial' }
   ]

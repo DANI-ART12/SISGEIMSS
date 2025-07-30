@@ -1,32 +1,25 @@
 @media print {
-    body {
-      margin: 0;
-      padding: 0;
-      color: black;
-      font-size: 10px;
-      font-family: "Times New Roman", serif;
+    @page {
+      size: letter portrait;
+      margin: 10mm;
     }
   
-    .no-print {
+    body {
+      -webkit-print-color-adjust: exact !important;
+      print-color-adjust: exact !important;
+      color: black !important;
+      background: white !important;
+    }
+  
+    .print\:hidden {
       display: none !important;
     }
   
-    .page-break {
-      page-break-before: always;
-    }
-  
-    .bg-white, .shadow, .rounded, .border, .max-w-5xl {
-      all: unset;
-    }
-  
     * {
-      -webkit-print-color-adjust: exact;
-      print-color-adjust: exact;
-    }
-  
-    img {
-      max-width: 100%;
-      height: auto;
+      page-break-inside: avoid;
+      page-break-before: avoid;
+      page-break-after: avoid;
     }
   }
+  
   

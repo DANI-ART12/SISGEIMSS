@@ -1,86 +1,90 @@
-<div class="p-8 bg-white rounded shadow max-w-3xl mx-auto font-serif text-gray-900" #pdfContent>
-    <!-- Encabezado -->
-    <h1 class="text-2xl font-bold text-center mb-6 underline">INFORME DE COMISIÓN</h1>
-  
-    <!-- Fecha alineada a la derecha -->
-    <div class="text-right mb-6 text-sm">Oaxaca, Oax., {{ fechaCreacion }}</div>
-  
-    <!-- Directora -->
-    <p class="mb-6 leading-relaxed">
-      <strong>{{ doctoraNombre }}</strong><br />
-      {{ doctoraCargo }}<br />
-      Presente.
-    </p>
-  
-    <!-- Cuerpo del informe -->
-    <p class="mb-6 text-justify leading-relaxed indent-8">
-      Por medio del presente, le informo que fui comisionado con el Pliego Folio <strong>{{ folio }}</strong> al
-      <strong>{{ lugarDestino }}</strong> para <strong>{{ motivoComision }}</strong> Paciente NSS:
-      <strong>{{ pacienteNSS }}</strong>, Nombre: <strong>{{ pacienteNombre }}</strong>, saliendo del H.G.Z. No. 1 de Oaxaca
-      a las <strong>{{ horaSalida }}</strong> horas del día <strong>{{ fechaSalida }}</strong>, llegando al
-      <strong>{{ lugarDestino }}</strong> a las <strong>{{ horaLlegada }}</strong> horas del mismo día, a bordo de la ambulancia
-      ECCO <strong>{{ ambulanciaECCO }}</strong>.
-    </p>
-  
-    <p class="mb-6 text-justify leading-relaxed indent-8">
-      El paciente fue entregado sin novedad. Posteriormente, se realizó el retorno partiendo del
-      <strong>{{ lugarDestino }}</strong> a las <strong>{{ horaRegreso }}</strong> horas, arribando nuevamente al H.G.Z. No. 1
-      de Oaxaca a las <strong>{{ horaLlegadaFinal }}</strong> horas del día <strong>{{ fechaRegreso }}</strong>.
-    </p>
-  
-    <p class="mb-6 text-justify leading-relaxed indent-8">
-      Durante este traslado se registró un kilometraje inicial de <strong>{{ kmInicial }}</strong> km y final de
-      <strong>{{ kmFinal }}</strong> km, resultando en un recorrido total de <strong>{{ totalKm }}</strong> km.
-    </p>
-  
-    <p class="mb-12 text-justify leading-relaxed indent-8">
-      Sin más que informar, quedo a sus órdenes para cualquier aclaración.
-    </p>
-  
-    <!-- Datos del operador (firma) -->
-    <div class="text-center mt-16">
-      <p><strong>{{ operadorNombre }}</strong></p>
-      <p>{{ operadorCategoria }} – Matrícula: {{ operadorMatricula }}</p>
-    </div>
-  
-    <!-- Botones -->
-    <div class="mt-8 flex justify-end gap-4 print:hidden">
+<div
+  id="pdfContent"
+  #pdfContent
+  class="bg-white rounded shadow mx-auto font-serif text-gray-900"
+  style="width: 215.9mm; min-height: 279.4mm; padding: 20mm; box-sizing: border-box;"
+>
+  <!-- Encabezado -->
+  <h1 class="text-2xl font-bold text-center mb-6 underline">INFORME DE COMISIÓN</h1>
+
+  <!-- Fecha -->
+  <div class="text-right mb-6 text-sm">Oaxaca, Oax., {{ fechaCreacion }}</div>
+
+  <!-- Datos -->
+  <p class="mb-6 leading-relaxed">
+    <strong>{{ doctoraNombre }}</strong><br />
+    {{ doctoraCargo }}<br />
+    Presente.
+  </p>
+
+  <!-- Cuerpo -->
+  <p class="mb-6 text-justify leading-relaxed indent-8">
+    Por medio del presente, le informo que fui comisionado con el Pliego Folio <strong>{{ folio }}</strong> al
+    <strong>{{ lugarDestino }}</strong> para <strong>{{ motivoComision }}</strong> Paciente NSS:
+    <strong>{{ pacienteNSS }}</strong>, Nombre: <strong>{{ pacienteNombre }}</strong>, saliendo del H.G.Z. No. 1 de Oaxaca
+    a las <strong>{{ horaSalida }}</strong> horas del día <strong>{{ fechaSalida }}</strong>, llegando al
+    <strong>{{ lugarDestino }}</strong> a las <strong>{{ horaLlegada }}</strong> horas del mismo día, a bordo de la ambulancia
+    ECCO <strong>{{ ambulanciaECCO }}</strong>.
+  </p>
+
+  <p class="mb-6 text-justify leading-relaxed indent-8">
+    El paciente fue entregado sin novedad. Posteriormente, se realizó el retorno partiendo del
+    <strong>{{ lugarDestino }}</strong> a las <strong>{{ horaRegreso }}</strong> horas, arribando nuevamente al H.G.Z. No. 1
+    de Oaxaca a las <strong>{{ horaLlegadaFinal }}</strong> horas del día <strong>{{ fechaRegreso }}</strong>.
+  </p>
+
+  <p class="mb-6 text-justify leading-relaxed indent-8">
+    Durante este traslado se registró un kilometraje inicial de <strong>{{ kmInicial }}</strong> km y final de
+    <strong>{{ kmFinal }}</strong> km, resultando en un recorrido total de <strong>{{ totalKm }}</strong> km.
+  </p>
+
+  <p class="mb-12 text-justify leading-relaxed indent-8">
+    Sin más que informar, quedo a sus órdenes para cualquier aclaración.
+  </p>
+
+  <!-- Firma -->
+  <div class="text-center mt-16">
+    <p><strong>{{ operadorNombre }}</strong></p>
+    <p>{{ operadorCategoria }} – Matrícula: {{ operadorMatricula }}</p>
+  </div>
+
+  <!-- Botones -->
+  <div class="mt-8 flex justify-end gap-4 print:hidden">
+    <button
+      (click)="editarInforme()"
+      class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition"
+    >
+      Editar
+    </button>
+    <button
+      (click)="imprimirInforme()"
+      class="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700 transition"
+    >
+      Imprimir Informe
+    </button>
+  </div>
+
+  <!-- Editor -->
+  <div *ngIf="enEdicion" class="mt-6 p-4 border rounded bg-yellow-50 print:hidden">
+    <h3 class="font-semibold mb-3 text-lg">Editar Informe</h3>
+    <textarea
+      [(ngModel)]="informeTexto"
+      rows="15"
+      class="w-full border rounded p-3 text-sm leading-relaxed font-mono"
+    ></textarea>
+    <div class="mt-4 flex gap-2">
       <button
-        (click)="editarInforme()"
+        (click)="guardarCambios()"
         class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition"
       >
-        Editar
+        Guardar
       </button>
       <button
-        (click)="imprimirInforme()"
-        class="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700 transition"
+        (click)="cancelarEdicion()"
+        class="bg-gray-400 px-4 py-2 rounded hover:bg-gray-500 transition"
       >
-        Imprimir Informe
+        Cancelar
       </button>
     </div>
-  
-    <!-- Editor -->
-    <div *ngIf="enEdicion" class="mt-6 p-4 border rounded bg-yellow-50 print:hidden">
-      <h3 class="font-semibold mb-3 text-lg">Editar Informe</h3>
-      <textarea
-        [(ngModel)]="informeTexto"
-        rows="15"
-        class="w-full border rounded p-3 text-sm leading-relaxed font-mono"
-      ></textarea>
-      <div class="mt-4 flex gap-2">
-        <button
-          (click)="guardarCambios()"
-          class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition"
-        >
-          Guardar
-        </button>
-        <button
-          (click)="cancelarEdicion()"
-          class="bg-gray-400 px-4 py-2 rounded hover:bg-gray-500 transition"
-        >
-          Cancelar
-        </button>
-      </div>
-    </div>
   </div>
-  
+</div>
