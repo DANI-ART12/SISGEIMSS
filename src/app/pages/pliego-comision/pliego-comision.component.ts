@@ -1,91 +1,142 @@
-import { Component, ElementRef, ViewChild } from '@angular/core';
-
-declare const html2pdf: any;
+import { Component } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-pliego-comision',
+  standalone: true,
+  imports: [CommonModule, FormsModule],
   templateUrl: './pliego-comision.component.html',
   styleUrls: ['./pliego-comision.component.css']
 })
 export class PliegoComisionComponent {
-  @ViewChild('pdfContenido') pdfContenido!: ElementRef;
+  numeroFolio: string = '1234/2024';
+  fechaActual: string = new Date().toLocaleDateString('es-MX', {
+    day: '2-digit',
+    month: 'long',
+    year: 'numeric'
+  });
 
-  numeroPliego = '1234/2024';
-  fecha = '16 de julio de 2025';
+  // --- Variables primera tabla ---
+  funcionarioSolicitante = '';
+  categoria = '';
+  dependencia = '';
+  matricula = '';
+  nombreComisionado = '';
+  rfc = '';
+  curp = '';
+  tipoBase = false;
+  tipoConfianza = false;
+  categoriaNumNombre = '';
+  telefonoOficina = '';
+  objetoComision = '';
+  lugaresComision = '';
+  periodo = '';
+  totalDias: number | null = null;
 
-  solicitanteNombre = 'LIC. SENORINA CASTRO MORENO';
-  solicitanteCargo = 'M23 JEFE DE SERVICIOS DE DESARROLLO DE PERSONAL';
-  solicitanteMatricula = '99217598';
+  // Viáticos y autorizaciones
+  cuotaDiariaViaticos = '';
+  anticipoViaticos = '';
+  anticipoPasajes = '';
+  anticipoVehiculo = '';
+  medioAvion = false;
+  medioVehiculoOficial = false;
+  medioAutobus = false;
+  medioVehiculoInstitucional = false;
+  medioEcco = false;
+  disponibilidadPresupuestal = '';
 
-  comisionadoNombre = 'LIC. MARIA DEL PILAR ORTEGA GARCÍA';
-  comisionadoTipoContratacion = 'Confianza A';
-  comisionadoMatricula = '99218665';
-  grupoJerarquico = 'N49 JEFE A DEPTO CAPACIT Y TRANSP';
-  telefono = '951 515 27 23';
+  // Vale Tesorería
+  valeBuenoPor = '';
+  valeRecibiCantidad = '';
+  valeCantidadLetra = '';
+  valeDiasViaticos: number | null = null;
+  valeValorPasajes = '';
+  valeValorPasajesLetra = '';
+  valeLugarFecha = '';
 
-  motivo = 'Capacitación sobre declaración patrimonial.';
-  lugarComision = 'SALINA CRUZ, OAX';
-  periodo = 'Del 22 al 24 de mayo 2024';
-  totalDias = 'TRES';
-  transporte = 'Traslado terrestre';
+  // Certificado Tránsito y Permanencia
+  certificadoFilas = Array.from({ length: 5 }, () => ({
+    lugarFecha: '',
+    llegada: '',
+    salida: '',
+    firma: ''
+  }));
 
-  cuotaDiaria = '$1,796.64';
-  anticipoViaticos = '-';
-  anticipoPasajes = '-';
-  subtotal = '$5,389.92';
-  gastoTotal = '$5,389.92';
+  // Reanudación de labores
+  reanudaFecha = '';
+  reanudaFirma = '';
 
-  presupuestoDisponible = '$42061603';
-  clavePresupuestal = '219001 700100 Cuenta 42061603';
-  responsablePresupuesto = 'C. ARACELY RAMÍREZ VÁSQUEZ (MAT 311210232)';
+  // Liquidación (última tabla)
+  liqAnticipoViaticosCargo = '';
+  liqAnticipoViaticosAbono = '';
+  liqAnticipoPasajesCargo = '';
+  liqAnticipoPasajesAbono = '';
+  liqCertificacionCargo = '';
+  liqCertificacionAbono = '';
+  liqPasajesCargo = '';
+  liqPasajesAbono = '';
+  liqVehiculoCargo = '';
+  liqVehiculoAbono = '';
+  liqTrasladoCargo = '';
+  liqTrasladoAbono = '';
+  liqPrimaCargo = '';
+  liqPrimaAbono = '';
+  liqSumaCargo = '';
+  liqSumaAbono = '';
+  liqSaldoCargo = '';
+  liqSaldoAbono = '';
+  liqRecibiCantidad = '';
+  liqRecibiCantidadLetra = '';
 
-  firmaEmpleado = 'LIC. MARIA DEL PILAR ORTEGA GARCÍA';
-
-  imprimirDirecto(): void {
-    const contenidoClonado = this.pdfContenido.nativeElement.cloneNode(true) as HTMLElement;
-    const botones = contenidoClonado.querySelectorAll('.print\\:hidden');
-    botones.forEach(el => el.remove());
+  imprimir(): void {
+    const contenido = document.getElementById('printArea')?.innerHTML;
+    if (!contenido) return;
 
     const ventana = window.open('', '_blank', 'width=816,height=1056');
     if (!ventana) {
-      alert('El navegador bloqueó la ventana emergente.');
+      alert('La ventana emergente fue bloqueada por el navegador.');
       return;
     }
 
-    const documento = `
-    <html>
-      <head>
-        <title>Pliego de Comisión</title>
-        <style>
-          @page { size: letter; margin: 10mm; }
-          body {
-            font-family: 'Times New Roman', serif;
-            font-size: 10pt;
-            margin: 0;
-            background: white;
-            color: black;
-          }
-          * { page-break-inside: avoid; }
-          .text-center { text-align: center; }
-          .border { border: 1px solid black; border-collapse: collapse; }
-          .border td, .border th { border: 1px solid black; padding: 4px; }
-          .certificado-linea td { height: 50px; }
-        </style>
-      </head>
-      <body>
-        ${contenidoClonado.innerHTML}
-        <script>
-          window.onload = () => {
-            setTimeout(() => {
-              window.print();
-              window.close();
-            }, 500);
-          };
-        </script>
-      </body>
-    </html>`;
     ventana.document.open();
-    ventana.document.write(documento);
+    ventana.document.write(`
+      <html>
+        <head>
+          <title>Impresión Pliego Comisión</title>
+          <link href="styles.css" rel="stylesheet" />
+          <style>
+            @page { size: letter; margin: 8mm; }
+            body {
+              margin: 0;
+              padding: 0;
+              font-family: 'Times New Roman', serif;
+              font-size: 8.5pt;
+              background: white;
+              color: black;
+              -webkit-print-color-adjust: exact !important;
+              print-color-adjust: exact !important;
+            }
+            .print-area {
+              width: 100%;
+              max-width: 816px;
+              margin: auto;
+              padding: 8mm;
+            }
+            table { border-collapse: collapse; width: 100%; }
+            td { border: 1px solid black; padding: 2px; }
+            .page-break { page-break-before: always; }
+            * { page-break-inside: avoid !important; }
+          </style>
+        </head>
+        <body>
+          <div class="print-area">${contenido}</div>
+          <script>
+            window.onload = function() { window.print(); }
+          </script>
+        </body>
+      </html>
+    `);
     ventana.document.close();
   }
 }

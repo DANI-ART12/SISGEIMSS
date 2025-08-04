@@ -1,25 +1,106 @@
-@media print {
-    @page {
-      size: letter portrait;
-      margin: 10mm;
-    }
-  
-    body {
-      -webkit-print-color-adjust: exact !important;
-      print-color-adjust: exact !important;
-      color: black !important;
-      background: white !important;
-    }
-  
-    .print\:hidden {
-      display: none !important;
-    }
-  
-    * {
-      page-break-inside: avoid;
-      page-break-before: avoid;
-      page-break-after: avoid;
-    }
-  }
-  
+/* Centrar contenido principal */
+#printArea {
+  max-width: 816px;
+  margin: 0 auto;
+  padding: 8mm;
+  font-family: 'Times New Roman', serif;
+  font-size: 8.5pt;
+  color: black;
+  background: white;
+  position: relative;
+}
+
+/* Frases laterales giradas y centradas */
+.absolute {
+  position: absolute;
+}
+
+.top-1\/3 {
+  top: 33%;
+}
+
+.left-0 {
+  left: 0;
+}
+
+.right-0 {
+  right: 0;
+}
+
+.origin-left {
+  transform-origin: left center;
+}
+
+.origin-right {
+  transform-origin: right center;
+}
+
+.rotate-90 {
+  transform: rotate(90deg);
+}
+
+.-rotate-90 {
+  transform: rotate(-90deg);
+}
+
+.whitespace-nowrap {
+  white-space: nowrap;
+}
+
+/* Para salto de pagina */
+.page-break {
+  page-break-before: always;
+}
+
+/* Inputs con borde solo abajo */
+input[type="text"],
+input[type="number"] {
+  border: none;
+  border-bottom: 1px solid black;
+  font-size: 8pt;
+  padding: 0 2px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+/* Tabla */
+table {
+  border-collapse: collapse;
+  width: 100%;
+}
+
+td {
+  border: 1px solid black;
+  padding: 4px 6px;
+  vertical-align: top;
+}
+
+.text-center {
+  text-align: center;
+}
+
+.font-bold {
+  font-weight: bold;
+}
+
+.text-xs {
+  font-size: 8pt;
+}
+
+.p-1 {
+  padding: 0.25rem;
+}
+
+.p-2 {
+  padding: 0.5rem;
+}
+
+.p-4 {
+  padding: 1rem;
+}
+
+.p-12 {
+  padding: 3rem;
+}
+
   

@@ -1,1 +1,32 @@
-/* Dashboard component styles (empty for now) */
+/* Animación de movimiento ida y vuelta */
+@keyframes moverAmbulancia {
+    0% {
+      left: -6rem;
+    }
+    50% {
+      left: 100%;
+    }
+    100% {
+      left: -6rem;
+    }
+    
+  }
+  
+  .ambulancia {
+    animation: moverAmbulancia 6s linear infinite;
+  }
+  
+  /* Animación parpadeo sirena */
+  @keyframes parpadeoSirena {
+    0%, 100% {
+      fill: #e53935; /* rojo brillante */
+    }
+    50% {
+      fill: #4285f4; /* azul brillante */
+    }
+  }
+  
+  .sirena {
+    animation: parpadeoSirena 0.6s infinite;
+  }
+  

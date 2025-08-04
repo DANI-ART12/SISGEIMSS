@@ -1,107 +1,175 @@
 <div class="max-w-4xl mx-auto p-8 bg-white shadow rounded-2xl">
-    <!-- Título -->
-    <h1 class="text-3xl font-bold text-center mb-6">Traslados Locales</h1>
-  
-    <!-- Formulario -->
-    <form (ngSubmit)="guardarTraslado()" #formTraslado="ngForm" class="grid grid-cols-1 md:grid-cols-2 gap-6">
-        <!-- Folio -->
-        <div>
-          <label for="folio" class="block font-medium mb-1">Número de Folio</label>
-          <input type="text" id="folio" name="folio" [(ngModel)]="traslado.folio" readonly
-                 class="w-full border rounded-lg p-2 outline-none focus:ring-2 focus:ring-blue-500" disabled>
-        </div>
-      <!-- Nombre del paciente -->
-      <div>
-        <label for="nombre" class="block font-medium mb-1">Nombre del paciente</label>
-        <input type="text" id="nombre" name="nombre" [(ngModel)]="traslado.nombre" required
-               class="w-full border rounded-lg p-2 outline-none focus:ring-2 focus:ring-blue-500"
-               placeholder="Ingrese Numero de Paciente ">
-      </div>
-  
-      <!-- Número de Afiliación -->
-      <div>
-        <label for="afiliacion" class="block font-medium mb-1">Número de Afiliación</label>
-        <input type="number" id="afiliacion" name="afiliacion" [(ngModel)]="traslado.afiliacion" required
-               class="w-full border rounded-lg p-2 outline-none focus:ring-2 focus:ring-blue-500"
-               placeholder="Ingrese Numero de Afiliacion">
-      </div>
-  
-      <!-- Número de Teléfono -->
-      <div>
-        <label for="telefono" class="block font-medium mb-1">Número de Teléfono</label>
-        <input type="tel" id="telefono" name="telefono" [(ngModel)]="traslado.telefono" required
-               class="w-full border rounded-lg p-2 outline-none focus:ring-2 focus:ring-blue-500"
-               placeholder="Ingrese Número de Teléfono">
-      </div>
-  
-      <!-- Fecha y Hora -->
-      <div>
-        <label for="fecha" class="block font-medium mb-1">Fecha y Hora del Traslado</label>
-        <input type="datetime-local" id="fecha" name="fecha" [(ngModel)]="traslado.fecha" required
-               class="w-full border rounded-lg p-2 outline-none focus:ring-2 focus:ring-blue-500">
-      </div>
-  
-      <!-- Origen -->
-      <div>
-        <label for="origen" class="block font-medium mb-1">Origen</label>
-        <input type="text" id="origen" name="origen" [(ngModel)]="traslado.origen" required
-               class="w-full border rounded-lg p-2 outline-none focus:ring-2 focus:ring-blue-500"
-               placeholder="Ingrese Origen">
-      </div>
-  
-      <!-- Destino -->
-      <div>
-        <label for="destino" class="block font-medium mb-1">Destino</label>
-        <input type="text" id="destino" name="destino" [(ngModel)]="traslado.destino" required
-               class="w-full border rounded-lg p-2 outline-none focus:ring-2 focus:ring-blue-500"
-               placeholder="Ingrese Destino">
-      </div>
-  
-      <!-- Requiere -->
-      <div>
-        <label for="requiere" class="block font-medium mb-1">Requiere</label>
-        <select id="requiere" name="requiere" [(ngModel)]="traslado.requiere" required
-                class="w-full border rounded-lg p-2 outline-none focus:ring-2 focus:ring-blue-500">
-          <option value="" disabled selected>Selecciona una opción</option>
-          <option value="oxigeno">Oxígeno</option>
-          <option value="incubadora">Incubadora</option>
-        </select>
-      </div>
-  
-      <!-- Tipo de Servicio -->
-      <div>
-        <label for="tipoServicio" class="block font-medium mb-1">Tipo de Servicio</label>
-        <select id="tipoServicio" name="tipoServicio" [(ngModel)]="traslado.tipoServicio" required
-                class="w-full border rounded-lg p-2 outline-none focus:ring-2 focus:ring-blue-500">
-          <option value="" disabled selected>Selecciona una opción</option>
-          <option value="alta">Alta</option>
-          <option value="cita">Cita Médica</option>
-          <option value="interconsulta">Interconsulta</option>
-          <option value="infeccioso">Infeccioso</option>
-        </select>
-      </div>
-  
-      <!-- Posición -->
-      <div>
-        <label for="posicion" class="block font-medium mb-1">Posición</label>
-        <select id="posicion" name="posicion" [(ngModel)]="traslado.posicion" required
-                class="w-full border rounded-lg p-2 outline-none focus:ring-2 focus:ring-blue-500">
-          <option value="" disabled selected>Selecciona una opción</option>
-          <option value="acostado">Acostado</option>
-          <option value="brazos">En brazos</option>
-          <option value="sentado">Sentado</option>
-        </select>
-      </div>
-  
-      <!-- Botón -->
-      <div class="md:col-span-2">
-        <button type="submit"
-                class="w-full bg-blue-600 text-white px-6 py-3 rounded-xl hover:bg-blue-700 transition">
-          Guardar traslado
-        </button>
-      </div>
-  
-    </form>
+  <h1 class="text-3xl font-bold text-center mb-6">Traslados Locales</h1>
+
+  <form (ngSubmit)="guardarTraslado()" #formTraslado="ngForm" class="grid grid-cols-1 md:grid-cols-2 gap-6">
+
+    <!-- Folio -->
+    <div>
+      <label for="folio" class="block font-medium mb-1">Número de Folio</label>
+      <input type="text" id="folio" name="folio" [(ngModel)]="traslado.folio" readonly
+             class="w-full border rounded-lg p-2 outline-none focus:ring-2 focus:ring-blue-500" disabled>
+    </div>
+
+    <!-- Nombre paciente con autocompletado -->
+    <div class="relative">
+      <label for="nombre" class="block font-medium mb-1">Nombre del paciente</label>
+      <input type="text" id="nombre" name="nombre" [(ngModel)]="traslado.nombre"
+             (input)="onNombreInput($event)" autocomplete="off" required
+             class="w-full border rounded-lg p-2 outline-none focus:ring-2 focus:ring-blue-500"
+             placeholder="Ingrese Nombre del Paciente">
+
+      <!-- Lista de sugerencias -->
+      <ul *ngIf="mostrarSugerencias" class="absolute z-10 bg-white border border-gray-300 rounded w-full max-h-40 overflow-auto mt-1">
+        <li *ngFor="let paciente of pacientesFiltrados" 
+            (click)="seleccionarPaciente(paciente)"
+            class="cursor-pointer hover:bg-blue-100 px-3 py-1">
+          {{ paciente.nombre }} {{ paciente.primerApellido }} {{ paciente.segundoApellido }}
+        </li>
+      </ul>
+    </div>
+
+    <!-- Número de Afiliación -->
+    <div>
+      <label for="afiliacion" class="block font-medium mb-1">Número de Afiliación (NSS)</label>
+      <input type="text" id="afiliacion" name="afiliacion" [(ngModel)]="traslado.afiliacion" required
+             class="w-full border rounded-lg p-2 outline-none focus:ring-2 focus:ring-blue-500"
+             placeholder="Ingrese Número de Afiliación">
+    </div>
+
+    <!-- Número de Teléfono -->
+    <div>
+      <label for="telefono" class="block font-medium mb-1">Número de Teléfono</label>
+      <input type="tel" id="telefono" name="telefono" [(ngModel)]="traslado.telefono" required
+             class="w-full border rounded-lg p-2 outline-none focus:ring-2 focus:ring-blue-500"
+             placeholder="Ingrese Número de Teléfono">
+    </div>
+
+    <!-- Fecha y Hora -->
+    <div>
+      <label for="fecha" class="block font-medium mb-1">Fecha y Hora del Traslado</label>
+      <input type="datetime-local" id="fecha" name="fecha" [(ngModel)]="traslado.fecha" required
+             class="w-full border rounded-lg p-2 outline-none focus:ring-2 focus:ring-blue-500">
+    </div>
+
+    <!-- Origen -->
+    <div>
+      <label for="origen" class="block font-medium mb-1">Origen</label>
+      <input type="text" id="origen" name="origen" [(ngModel)]="traslado.origen" required
+             class="w-full border rounded-lg p-2 outline-none focus:ring-2 focus:ring-blue-500"
+             placeholder="Ingrese Origen">
+    </div>
+
+    <!-- Destino -->
+    <div>
+      <label for="destino" class="block font-medium mb-1">Destino</label>
+      <input type="text" id="destino" name="destino" [(ngModel)]="traslado.destino" required
+             class="w-full border rounded-lg p-2 outline-none focus:ring-2 focus:ring-blue-500"
+             placeholder="Ingrese Destino">
+    </div>
+
+    <!-- Requiere -->
+    <div>
+      <label for="requiere" class="block font-medium mb-1">Requiere</label>
+      <select id="requiere" name="requiere" [(ngModel)]="traslado.requiere" required
+              class="w-full border rounded-lg p-2 outline-none focus:ring-2 focus:ring-blue-500">
+        <option value="" disabled selected>Selecciona una opción</option>
+        <option value="oxigeno">Oxígeno</option>
+        <option value="incubadora">Incubadora</option>
+      </select>
+    </div>
+
+    <!-- Tipo de Servicio -->
+    <div>
+      <label for="tipoServicio" class="block font-medium mb-1">Tipo de Servicio</label>
+      <select id="tipoServicio" name="tipoServicio" [(ngModel)]="traslado.tipoServicio" required
+              class="w-full border rounded-lg p-2 outline-none focus:ring-2 focus:ring-blue-500">
+        <option value="" disabled selected>Selecciona una opción</option>
+        <option value="alta">Alta</option>
+        <option value="cita">Cita Médica</option>
+        <option value="interconsulta">Interconsulta</option>
+        <option value="infeccioso">Infeccioso</option>
+      </select>
+    </div>
+
+    <!-- Posición -->
+    <div>
+      <label for="posicion" class="block font-medium mb-1">Posición</label>
+      <select id="posicion" name="posicion" [(ngModel)]="traslado.posicion" required
+              class="w-full border rounded-lg p-2 outline-none focus:ring-2 focus:ring-blue-500">
+        <option value="" disabled selected>Selecciona una opción</option>
+        <option value="acostado">Acostado</option>
+        <option value="brazos">En brazos</option>
+        <option value="sentado">Sentado</option>
+      </select>
+    </div>
+
+    <!-- Botón Guardar -->
+    <div class="md:col-span-2">
+      <button type="submit"
+              class="w-full bg-blue-600 text-white px-6 py-3 rounded-xl hover:bg-blue-700 transition">
+        Guardar traslado
+      </button>
+    </div>
+
+  </form>
+
+  <!-- FORMULARIO PACIENTE NUEVO -->
+  <div *ngIf="mostrarFormularioPacienteNuevo" class="border rounded p-4 mt-6 bg-gray-50 max-w-4xl mx-auto">
+    <h3 class="font-semibold mb-4">Agregar nuevo paciente</h3>
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <input
+        type="text"
+        placeholder="Nombre(s)"
+        [(ngModel)]="nuevoPaciente.nombre"
+        name="nuevoNombre"
+        class="border p-2 rounded"
+        required
+      />
+      <input
+        type="text"
+        placeholder="Primer Apellido"
+        [(ngModel)]="nuevoPaciente.primerApellido"
+        name="nuevoPrimerApellido"
+        class="border p-2 rounded"
+        required
+      />
+      <input
+        type="text"
+        placeholder="Segundo Apellido"
+        [(ngModel)]="nuevoPaciente.segundoApellido"
+        name="nuevoSegundoApellido"
+        class="border p-2 rounded"
+      />
+      <input
+        type="text"
+        placeholder="NSS"
+        [(ngModel)]="nuevoPaciente.nss"
+        name="nuevoNSS"
+        class="border p-2 rounded"
+        required
+      />
+      <input
+        type="text"
+        placeholder="Teléfono"
+        [(ngModel)]="nuevoPaciente.telefono"
+        name="nuevoTelefono"
+        class="border p-2 rounded"
+      />
+      <input
+        type="text"
+        placeholder="Domicilio"
+        [(ngModel)]="nuevoPaciente.domicilio"
+        name="nuevoDomicilio"
+        class="border p-2 rounded"
+      />
+    </div>
+
+    <button
+      (click)="agregarPacienteNuevo()"
+      class="mt-4 bg-green-600 text-white px-5 py-2 rounded hover:bg-green-700"
+    >
+      Guardar Paciente Nuevo
+    </button>
   </div>
-  
-  
+
+</div>

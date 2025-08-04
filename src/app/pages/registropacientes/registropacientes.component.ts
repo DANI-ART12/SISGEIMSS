@@ -2,13 +2,16 @@ import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 
-interface Paciente {
+interface HistorialPaciente {
   nombre: string;
   primerApellido: string;
   segundoApellido: string;
   nss: string;
-  telefono: string;
   domicilio: string;
+  traslados: {
+    hospital: string;
+    motivo: string;
+  }[];
 }
 
 @Component({
@@ -20,72 +23,39 @@ interface Paciente {
 })
 export class RegistropacientesComponent {
   filtro: string = '';
-  mostrarFormulario: boolean = false;
 
-  nuevoPaciente: Paciente = this.crearPacienteVacio();
-
-  // Lista inicial con algunos pacientes de ejemplo (puedes eliminar o modificar)
-  pacientes: Paciente[] = [
+  // Lista de ejemplo
+  historialPacientes: HistorialPaciente[] = [
     {
       nombre: 'Juan',
       primerApellido: 'Pérez',
       segundoApellido: 'Gómez',
       nss: '12345678901',
-      telefono: '5512345678',
-      domicilio: 'Calle Falsa 123'
+      domicilio: 'Calle Falsa 123',
+      traslados: [
+        { hospital: 'Hospital General', motivo: 'Estudio' },
+        { hospital: 'Clínica IMSS', motivo: 'Operación' }
+      ]
     },
     {
       nombre: 'María',
       primerApellido: 'López',
       segundoApellido: 'Ramírez',
       nss: '10987654321',
-      telefono: '5598765432',
-      domicilio: 'Avenida Siempre Viva 742'
+      domicilio: 'Avenida Siempre Viva 742',
+      traslados: [
+        { hospital: 'Hospital Infantil', motivo: 'Alta' }
+      ]
     }
   ];
 
-  // Getter para devolver pacientes filtrados según texto en filtro
-  get pacientesFiltrados(): Paciente[] {
-    if (!this.filtro.trim()) {
-      return this.pacientes;
-    }
-    const filtroMinusculas = this.filtro.toLowerCase();
-    return this.pacientes.filter(p =>
-      (`${p.nombre} ${p.primerApellido} ${p.segundoApellido}`)
-        .toLowerCase()
-        .includes(filtroMinusculas)
+  // Filtrar por nombre o NSS
+  get historialFiltrado(): HistorialPaciente[] {
+    if (!this.filtro.trim()) return this.historialPacientes;
+    const filtroLower = this.filtro.toLowerCase();
+    return this.historialPacientes.filter(p =>
+      `${p.nombre} ${p.primerApellido} ${p.segundoApellido}`.toLowerCase().includes(filtroLower) ||
+      p.nss.toLowerCase().includes(filtroLower)
     );
-  }
-
-  agregarPaciente() {
-    // Validación básica para campos obligatorios
-    if (
-      !this.nuevoPaciente.nombre.trim() ||
-      !this.nuevoPaciente.primerApellido.trim() ||
-      !this.nuevoPaciente.nss.trim()
-    ) {
-      alert('Por favor, complete al menos Nombre, Primer Apellido y NSS.');
-      return;
-    }
-
-    // Agregar copia del nuevo paciente al arreglo
-    this.pacientes.push({ ...this.nuevoPaciente });
-
-    // Resetear el formulario
-    this.nuevoPaciente = this.crearPacienteVacio();
-
-    // Ocultar formulario
-    this.mostrarFormulario = false;
-  }
-
-  crearPacienteVacio(): Paciente {
-    return {
-      nombre: '',
-      primerApellido: '',
-      segundoApellido: '',
-      nss: '',
-      telefono: '',
-      domicilio: ''
-    };
   }
 }
