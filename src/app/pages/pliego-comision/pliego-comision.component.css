@@ -103,4 +103,55 @@ td {
   padding: 3rem;
 }
 
-  
+/* ========================================= */
+/* NUEVO: Cuadros laterales para frases rotadas */
+/* ========================================= */
+
+.vertical-text-left,
+.vertical-text-right {
+  position: absolute;
+  top: 50%;
+  width: 40px;
+  padding: 4px;
+  font-size: 7pt;
+  font-weight: 600;
+  text-align: center;
+  color: #374151;
+  border: 1px solid #000;
+  background: #fff;
+  white-space: nowrap;
+  /* El translateX se mueve después de la rotación */
+}
+
+/* Lado izquierdo */
+.vertical-text-left {
+  left: -20px; /* Saca el cuadro un poco fuera del contenido */
+  transform: rotate(-90deg) translate(-50%, 0);
+  transform-origin: center center;
+}
+
+/* Lado derecho */
+.vertical-text-right {
+  right: -20px;
+  transform: rotate(90deg) translate(50%, 0);
+  transform-origin: center center;
+}
+
+/* En impresión que siempre queden centradas en los bordes */
+@media print {
+  .vertical-text-left {
+    position: fixed;
+    left: 5mm; /* margen izquierdo del papel */
+    top: 50%;
+    transform: rotate(-90deg) translate(-50%, 0);
+    transform-origin: center center;
+  }
+
+  .vertical-text-right {
+    position: fixed;
+    right: 5mm; /* margen derecho del papel */
+    top: 50%;
+    transform: rotate(90deg) translate(50%, 0);
+    transform-origin: center center;
+  }
+}

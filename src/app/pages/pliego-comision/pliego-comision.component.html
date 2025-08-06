@@ -1,223 +1,436 @@
 <div id="printArea" class="max-w-[816px] mx-auto text-[8.5pt] leading-tight">
 
-   <!-- Frases laterales centradas -->
-   <div class="absolute left-0 top-1/2 -translate-y-1/2 w-36 text-[7pt] font-semibold text-gray-700 rotate-[-90deg] origin-left whitespace-nowrap text-center">
-    Se hará su comprobación en un término de 5 días
-  </div>
-  <div class="absolute right-0 top-1/2 -translate-y-1/2 w-36 text-[7pt] font-semibold text-gray-700 rotate-[90deg] origin-right whitespace-nowrap text-center">
-    No se admiten tachaduras ni enmendaduras
-  </div>
+  <div
+  contenteditable="true"
+  class="absolute left-4 top-1/2 -translate-y-1/2 w-36 text-[7pt] font-semibold text-gray-700 rotate-[-90deg] origin-left whitespace-nowrap text-center"
+  (input)="updateFraseIzquierda($event)"
+  [innerText]="fraseIzquierda"
+  spellcheck="false"
+></div>
+
+<div
+  contenteditable="true"
+  class="absolute right-4 top-1/2 -translate-y-1/2 w-36 text-[7pt] font-semibold text-gray-700 rotate-[90deg] origin-right whitespace-nowrap text-center"
+  (input)="updateFraseDerecha($event)"
+  [innerText]="fraseDerecha"
+  spellcheck="false"
+></div>
+
   <!-- ENCABEZADO -->
-  <div class="flex justify-between items-start mb-2">
-    <!-- Logo y Títulos -->
-    <div class="flex items-center justify-center mb-2">
-      <img src="assets/logoimss.png" alt="IMSS" class="w-12 h-12 mr-3" />
-      <div class="flex flex-col items-center">
-        <h1 class="font-bold text-[12pt] uppercase text-center">
-          INSTITUTO MEXICANO DEL SEGURO SOCIAL
-        </h1>
-        <h2 class="font-bold text-[10pt] underline uppercase text-center">
-          PLIEGO DE COMISIÓN
-        </h2>
-      </div>
-    </div>
-    <!-- Folio -->
-    <div class="border border-black p-1 w-36 text-right text-[8pt]">
-      <p class="border-b border-black font-bold">No. FOLIO</p>
-      <p>{{ numeroFolio }}</p>
-      <p class="text-[7pt] mt-1">{{ fechaActual }}</p>
+<div class="flex justify-between items-center mb-2">
+  <!-- Título principal -->
+  <div class="flex flex-col items-center flex-1">
+    <h1 class="font-bold text-[12pt] uppercase">INSTITUTO MEXICANO DEL SEGURO SOCIAL</h1>
+    <h2 class="font-bold text-[10pt] uppercase underline">PLIEGO DE COMISIÓN</h2>
+  </div>
+  <!-- Folio -->
+  <div class="flex items-center">
+    <span class="mr-1 text-sm">No.</span>
+    <div class="border border-black rounded-full px-4 py-1 font-bold text-sm">
+      {{ numeroFolio }}
     </div>
   </div>
+</div>
 
-  <!-- TABLA AUTORIZACIÓN DE COMISIÓN -->
-  <table class="w-full border border-black mb-2">
-    <tbody>
-      <tr>
-        <td class="border p-1 font-bold" colspan="4">AUTORIZACIÓN DE COMISIÓN</td>
-      </tr>
-      <tr>
-        <td class="border p-1" colspan="2">
-          Funcionario solicitante:<br>
-          <input type="text" [(ngModel)]="funcionarioSolicitante" class="w-full text-xs border-b border-black" />
-        </td>
-        <td class="border p-1" colspan="2">
-          Categoría:<br>
-          <input type="text" [(ngModel)]="categoria" class="w-full text-xs border-b border-black" />
-        </td>
-      </tr>
-      <tr>
-        <td class="border p-1" colspan="4">
-          Dependencia:<br>
-          <input type="text" [(ngModel)]="dependencia" class="w-full text-xs border-b border-black" />
-        </td>
-      </tr>
-      <!-- Nombre, RFC, CURP, Tipo Contratación -->
-      <tr>
-        <td class="border p-1">
-          Nombre comisionado:<br>
-          <input type="text" [(ngModel)]="nombreComisionado" class="w-full text-xs border-b border-black" />
-        </td>
-        <td class="border p-1">
-          RFC:<br>
-          <input type="text" [(ngModel)]="rfc" class="w-full text-xs border-b border-black" />
-        </td>
-        <td class="border p-1">
-          CURP:<br>
-          <input type="text" [(ngModel)]="curp" class="w-full text-xs border-b border-black" />
-        </td>
-        <td class="border p-1">
-          Tipo de contratación:<br>
-          <label class="mr-2"><input type="checkbox" [(ngModel)]="tipoBase" /> Base</label>
-          <label><input type="checkbox" [(ngModel)]="tipoConfianza" /> Confianza</label>
-        </td>
-      </tr>
-      <!-- Matrícula / Categoría / Teléfono -->
-      <tr>
-        <td class="border p-1">
-          Matrícula:<br>
-          <input type="text" [(ngModel)]="matricula" class="w-full text-xs border-b border-black" />
-        </td>
-        <td class="border p-1" colspan="2">
-          Categoría (num y nombre):<br>
-          <input type="text" [(ngModel)]="categoriaNumNombre" class="w-full text-xs border-b border-black" />
-        </td>
-        <td class="border p-1">
-          Teléfono oficina:<br>
-          <input type="text" [(ngModel)]="telefonoOficina" class="w-full text-xs border-b border-black" />
-        </td>
-      </tr>
-      <!-- Objeto comisión -->
-      <tr>
-        <td class="border p-1" colspan="4">
-          Objeto de comisión:<br>
-          <input type="text" [(ngModel)]="objetoComision" class="w-full text-xs border-b border-black" />
-        </td>
-      </tr>
-      <!-- Lugares comisión -->
-      <tr>
-        <td class="border p-1" colspan="4">
-          Lugares de comisión:<br>
-          <input type="text" [(ngModel)]="lugaresComision" class="w-full text-xs border-b border-black" />
-        </td>
-      </tr>
-      <!-- Periodo / Total días -->
-      <tr>
-        <td class="border p-1" colspan="3">
-          Periodo:<br>
-          <input type="text" [(ngModel)]="periodo" class="w-full text-xs border-b border-black" />
-        </td>
-        <td class="border p-1">
-          Total de días:<br>
-          <input type="number" [(ngModel)]="totalDias" class="w-full text-xs border-b border-black" />
-        </td>
-      </tr>
-      <!-- Firmas -->
-      <tr>
-        <td class="border p-4 text-center" colspan="2">
-          Funcionario solicitante<br><br><br>
-        </td>
-        <td class="border p-4 text-center" colspan="2">
-          Funcionario que autoriza<br><br><br>
-        </td>
-      </tr>
-    </tbody>
-  </table>
+<!-- TABLA AUTORIZACIÓN DE COMISIÓN -->
+<table class="w-full border border-black mb-3 text-[8pt]">
+  <thead>
+    <tr>
+      <th colspan="6" class="bg-gray-300 text-center font-bold uppercase p-1">
+        AUTORIZACIÓN DE COMISIÓN
+      </th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td class="border font-bold uppercase p-1 w-[18%]">Funcionario solicitante</td>
+      <td class="border p-1" colspan="5">
+        <input [(ngModel)]="funcionarioSolicitante" class="w-full" [readonly]="!modoEdicion" />
+      </td>
+    </tr>
+    <tr>
+      <td class="border font-bold uppercase p-1">Categoría</td>
+      <td class="border p-1" colspan="5">
+        <input [(ngModel)]="categoria" class="w-full border-black" [readonly]="!modoEdicion" />
+      </td>
+    </tr>
+    <tr>
+      <td class="border font-bold uppercase p-1">Dependencia</td>
+      <td class="border p-1" colspan="5">
+        <input [(ngModel)]="dependencia" class="w-full border-black" [readonly]="!modoEdicion" />
+      </td>
+    </tr>
+    <!-- FILA: Nombre comisionado / RFC-CURP / Tipo de contratación -->
+    <tr>
+      <td class="border font-bold uppercase p-1 text-center">Nombre comisionado</td>
+      <td class="border p-1">
+        <input [(ngModel)]="nombreComisionado" class="w-full border-black" [readonly]="!modoEdicion" />
+      </td>
 
-  <!-- TABLAS VIÁTICOS Y AUTORIZACIONES ESPECÍFICAS -->
-  <div class="grid grid-cols-2 gap-2 mb-2">
-    <!-- Viáticos -->
-    <table class="w-full border border-black">
-      <tbody>
-        <tr><td class="border p-1 font-bold text-center">AUTORIZACIÓN DEL IMPORTE DE VIÁTICOS Y PASAJES</td></tr>
-        <tr><td class="border p-1">Cuota diaria de viáticos: <input type="text" [(ngModel)]="cuotaDiariaViaticos" class="w-full text-xs border-b border-black" /></td></tr>
-        <tr><td class="border p-1">Anticipo de viáticos: <input type="text" [(ngModel)]="anticipoViaticos" class="w-full text-xs border-b border-black" /></td></tr>
-        <tr><td class="border p-1">Anticipo de pasajes: <input type="text" [(ngModel)]="anticipoPasajes" class="w-full text-xs border-b border-black" /></td></tr>
-        <tr><td class="border p-1">Anticipo de gastos por uso de vehículo: <input type="text" [(ngModel)]="anticipoVehiculo" class="w-full text-xs border-b border-black" /></td></tr>
-        <tr>
-          <tr>
-          <td class="border p-1 text-center">
-            Medio de transporte:<br>
-            <label><input type="checkbox" [(ngModel)]="medioAvion" /> Avión</label>
-            <label><input type="checkbox" [(ngModel)]="medioVehiculoOficial" /> Vehículo oficial</label>
-            <label><input type="checkbox" [(ngModel)]="medioAutobus" /> Autobús</label>
-            <label><input type="checkbox" [(ngModel)]="medioVehiculoInstitucional" /> Vehículo institucional  ECCO_____</label>
-            
-          </td>
-        </tr>
-        <tr>
-          <td class="border p-1 text-center">TESORERÍA GENERAL</td>
-        </tr>
-        <tr><td class="border p-2">nombrde y firma</td></tr>
-      </tbody>
-    </table>
+      <td class="border font-bold uppercase p-1 text-center">RFC / CURP</td>
+      <td class="border p-1">
+        <input [(ngModel)]="rfc" placeholder="RFC" class="w-full border-black mb-1" [readonly]="!modoEdicion" />
+        <input [(ngModel)]="curp" placeholder="CURP" class="w-full border-black" [readonly]="!modoEdicion" />
+      </td>
 
-    <!-- Autorizaciones específicas -->
-    <table class="w-full border border-black">
-      <tbody>
-        <tr><td class="border p-1 font-bold text-center">AUTORIZACIONES ESPECÍFICAS</td></tr>
-        <tr><td class="border p-4">Por uso de vehículo:</td></tr>
-        <tr><td class="border p-4">En comisiones mayores a 60 días:</td></tr>
-        <tr><td class="border p-4">Por arrendamiento de vehículo:</td></tr>
-        <tr><td class="border p-2">Autoriza DISPONIBILIDAD PRESUPUESTAL</td></tr>
-        <tr>
-          <td class="border p-4 text-center">
-           nombre y firma:<br><strong>M.A SALOMÓN</strong><br>
-            {{ disponibilidadPresupuestal }}
-          </td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
+      <td class="border font-bold uppercase p-1 text-center">Tipo de contratación</td>
+      <td class="border p-1 text-center">
+        <label class="mr-3">
+          <input type="checkbox" [(ngModel)]="tipoBase" [disabled]="!modoEdicion" /> Base
+        </label>
+        <label>
+          <input type="checkbox" [(ngModel)]="tipoConfianza" [disabled]="!modoEdicion" /> Confianza
+        </label>
+      </td>
+    </tr>
+
+    <!-- Matrícula / Categoría / Teléfono -->
+    <tr>
+      <td class="border font-bold uppercase p-1">Matrícula</td>
+      <td class="border p-1">
+        <input [(ngModel)]="matricula" class="w-full border-black" [readonly]="!modoEdicion" />
+      </td>
+      <td class="border font-bold uppercase p-1 text-center">Categoría<br />(Num. y Nombre)</td>
+      <td class="border p-1">
+        <input [(ngModel)]="categoriaNumNombre" class="w-full border-black" [readonly]="!modoEdicion" />
+      </td>
+      <td class="border font-bold uppercase p-1 text-center">Teléfono oficina</td>
+      <td class="border p-1">
+        <input [(ngModel)]="telefonoOficina" class="w-full border-black" [readonly]="!modoEdicion" />
+      </td>
+    </tr>
+
+    <!-- Objeto comisión -->
+    <tr>
+      <td class="border font-bold uppercase p-1">Objeto de la comisión</td>
+      <td class="border p-1" colspan="5">
+        <input [(ngModel)]="objetoComision" class="w-full border-black" [readonly]="!modoEdicion" />
+      </td>
+    </tr>
+
+    <!-- Lugares comisión -->
+    <tr>
+      <td class="border font-bold uppercase p-1">Lugares de comisión</td>
+      <td class="border p-1" colspan="5">
+        <input [(ngModel)]="lugaresComision" class="w-full border-black" [readonly]="!modoEdicion" />
+      </td>
+    </tr>
+
+    <!-- Periodo y total días -->
+    <tr>
+      <td class="border font-bold uppercase p-1">Periodo</td>
+      <td class="border p-1" colspan="3">
+        <input [(ngModel)]="periodo" class="w-full border-black" [readonly]="!modoEdicion" />
+      </td>
+      <td class="border font-bold uppercase p-1 text-center">Total días</td>
+      <td class="border p-1 text-center">
+        <input
+          type="number"
+          [(ngModel)]="totalDias"
+          class="w-12 text-center border-b border-black"
+          [readonly]="!modoEdicion"
+        /><br />
+        <input
+          type="text"
+          [(ngModel)]="totalDiasTexto"
+          placeholder="(TRES DÍAS)"
+          class="text-center border-black w-full"
+          [readonly]="!modoEdicion"
+        />
+      </td>
+    </tr>
+
+    <!-- Firmas -->
+    <tr>
+      <!-- Funcionario solicitante -->
+      <td class="border border-black p-2 text-center" colspan="3" style="vertical-align: bottom;">
+        <div class="uppercase font-bold text-xs mb-2">FUNCIONARIO SOLICITANTE</div>
+
+        <div *ngIf="!modoEdicion" class="font-bold text-sm mb-1">
+          {{ funcionarioSolicitanteNombre }}
+          <div class="border-t border-black mt-1" style="width: 90%; margin: 0 auto;"></div>
+        </div>
+        <div *ngIf="modoEdicion">
+          <input [(ngModel)]="funcionarioSolicitanteNombre" class="w-full border-b border-black text-center mb-1" />
+          <input [(ngModel)]="funcionarioSolicitanteCargo" class="w-full border-b border-black text-center text-xs" />
+        </div>
+      </td>
+
+      <!-- Funcionario que autoriza -->
+      <td class="border border-black p-2 text-center" colspan="3" style="vertical-align: bottom;">
+        <div class="uppercase font-bold text-xs mb-2">FUNCIONARIO QUE AUTORIZA</div>
+
+        <div *ngIf="!modoEdicion" class="font-bold text-sm mb-1">
+          {{ funcionarioAutorizaNombre }}
+          <div class="border-t border-black mt-1" style="width: 90%; margin: 0 auto;"></div>
+        </div>
+        <div *ngIf="modoEdicion">
+          <input [(ngModel)]="funcionarioAutorizaNombre" class="w-full border-b border-black text-center mb-1" />
+          <input [(ngModel)]="funcionarioAutorizaCargo" class="w-full border-b border-black text-center text-xs" />
+        </div>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<div class="grid grid-cols-1 md:grid-cols-2 gap-2 text-[9pt] font-sans print:grid-cols-2 print:gap-2">
+  <!-- Tabla 1: VIÁTICOS Y PASAJES -->
+<table class="w-full border border-black table-fixed h-full">
+  <thead>
+    <tr class="bg-gray-300">
+      <th colspan="2" class="border border-black text-center font-bold p-1 uppercase">
+        AUTORIZACIÓN DEL IMPORTE DE VIÁTICOS Y PASAJES
+      </th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td class="border p-1">CUOTA DIARIA DE VIÁTICOS</td>
+      <td class="border p-1 text-right">
+        <span *ngIf="!modoEdicion">$ {{ cuotaDiariaViaticos }}</span>
+        <input *ngIf="modoEdicion" [(ngModel)]="cuotaDiariaViaticos" class="w-full text-right border-b border-black" />
+      </td>
+    </tr>
+    <tr>
+      <td class="border p-1">ANTICIPO DE VIÁTICOS</td>
+      <td class="border p-1 text-right">
+        <span *ngIf="!modoEdicion">$ {{ anticipoViaticos }}</span>
+        <input *ngIf="modoEdicion" [(ngModel)]="anticipoViaticos" class="w-full text-right border-b border-black" />
+      </td>
+    </tr>
+    <tr>
+      <td class="border p-1">ANTICIPO DE PASAJES</td>
+      <td class="border p-1 text-right">
+        <span *ngIf="!modoEdicion">$ {{ anticipoPasajes }}</span>
+        <input *ngIf="modoEdicion" [(ngModel)]="anticipoPasajes" class="w-full text-right border-b border-black" />
+      </td>
+    </tr>
+    <tr>
+      <td class="border p-1">ANTICIPO GASTOS POR USO VEHÍCULO</td>
+      <td class="border p-1 text-right">
+        <span *ngIf="!modoEdicion">$ {{ anticipoVehiculo }}</span>
+        <input *ngIf="modoEdicion" [(ngModel)]="anticipoVehiculo" class="w-full text-right border-b border-black" />
+      </td>
+    </tr>
+    <tr class="font-bold">
+      <td class="border p-1 text-right">SUMA</td>
+      <td class="border p-1 text-right">
+        <span *ngIf="!modoEdicion">$ {{ sumaTotal }}</span>
+        <input *ngIf="modoEdicion" [(ngModel)]="sumaTotal" class="w-full text-right border-b border-black" />
+      </td>
+    </tr>
+    <tr>
+      <td colspan="2" class="border p-1 text-center font-bold uppercase">MEDIO DE TRANSPORTE</td>
+    </tr>
+    <tr>
+      <td colspan="2" class="border p-1 text-center space-x-2">
+        <label><input type="checkbox" [(ngModel)]="medioAvion"> AVIÓN</label>
+        <label><input type="checkbox" [(ngModel)]="medioAutobus"> AUTOBÚS</label>
+        <label><input type="checkbox" [(ngModel)]="medioVehiculoOficial"> VEHÍCULO OFICIAL</label>
+        <label><input type="checkbox" [(ngModel)]="usoVehiculoInstitucional"> VEHÍCULO INSTITUCIONAL ECCO_____</label>
+      </td>
+    </tr>
+    <tr>
+      <td colspan="2" class="border p-1 text-center font-bold">TESORERÍA GENERAL</td>
+    </tr>
+    <tr>
+      <td colspan="2" class="border h-10 p-1 text-center">
+        <span *ngIf="!modoEdicion">{{ tesoreriaGeneralTexto }}</span>
+        <input *ngIf="modoEdicion" [(ngModel)]="tesoreriaGeneralTexto" class="w-full border-b border-black text-center" />
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+
+
+  <!-- Tabla 2: AUTORIZACIONES ESPECÍFICAS -->
+<!-- Tabla 2: AUTORIZACIONES ESPECÍFICAS -->
+<table class="w-full border border-black table-fixed h-full">
+  <thead>
+    <tr class="bg-gray-300">
+      <th class="border border-black text-center font-bold p-1 uppercase">
+        AUTORIZACIONES ESPECÍFICAS
+      </th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td class="border p-1 h-[30px] align-top">POR USO DE VEHÍCULO PROPIO</td>
+    </tr>
+    <tr>
+      <td class="border h-[30px] p-1">
+        <span *ngIf="!modoEdicion">{{ autorizacionVehiculoPropio }}</span>
+        <textarea *ngIf="modoEdicion" [(ngModel)]="autorizacionVehiculoPropio" class="w-full border-b border-black resize-none text-xs"></textarea>
+      </td>
+    </tr>
+
+    <tr>
+      <td class="border p-1 h-[30px] align-top">EN COMISIONES MAYORES A 60 DÍAS</td>
+    </tr>
+    <tr>
+      <td class="border h-[30px] p-1">
+        <span *ngIf="!modoEdicion">{{ autorizacionMas60Dias }}</span>
+        <textarea *ngIf="modoEdicion" [(ngModel)]="autorizacionMas60Dias" class="w-full border-b border-black resize-none text-xs"></textarea>
+      </td>
+    </tr>
+
+    <tr>
+      <td class="border p-1 h-[30px] align-top">POR ARRENDAMIENTO DE VEHÍCULO</td>
+    </tr>
+    <tr>
+      <td class="border h-[30px] p-1">
+        <span *ngIf="!modoEdicion">{{ autorizacionArrendamiento }}</span>
+        <textarea *ngIf="modoEdicion" [(ngModel)]="autorizacionArrendamiento" class="w-full border-b border-black resize-none text-xs"></textarea>
+      </td>
+    </tr>
+
+    <tr>
+      <td class="border p-1 text-center font-bold uppercase">AUTORIZA DISPONIBILIDAD PRESUPUESTAL</td>
+    </tr>
+    <tr>
+      <td class="border p-1 text-center text-xs">
+        <span *ngIf="!modoEdicion"><strong>{{ nombrePresupuestal }}</strong></span>
+        <input *ngIf="modoEdicion" [(ngModel)]="nombrePresupuestal" class="w-full border-b border-black text-center text-xs font-bold" />
+      </td>
+    </tr>
+    <tr>
+      <td class="border p-1 text-center text-xs">
+        <span *ngIf="!modoEdicion">{{ textoPresupuestal }}</span>
+        <input *ngIf="modoEdicion" [(ngModel)]="textoPresupuestal" class="w-full border-b border-black text-center text-xs" />
+      </td>
+    </tr>
+    <tr>
+      <td class="border p-1 text-center text-xs">
+        <span *ngIf="!modoEdicion">{{ disponibilidadPresupuestal }}</span>
+        <textarea *ngIf="modoEdicion" [(ngModel)]="disponibilidadPresupuestal" class="w-full border-b border-black text-center text-xs resize-none"></textarea>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+</div>
+
+  
 
   <!-- TABLA VALE TESORERÍA -->
-  <table class="w-full border border-black mb-6">
-    <tbody>
-      <tr>
-        <td class="border p-1 font-bold text-center" colspan="2">VALE A LA TESORERÍA GENERAL DEL INSTITUTO MEXICANO</td>
-      </tr>
-      <tr>
-        <td colspan="2" class="p-2 text-justify">
-          BUENO POR $_____ RECIBÍ LA CANTIDAD DE $__________ (_________________) CORRESPONDIENTE A ( ) DÍAS DE VIÁTICOS PARA EL DESEMPEÑO DE ESTA COMISIÓN,
-          Y $____________ (____________) VALOR DE LOS PASAJES O ANTICIPO DE GASTOS POR USO DE VEHÍCULO PROPIO.
-        </td>
-      </tr>
-      <tr>
-        <td class="border p-4 text-center">Lugar y fecha</td>
-        <td class="border p-4 text-center">Empleado comisionado<br>{{ nombreComisionado }}</td>
-      </tr>
-    </tbody>
-  </table>
+<table class="w-full border border-black mb-6 mt-6">
+  <tbody>
+    <tr>
+      <td class="bg-gray-300 border-b border-black text-center font-bold text-sm" colspan="2">
+        VALE A LA TESORERÍA GENERAL DEL INSTITUTO MEXICANO
+      </td>
+    </tr>
+    <tr>
+      <td colspan="2" class="p-2 text-justify text-[8pt] leading-tight">
+        BUENO POR 
+        <span *ngIf="!modoEdicion">$ {{ valeBuenoPor }}</span>
+        <input *ngIf="modoEdicion" [(ngModel)]="valeBuenoPor" class="inline-block border-b border-black w-20 text-right" />
 
+        RECIBÍ LA CANTIDAD DE 
+        <span *ngIf="!modoEdicion">$ {{ valeRecibiCantidad }}</span>
+        <input *ngIf="modoEdicion" [(ngModel)]="valeRecibiCantidad" class="inline-block border-b border-black w-20 text-right" />
+
+        (
+        <span *ngIf="!modoEdicion">{{ valeCantidadLetra }}</span>
+        <input *ngIf="modoEdicion" [(ngModel)]="valeCantidadLetra" class="inline-block border-b border-black w-[200px]" />
+        )
+
+        CORRESPONDIENTE A (
+        <span *ngIf="!modoEdicion">{{ valeDiasViaticos }}</span>
+        <input *ngIf="modoEdicion" [(ngModel)]="valeDiasViaticos" type="number" class="inline-block border-b border-black w-10 text-center" />
+        ) DÍAS DE VIÁTICOS PARA EL DESEMPEÑO DE ESTA COMISIÓN,
+
+        Y $
+        <span *ngIf="!modoEdicion">{{ valeValorPasajes }}</span>
+        <input *ngIf="modoEdicion" [(ngModel)]="valeValorPasajes" class="inline-block border-b border-black w-20 text-right" />
+
+        (
+        <span *ngIf="!modoEdicion">{{ valeValorPasajesLetra }}</span>
+        <input *ngIf="modoEdicion" [(ngModel)]="valeValorPasajesLetra" class="inline-block border-b border-black w-[200px]" />
+        )
+
+        VALOR DE LOS PASAJES O ANTICIPO DE GASTOS POR USO DE VEHÍCULO PROPIO.
+      </td>
+    </tr>
+
+    <tr>
+      <td class="border p-1 text-center align-top">
+        <div class="font-bold uppercase">Lugar y fecha</div>
+        <div class="mt-2">
+          <span *ngIf="!modoEdicion">{{ valeLugarFecha }}</span>
+          <input *ngIf="modoEdicion"
+                [(ngModel)]="valeLugarFecha"
+                placeholder="Oaxaca de Juárez, Oax. 30 de agosto de 2024"
+                class="w-full text-xs font-normal border-b border-black text-left" />
+        </div>
+      </td>
+      <td class="border p-1 text-center align-top">
+        <div class="font-bold uppercase">Empleado comisionado</div>
+        <div class="mt-2 font-bold uppercase text-center">
+          {{ nombreComisionado }}
+        </div>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+
+<!-- Números a izquierda y derecha -->
+<div class="flex justify-between text-xs font-bold mb-2">
+  <div>
+    <span *ngIf="!modoEdicion">{{ numeroIzquierdo }}</span>
+    <input *ngIf="modoEdicion" [(ngModel)]="numeroIzquierdo" class="w-20 border-b border-black text-left" />
+  </div>
+  <div>
+    <span *ngIf="!modoEdicion">{{ numeroDerecho }}</span>
+    <input *ngIf="modoEdicion" [(ngModel)]="numeroDerecho" class="w-20 border-b border-black text-right" />
+  </div>
+</div>
+
+
+  
   <!-- SALTO DE PÁGINA -->
   <div class="page-break"></div>
 
 <!-- CERTIFICADO DE TRÁNSITO Y PERMANENCIA -->
-<table class="w-full border border-black mb-2">
-  <tbody>
+<table class="w-full border border-black mb-2 text-[8pt]">
+  <thead>
     <tr>
-      <td colspan="3" class="border p-1 font-bold text-center uppercase">
-        CERTIFICADO DE TRÁNSITO Y PERMANENCIA
-      </td>
+      <th colspan="3" class="border border-black text-center font-bold uppercase bg-gray-300">
+        CERTIFICACIÓN DE TRÁNSITO Y PERMANENCIA
+      </th>
     </tr>
-    <tr class="text-center font-semibold">
-      <td class="border p-1">Lugar y sello</td>
-      <td class="border p-1">Fecha y Hora<br>(Llegada / Salida)</td>
-      <td class="border p-1">Firma Autógrafa de Certificación</td>
+    <tr class="text-center font-semibold uppercase bg-gray-200">
+      <th class="border p-1">Lugar y sello</th>
+      <th class="border p-1">Fecha y hora</th>
+      <th class="border p-1">Firma autógrafa de certificación</th>
     </tr>
+  </thead>
+  <tbody>
     <tr *ngFor="let fila of certificadoFilas">
-      <td class="border h-13 p-1 align-top"></td>
-      <td class="border h-9 p-1 align-top"></td>
-      <td class="border h-13 p-1 align-top"></td>
+      <!-- Lugar y sello -->
+      <td class="border align-top h-[60px]"></td>
+
+       <!-- LLEGADA / SALIDA -->
+       <td class="border align-top text-center p-0">
+        <div class="border-b border-black py-[4px]">LLEGADA</div>
+        <div class="py-[4px]">SALIDA</div>
+      </td>
+
+      <!-- Firma -->
+      <td class="border align-top h-[60px]"></td>
     </tr>
   </tbody>
-</table> 
+</table>
+
 
 
   <!-- CERTIFICACIÓN DE REANUDACIÓN DE LABORES -->
   <table class="w-full border border-black mb-6">
     <tbody>
       <tr>
-        <td colspan="2" class="border p-1 font-bold text-center uppercase">
+        <td colspan="2" class="bg-gray-300 border-b border-black text-center font-bold text-sm">
           CERTIFICACIÓN DE REANUDACIÓN DE LABORES
         </td>
       </tr>
@@ -226,71 +439,116 @@
         <td class="border p-1">Firma Autógrafa</td>
       </tr>
       <tr>
-        <td class="border h-16"></td>
-        <td class="border h-16"></td>
+        <td class="border h-13"></td>
+        <td class="border h-13"></td>
       </tr>
     </tbody>
   </table>
- 
-  <!-- TABLA LIQUIDACIÓN DE VIÁTICOS Y PASAJES -->
+
+  <!-- conceptos/elaboro/ autorizacion -->
   <table class="w-full border border-black mb-2">
     <thead>
-      <tr class="text-center font-bold">
+      <tr class="bg-gray-300 border-b border-black text-center font-bold text-sm">
         <td class="border p-1 w-1/3">Concepto</td>
         <td class="border p-1 w-1/3">Cargo</td>
         <td class="border p-1 w-1/3">Abonos</td>
       </tr>
     </thead>
     <tbody>
-      <tr><td class="border p-1">Anticipo de viáticos</td><td class="border p-1"></td><td class="border p-1"></td></tr>
-      <tr><td class="border p-1">Anticipo de pasajes</td><td class="border p-1"></td><td class="border p-1"></td></tr>
-      <tr><td class="border p-1">Certificación de tránsito y permanencia por días</td><td class="border p-1"></td><td class="border p-1"></td></tr>
-      <tr><td class="border p-1">Comprobantes de pasajes</td><td class="border p-1"></td><td class="border p-1"></td></tr>
-      <tr><td class="border p-1">Comprobante por uso de vehículo propio</td><td class="border p-1"></td><td class="border p-1"></td></tr>
-      <tr><td class="border p-1">Comprobante de costos de traslado</td><td class="border p-1"></td><td class="border p-1"></td></tr>
-      <tr><td class="border p-1">Comprobante de prima de riesgo de transporte aéreo</td><td class="border p-1"></td><td class="border p-1"></td></tr>
-      <tr><td class="border p-1 font-bold">Suma</td><td class="border p-1"></td><td class="border p-1"></td></tr>
-      <tr><td class="border p-1 font-bold">Saldo</td><td class="border p-1"></td><td class="border p-1"></td></tr>
+      <tr>
+        <td class="border p-1">Anticipo de viáticos</td>
+        <td class="border p-1"><input [(ngModel)]="anticipoViaticosCargo" class="w-full border-none" /></td>
+        <td class="border p-1"><input [(ngModel)]="anticipoViaticosAbono" class="w-full border-none" /></td>
+      </tr>
+      <tr>
+        <td class="border p-1">Anticipo de pasajes</td>
+        <td class="border p-1"><input [(ngModel)]="anticipoPasajesCargo" class="w-full border-none" /></td>
+        <td class="border p-1"><input [(ngModel)]="anticipoPasajesAbono" class="w-full border-none" /></td>
+      </tr>
+      <tr>
+        <td class="border p-1">
+          Certificación de tránsito y permanencia por
+          <input [(ngModel)]="numeroDias" class="w-12 border-b border-black text-center" /> días
+        </td>
+        <td class="border p-1"><input [(ngModel)]="liqCertificacionCargo" class="w-full border-none" /></td>
+        <td class="border p-1"><input [(ngModel)]="liqCertificacionAbono" class="w-full border-none" /></td>
+      </tr>
+      <tr>
+        <td class="border p-1">Comprobantes de pasajes</td>
+        <td class="border p-1"><input [(ngModel)]="liqPasajesCargo" class="w-full border-none" /></td>
+        <td class="border p-1"><input [(ngModel)]="liqPasajesAbono" class="w-full border-none" /></td>
+      </tr>
+      <tr>
+        <td class="border p-1">Comprobante por uso de vehículo propio</td>
+        <td class="border p-1"><input [(ngModel)]="liqVehiculoCargo" class="w-full border-none" /></td>
+        <td class="border p-1"><input [(ngModel)]="liqVehiculoAbono" class="w-full border-none" /></td>
+      </tr>
+      <tr>
+        <td class="border p-1">Comprobante de costos de traslado</td>
+        <td class="border p-1"><input [(ngModel)]="liqTrasladoCargo" class="w-full border-none" /></td>
+        <td class="border p-1"><input [(ngModel)]="liqTrasladoAbono" class="w-full border-none" /></td>
+      </tr>
+      <tr>
+        <td class="border p-1">Comprobante de prima de riesgo de transporte aéreo</td>
+        <td class="border p-1"><input [(ngModel)]="liqPrimaCargo" class="w-full border-none" /></td>
+        <td class="border p-1"><input [(ngModel)]="liqPrimaAbono" class="w-full border-none" /></td>
+      </tr>
+      <tr>
+        <td class="border p-1 font-bold text-right">Suma</td>
+        <td class="border p-1 text-right"><input [(ngModel)]="liqSumaCargo" class="w-full border-none text-right" /></td>
+        <td class="border p-1"><input [(ngModel)]="liqSumaAbono" class="w-full border-none" /></td>
+      </tr>
+      <tr>
+        <td class="border p-1 font-bold text-right">Saldo</td>
+        <td class="border p-1 text-right"><input [(ngModel)]="liqSaldoCargo" class="w-full border-none text-right" /></td>
+        <td class="border p-1"><input [(ngModel)]="liqSaldoAbono" class="w-full border-none" /></td>
+      </tr>
     </tbody>
   </table>
+  
 
-  <!-- FIRMAS ELABORÓ / REVISÓ / CONFORME -->
-  <table class="w-full border border-black mb-2">
-    <tbody>
-      <tr class="text-center font-bold">
-        <td class="border p-1">Elaboró</td>
-        <td class="border p-1">Revisó</td>
-        <td class="border p-1">Conforme resultado liquidación</td>
-      </tr>
-      <tr class="text-center">
-        <td class="border p-4">M.A Salomón<br><span class="text-xs">Jefe de Depto</span></td>
-        <td class="border p-4">M.A Salomón<br><span class="text-xs">Jefe de Depto</span></td>
-        <td class="border p-4">Nombre y firma del empleado comisionado</td>
-      </tr>
-    </tbody>
-  </table>
-
-  <!-- RECIBÍ CANTIDAD -->
-  <div class="border border-black p-2 mb-2 text-justify">
-    RECIBÍ LA CANTIDAD DE $__________ (__________________________) POR CONCEPTO DE SALDO A MI FAVOR COMO RESULTADO DE LA LIQUIDACIÓN.
+<!-- RECIBÍ CANTIDAD -->
+<div class="border border-black p-2 mb-2 text-justify">
+  <span *ngIf="!modoEdicion">RECIBÍ LA CANTIDAD DE $_________________ (__________________________________________________) POR CONCEPTO DE SALDO A MI FAVOR COMO RESULTADO DE LA LIQUIDACIÓN.</span>
+  <div *ngIf="modoEdicion">
+    <textarea [(ngModel)]="textoRecibiCantidad" class="w-full text-xs border-none focus:outline-none"></textarea>
   </div>
-
-  <!-- AUTORIZACIÓN DE PAGO -->
-  <table class="w-full border border-black">
-    <tbody>
-      <tr class="text-center font-bold">
-        <td class="border p-1">Autorización de pago</td>
-        <td class="border p-1">Empleado comisionado</td>
-        <td class="border p-1">Fecha</td>
-      </tr>
-      <tr class="text-center">
-        <td class="border p-4">CP Erika<br><span class="text-xs">Subdirectora Administrativa</span></td>
-        <td class="border p-4">{{ nombreComisionado }}</td>
-        <td class="border p-4"></td>
-      </tr>
-    </tbody>
-  </table>
 </div>
+
+<!-- AUTORIZACIÓN DE PAGO -->
+<table class="w-full border border-black">
+  <tbody>
+    <tr class="text-center font-bold">
+      <td class="border p-1">Autorización de saldo</td>
+      <td class="border p-1">Empleado comisionado</td>
+      <td class="border p-1">Fecha</td>
+    </tr>
+    <tr class="text-center">
+      <td class="border p-4">
+        <span *ngIf="!modoEdicion">CP Erika<br><span class="text-xs">Subdirectora Administrativa</span></span>
+        <div *ngIf="modoEdicion">
+          <input [(ngModel)]="autorizacionNombre" class="w-full border-b border-black text-center mb-1" />
+          <input [(ngModel)]="autorizacionCargo" class="w-full border-b border-black text-center text-xs" />
+        </div>
+      </td>
+      <td class="border p-4">{{ nombreComisionado }}</td>
+      <td class="border p-4">
+        <span *ngIf="!modoEdicion">{{ fechaAutorizacion }}</span>
+        <input *ngIf="modoEdicion" type="date" [(ngModel)]="fechaAutorizacion" class="w-full border-b border-black text-center" />
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+</div>
+
+
+<!-- Botón para alternar edición -->
+<div class="print:hidden text-center mt-2 flex justify-center gap-4">
+  <button (click)="toggleEdicion()" 
+          class="px-6 py-2 bg-blue-700 text-white rounded text-sm shadow">
+    {{ modoEdicion ? 'Guardar Cambios' : 'Editar Pliego' }}
+  </button>
 
 <!-- Botón impresión -->
 <div class="print:hidden text-center mt-4">

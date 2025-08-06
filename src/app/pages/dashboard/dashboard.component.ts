@@ -43,8 +43,8 @@ export class DashboardComponent implements OnInit {
     const todosLosTraslados = [
       { numeroPliego: 'L1232025', fecha: hoy, hora: '10:00', paciente: 'Juan Pérez', lugar: 'Hospital General', operador: 'Carlos', estado: 'Pendiente', guardado: false },
       { numeroPliego: 'F1242025', fecha: hoy, hora: '13:00', paciente: 'Luis Ramírez', lugar: 'Clínica 45', operador: 'Miguel', estado: 'En curso', guardado: false },
-      { numeroPliego: 'L0052024', fecha: '2025-07-21', hora: '08:30', paciente: 'Ana Martínez', lugar: 'IMSS Norte', operador: '', estado: 'Pendiente', guardado: false },
-      { numeroPliego: 'F0072024', fecha: '2025-07-22', hora: '11:00', paciente: 'Sofía López', lugar: 'Hospital Ángeles', operador: '', estado: 'Pendiente', guardado: false }
+      { numeroPliego: 'L0052024', fecha: '2025-08-21', hora: '08:30', paciente: 'Ana Martínez', lugar: 'IMSS Norte', operador: '', estado: 'Pendiente', guardado: false },
+      { numeroPliego: 'F0072024', fecha: '2025-08-22', hora: '11:00', paciente: 'Sofía López', lugar: 'Hospital Ángeles', operador: '', estado: 'Pendiente', guardado: false }
     ];
   
     this.trasladosHoy = todosLosTraslados.filter(t => t.fecha === hoy);

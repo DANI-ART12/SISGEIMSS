@@ -16,44 +16,92 @@ export class PliegoComisionComponent {
     month: 'long',
     year: 'numeric'
   });
+  fraseIzquierda: string = 'Se hará su comprobación en un término de 5 días';
+  fraseDerecha: string = 'No se admiten tachaduras ni enmendaduras';
+
+ 
+  updateFraseIzquierda(event: Event) {
+    const target = event.target as HTMLElement;
+    this.fraseIzquierda = target.innerText;
+  }
+  
+  updateFraseDerecha(event: Event) {
+    const target = event.target as HTMLElement;
+    this.fraseDerecha = target.innerText;
+  }
+  
 
   // --- Variables primera tabla ---
-  funcionarioSolicitante = '';
-  categoria = '';
-  dependencia = '';
-  matricula = '';
-  nombreComisionado = '';
-  rfc = '';
-  curp = '';
-  tipoBase = false;
-  tipoConfianza = false;
-  categoriaNumNombre = '';
-  telefonoOficina = '';
-  objetoComision = '';
-  lugaresComision = '';
-  periodo = '';
-  totalDias: number | null = null;
+  funcionarioSolicitante='';
+funcionarioSolicitanteNombre = '';
+funcionarioSolicitanteCargo='';
+funcionarioAutorizaNombre='';
+funcionarioAutorizaCargo='';
+categoria = '';
+dependencia = '';
+matricula = '';
+nombreComisionado = '';
+rfc = '';
+curp = '';
+tipoBase = false;
+tipoConfianza = false;
+categoriaNumNombre = '';
+telefonoOficina = '';
+objetoComision = '';
+lugaresComision = '';
+periodo = '';
+totalDias: number | null = null;
+totalDiasTexto = 'TRES DÍAS';
+
+// Firmas editables
+nombreFuncionarioSolicitante = '';
+cargoFuncionarioSolicitante = '';
+nombreFuncionarioAutoriza = '';
+cargoFuncionarioAutoriza = '';
+
 
   // Viáticos y autorizaciones
-  cuotaDiariaViaticos = '';
-  anticipoViaticos = '';
-  anticipoPasajes = '';
-  anticipoVehiculo = '';
-  medioAvion = false;
-  medioVehiculoOficial = false;
-  medioAutobus = false;
-  medioVehiculoInstitucional = false;
-  medioEcco = false;
-  disponibilidadPresupuestal = '';
+  // --- Variables VIÁTICOS Y PASAJES ---
+cuotaDiariaViaticos: string = '2,244.64';
+anticipoViaticos: string = '1,000.00';
+anticipoPasajes: string = '1,000.00';
+anticipoVehiculo: string = '0.00';
+sumaTotal: string = '2,000.00';
 
-  // Vale Tesorería
-  valeBuenoPor = '';
-  valeRecibiCantidad = '';
-  valeCantidadLetra = '';
-  valeDiasViaticos: number | null = null;
-  valeValorPasajes = '';
-  valeValorPasajesLetra = '';
-  valeLugarFecha = '';
+medioAvion: boolean = false;
+medioVehiculoOficial: boolean = false;
+medioAutobus: boolean = true;
+usoVehiculoInstitucional: boolean = true;
+
+tesoreriaGeneralTexto: string = '';
+
+
+// --- Variables AUTORIZACIONES ESPECÍFICAS ---
+autorizacionVehiculoPropio: string = '';
+autorizacionMas60Dias: string = '';
+autorizacionArrendamiento: string = '';
+
+nombrePresupuestal: string = 'M.A. SALOMON JONAS MEDINA GALLEGOS';
+textoPresupuestal: string = 'DISPONIBILIDAD PRESUPUESTAL';
+disponibilidadPresupuestal: string = `210101 142901 42061603 $337,421.79\n210101 142901 42061623 $2,297.00`;
+
+
+  // --- Vale a la Tesorería General ---
+valeBuenoPor: string = '';
+valeRecibiCantidad: string = '';
+valeCantidadLetra: string = '';
+valeDiasViaticos: number | null = null;
+valeValorPasajes: string = '';
+valeValorPasajesLetra: string = '';
+valeLugarFecha: string = '';
+
+
+
+//-- Números a izquierda y derecha --
+numeroIzquierdo: string = '12345';
+numeroDerecho: string = '67890';
+
+
 
   // Certificado Tránsito y Permanencia
   certificadoFilas = Array.from({ length: 5 }, () => ({
@@ -67,27 +115,77 @@ export class PliegoComisionComponent {
   reanudaFecha = '';
   reanudaFirma = '';
 
-  // Liquidación (última tabla)
-  liqAnticipoViaticosCargo = '';
-  liqAnticipoViaticosAbono = '';
-  liqAnticipoPasajesCargo = '';
-  liqAnticipoPasajesAbono = '';
-  liqCertificacionCargo = '';
-  liqCertificacionAbono = '';
-  liqPasajesCargo = '';
-  liqPasajesAbono = '';
-  liqVehiculoCargo = '';
-  liqVehiculoAbono = '';
-  liqTrasladoCargo = '';
-  liqTrasladoAbono = '';
-  liqPrimaCargo = '';
-  liqPrimaAbono = '';
-  liqSumaCargo = '';
-  liqSumaAbono = '';
-  liqSaldoCargo = '';
-  liqSaldoAbono = '';
-  liqRecibiCantidad = '';
-  liqRecibiCantidadLetra = '';
+  // FIRMAS ELABORÓ / REVISÓ / CONFORME -->
+
+  anticipoViaticosCargo = '';
+anticipoViaticosAbono = '';
+anticipoPasajesCargo = '';
+anticipoPasajesAbono = '';
+liqCertificacionCargo = '';
+liqCertificacionAbono = '';
+numeroDias: number | null = null;
+liqPasajesCargo = '';
+liqPasajesAbono = '';
+liqVehiculoCargo = '';
+liqVehiculoAbono = '';
+liqTrasladoCargo = '';
+liqTrasladoAbono = '';
+liqPrimaCargo = '';
+liqPrimaAbono = '';
+liqSumaCargo = '';
+liqSumaAbono = '';
+liqSaldoCargo = '';
+liqSaldoAbono = '';
+elaboroNombre = '';
+elaboroCargo = '';
+revisoNombre = '';
+revisoCargo = '';
+firmaEmpleado = '';
+textoRecibiCantidad = 'RECIBÍ LA CANTIDAD DE $__________ (__________________________) POR CONCEPTO DE SALDO A MI FAVOR COMO RESULTADO DE LA LIQUIDACIÓN.';
+autorizacionNombre = '';
+autorizacionCargo = '';
+fechaAutorizacion = '';
+
+  modoEdicion: boolean = false;
+
+  toggleEdicion() {
+    this.modoEdicion = !this.modoEdicion;
+
+    if (!this.modoEdicion) {
+      // Aquí puedes guardar los datos en un servicio o localStorage si quieres persistencia
+      console.log('Datos guardados:', {
+        
+        categoria: this.categoria,
+        dependencia: this.dependencia,
+        matricula: this.matricula,
+        nombreComisionado: this.nombreComisionado,
+        rfc: this.rfc,
+        curp: this.curp,
+        tipoBase: this.tipoBase,
+        tipoConfianza: this.tipoConfianza,
+        categoriaNumNombre: this.categoriaNumNombre,
+        telefonoOficina: this.telefonoOficina,
+        objetoComision: this.objetoComision,
+        lugaresComision: this.lugaresComision,
+        periodo: this.periodo,
+        totalDias: this.totalDias,
+        totalDiasTexto: this.totalDiasTexto,
+        cuotaDiariaViaticos: this.cuotaDiariaViaticos,
+        anticipoViaticos: this.anticipoViaticos,
+        anticipoPasajes: this.anticipoPasajes,
+        anticipoVehiculo: this.anticipoVehiculo,
+        sumaTotal: this.sumaTotal,
+        medioAvion: this.medioAvion,
+        medioVehiculoOficial: this.medioVehiculoOficial,
+        medioAutobus: this.medioAutobus,
+        
+        disponibilidadPresupuestal: this.disponibilidadPresupuestal,
+        valeLugarFecha: this.valeLugarFecha,
+        certificadoFilas: this.certificadoFilas,
+        // ... agrega los demás campos según necesites
+      });
+    }
+  }
 
   imprimir(): void {
     const contenido = document.getElementById('printArea')?.innerHTML;
@@ -140,3 +238,4 @@ export class PliegoComisionComponent {
     ventana.document.close();
   }
 }
+
