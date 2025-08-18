@@ -17,7 +17,7 @@
 ></div>
 
   <!-- ENCABEZADO -->
-<div class="flex justify-between items-center mb-2">
+<div class="flex justify-between items-center mb-0 mt-0" style="position: relative; top: -8px;">
   <!-- Título principal -->
   <div class="flex flex-col items-center flex-1">
     <h1 class="font-bold text-[12pt] uppercase">INSTITUTO MEXICANO DEL SEGURO SOCIAL</h1>
@@ -33,7 +33,7 @@
 </div>
 
 <!-- TABLA AUTORIZACIÓN DE COMISIÓN -->
-<table class="w-full border border-black mb-3 text-[8pt]">
+<table class="w-full border border-black mb-2 mt-2 text-[9pt]">
   <thead>
     <tr>
       <th colspan="6" class="bg-gray-300 text-center font-bold uppercase p-1">
@@ -45,42 +45,59 @@
     <tr>
       <td class="border font-bold uppercase p-1 w-[18%]">Funcionario solicitante</td>
       <td class="border p-1" colspan="5">
-        <input [(ngModel)]="funcionarioSolicitante" class="w-full" [readonly]="!modoEdicion" />
+        <div *ngIf="!modoEdicion">{{ funcionarioSolicitante }}</div>
+        <input *ngIf="modoEdicion" [(ngModel)]="funcionarioSolicitante" class="w-full" />
       </td>
     </tr>
     <tr>
       <td class="border font-bold uppercase p-1">Categoría</td>
       <td class="border p-1" colspan="5">
-        <input [(ngModel)]="categoria" class="w-full border-black" [readonly]="!modoEdicion" />
+        <div *ngIf="!modoEdicion">{{ categoria }}</div>
+        <input *ngIf="modoEdicion" [(ngModel)]="categoria" class="w-full" />
       </td>
     </tr>
     <tr>
       <td class="border font-bold uppercase p-1">Dependencia</td>
       <td class="border p-1" colspan="5">
-        <input [(ngModel)]="dependencia" class="w-full border-black" [readonly]="!modoEdicion" />
+        <div *ngIf="!modoEdicion">{{ dependencia }}</div>
+        <input *ngIf="modoEdicion" [(ngModel)]="dependencia" class="w-full" />
       </td>
     </tr>
+
     <!-- FILA: Nombre comisionado / RFC-CURP / Tipo de contratación -->
     <tr>
       <td class="border font-bold uppercase p-1 text-center">Nombre comisionado</td>
       <td class="border p-1">
-        <input [(ngModel)]="nombreComisionado" class="w-full border-black" [readonly]="!modoEdicion" />
+        <div *ngIf="!modoEdicion">{{ nombreComisionado }}</div>
+        <input *ngIf="modoEdicion" [(ngModel)]="nombreComisionado" class="w-full" />
       </td>
 
       <td class="border font-bold uppercase p-1 text-center">RFC / CURP</td>
       <td class="border p-1">
-        <input [(ngModel)]="rfc" placeholder="RFC" class="w-full border-black mb-1" [readonly]="!modoEdicion" />
-        <input [(ngModel)]="curp" placeholder="CURP" class="w-full border-black" [readonly]="!modoEdicion" />
+        <div *ngIf="!modoEdicion">
+          <div>{{ rfc }}</div>
+          <div>{{ curp }}</div>
+        </div>
+        <div *ngIf="modoEdicion">
+          <input [(ngModel)]="rfc" placeholder="RFC" class="w-full mb-1" />
+          <input [(ngModel)]="curp" placeholder="CURP" class="w-full" />
+        </div>
       </td>
 
       <td class="border font-bold uppercase p-1 text-center">Tipo de contratación</td>
       <td class="border p-1 text-center">
-        <label class="mr-3">
-          <input type="checkbox" [(ngModel)]="tipoBase" [disabled]="!modoEdicion" /> Base
-        </label>
-        <label>
-          <input type="checkbox" [(ngModel)]="tipoConfianza" [disabled]="!modoEdicion" /> Confianza
-        </label>
+        <div *ngIf="!modoEdicion">
+          <span *ngIf="tipoBase">Base</span>
+          <span *ngIf="tipoConfianza"> / Confianza</span>
+        </div>
+        <div *ngIf="modoEdicion">
+          <label class="mr-3">
+            <input type="checkbox" [(ngModel)]="tipoBase" /> Base
+          </label>
+          <label>
+            <input type="checkbox" [(ngModel)]="tipoConfianza" /> Confianza
+          </label>
+        </div>
       </td>
     </tr>
 
@@ -88,15 +105,20 @@
     <tr>
       <td class="border font-bold uppercase p-1">Matrícula</td>
       <td class="border p-1">
-        <input [(ngModel)]="matricula" class="w-full border-black" [readonly]="!modoEdicion" />
+        <div *ngIf="!modoEdicion">{{ matricula }}</div>
+        <input *ngIf="modoEdicion" [(ngModel)]="matricula" class="w-full" />
       </td>
+
       <td class="border font-bold uppercase p-1 text-center">Categoría<br />(Num. y Nombre)</td>
       <td class="border p-1">
-        <input [(ngModel)]="categoriaNumNombre" class="w-full border-black" [readonly]="!modoEdicion" />
+        <div *ngIf="!modoEdicion">{{ categoriaNumNombre }}</div>
+        <input *ngIf="modoEdicion" [(ngModel)]="categoriaNumNombre" class="w-full" />
       </td>
+
       <td class="border font-bold uppercase p-1 text-center">Teléfono oficina</td>
       <td class="border p-1">
-        <input [(ngModel)]="telefonoOficina" class="w-full border-black" [readonly]="!modoEdicion" />
+        <div *ngIf="!modoEdicion">{{ telefonoOficina }}</div>
+        <input *ngIf="modoEdicion" [(ngModel)]="telefonoOficina" class="w-full" />
       </td>
     </tr>
 
@@ -104,7 +126,8 @@
     <tr>
       <td class="border font-bold uppercase p-1">Objeto de la comisión</td>
       <td class="border p-1" colspan="5">
-        <input [(ngModel)]="objetoComision" class="w-full border-black" [readonly]="!modoEdicion" />
+        <div *ngIf="!modoEdicion">{{ objetoComision }}</div>
+        <input *ngIf="modoEdicion" [(ngModel)]="objetoComision" class="w-full" />
       </td>
     </tr>
 
@@ -112,7 +135,8 @@
     <tr>
       <td class="border font-bold uppercase p-1">Lugares de comisión</td>
       <td class="border p-1" colspan="5">
-        <input [(ngModel)]="lugaresComision" class="w-full border-black" [readonly]="!modoEdicion" />
+        <div *ngIf="!modoEdicion">{{ lugaresComision }}</div>
+        <input *ngIf="modoEdicion" [(ngModel)]="lugaresComision" class="w-full" />
       </td>
     </tr>
 
@@ -120,35 +144,32 @@
     <tr>
       <td class="border font-bold uppercase p-1">Periodo</td>
       <td class="border p-1" colspan="3">
-        <input [(ngModel)]="periodo" class="w-full border-black" [readonly]="!modoEdicion" />
+        <div *ngIf="!modoEdicion">{{ periodo }}</div>
+        <input *ngIf="modoEdicion" [(ngModel)]="periodo" class="w-full" />
       </td>
+
       <td class="border font-bold uppercase p-1 text-center">Total días</td>
       <td class="border p-1 text-center">
-        <input
-          type="number"
-          [(ngModel)]="totalDias"
-          class="w-12 text-center border-b border-black"
-          [readonly]="!modoEdicion"
-        /><br />
-        <input
-          type="text"
-          [(ngModel)]="totalDiasTexto"
-          placeholder="(TRES DÍAS)"
-          class="text-center border-black w-full"
-          [readonly]="!modoEdicion"
-        />
+        <div *ngIf="!modoEdicion">
+          {{ totalDias }}<br />
+          <span class="text-xs uppercase">{{ totalDiasTexto }}</span>
+        </div>
+        <div *ngIf="modoEdicion">
+          <input type="number" [(ngModel)]="totalDias" class="w-12 text-center border-b border-black mb-1" />
+          <input type="text" [(ngModel)]="totalDiasTexto" placeholder="(TRES DÍAS)" class="text-center w-full" />
+        </div>
       </td>
     </tr>
 
-    <!-- Firmas -->
+    <!-- Firmas (ya corregidas previamente) -->
     <tr>
       <!-- Funcionario solicitante -->
       <td class="border border-black p-2 text-center" colspan="3" style="vertical-align: bottom;">
         <div class="uppercase font-bold text-xs mb-2">FUNCIONARIO SOLICITANTE</div>
-
-        <div *ngIf="!modoEdicion" class="font-bold text-sm mb-1">
-          {{ funcionarioSolicitanteNombre }}
-          <div class="border-t border-black mt-1" style="width: 90%; margin: 0 auto;"></div>
+        <div *ngIf="!modoEdicion">
+          <div class="font-bold text-sm">{{ funcionarioSolicitanteNombre }}</div>
+          <div class="border-t border-black my-1 mx-auto" style="width: 90%;"></div>
+          <div class="text-xs">{{ funcionarioSolicitanteCargo }}</div>
         </div>
         <div *ngIf="modoEdicion">
           <input [(ngModel)]="funcionarioSolicitanteNombre" class="w-full border-b border-black text-center mb-1" />
@@ -159,10 +180,10 @@
       <!-- Funcionario que autoriza -->
       <td class="border border-black p-2 text-center" colspan="3" style="vertical-align: bottom;">
         <div class="uppercase font-bold text-xs mb-2">FUNCIONARIO QUE AUTORIZA</div>
-
-        <div *ngIf="!modoEdicion" class="font-bold text-sm mb-1">
-          {{ funcionarioAutorizaNombre }}
-          <div class="border-t border-black mt-1" style="width: 90%; margin: 0 auto;"></div>
+        <div *ngIf="!modoEdicion">
+          <div class="font-bold text-sm">{{ funcionarioAutorizaNombre }}</div>
+          <div class="border-t border-black my-1 mx-auto" style="width: 90%;"></div>
+          <div class="text-xs">{{ funcionarioAutorizaCargo }}</div>
         </div>
         <div *ngIf="modoEdicion">
           <input [(ngModel)]="funcionarioAutorizaNombre" class="w-full border-b border-black text-center mb-1" />
@@ -173,7 +194,8 @@
   </tbody>
 </table>
 
-<div class="grid grid-cols-1 md:grid-cols-2 gap-2 text-[9pt] font-sans print:grid-cols-2 print:gap-2">
+
+<div class="grid grid-cols-1 md:grid-cols-2 gap-2 text-[6pt] font-sans print:grid-cols-2 print:gap-2">
   <!-- Tabla 1: VIÁTICOS Y PASAJES -->
 <table class="w-full border border-black table-fixed h-full">
   <thead>
@@ -244,7 +266,7 @@
 
 
 
-  <!-- Tabla 2: AUTORIZACIONES ESPECÍFICAS -->
+ 
 <!-- Tabla 2: AUTORIZACIONES ESPECÍFICAS -->
 <table class="w-full border border-black table-fixed h-full">
   <thead>
@@ -314,7 +336,7 @@
   
 
   <!-- TABLA VALE TESORERÍA -->
-<table class="w-full border border-black mb-6 mt-6">
+<table class="w-full border border-black mb-2 mt-2">
   <tbody>
     <tr>
       <td class="bg-gray-300 border-b border-black text-center font-bold text-sm" colspan="2">
@@ -357,7 +379,7 @@
     <tr>
       <td class="border p-1 text-center align-top">
         <div class="font-bold uppercase">Lugar y fecha</div>
-        <div class="mt-2">
+        <div class="mt-1">
           <span *ngIf="!modoEdicion">{{ valeLugarFecha }}</span>
           <input *ngIf="modoEdicion"
                 [(ngModel)]="valeLugarFecha"
@@ -367,34 +389,44 @@
       </td>
       <td class="border p-1 text-center align-top">
         <div class="font-bold uppercase">Empleado comisionado</div>
-        <div class="mt-2 font-bold uppercase text-center">
+        <div class="mt-1 font-bold uppercase text-center">
           {{ nombreComisionado }}
         </div>
       </td>
     </tr>
   </tbody>
 </table>
-
-
-<!-- Números a izquierda y derecha -->
-<div class="flex justify-between text-xs font-bold mb-2">
-  <div>
-    <span *ngIf="!modoEdicion">{{ numeroIzquierdo }}</span>
-    <input *ngIf="modoEdicion" [(ngModel)]="numeroIzquierdo" class="w-20 border-b border-black text-left" />
+<div class="numeros-lados mb-0 mt-0 flex justify-between w-full">
+  <!-- Lado izquierdo -->
+  <div class="flex-1 pr-1">
+    <span *ngIf="!modoEdicion" class="block truncate">{{ numeroIzquierdo }}</span>
+    <input
+      *ngIf="modoEdicion"
+      [(ngModel)]="numeroIzquierdo"
+      [title]="numeroIzquierdo"
+      maxlength="20"
+      class="w-full"
+    />
   </div>
-  <div>
-    <span *ngIf="!modoEdicion">{{ numeroDerecho }}</span>
-    <input *ngIf="modoEdicion" [(ngModel)]="numeroDerecho" class="w-20 border-b border-black text-right" />
+
+  <!-- Lado derecho -->
+  <div class="flex-1 pl-1 text-right">
+    <span *ngIf="!modoEdicion" class="block truncate">{{ numeroDerecho }}</span>
+    <input
+      *ngIf="modoEdicion"
+      [(ngModel)]="numeroDerecho"
+      [title]="numeroDerecho"
+      maxlength="20"
+      class="w-full text-right"
+    />
   </div>
 </div>
 
-
-  
   <!-- SALTO DE PÁGINA -->
   <div class="page-break"></div>
 
 <!-- CERTIFICADO DE TRÁNSITO Y PERMANENCIA -->
-<table class="w-full border border-black mb-2 text-[8pt]">
+<table class="w-full border border-black mb-4 text-[10pt]">
   <thead>
     <tr>
       <th colspan="3" class="border border-black text-center font-bold uppercase bg-gray-300">
@@ -426,17 +458,18 @@
 
 
 
+
   <!-- CERTIFICACIÓN DE REANUDACIÓN DE LABORES -->
-  <table class="w-full border border-black mb-6">
+  <table class="w-full border border-black mb-6 text-[10pt]">
     <tbody>
       <tr>
-        <td colspan="2" class="bg-gray-300 border-b border-black text-center font-bold text-sm">
+        <td colspan="3" class="bg-gray-300 border-b border-black text-center font-bold text-sm">
           CERTIFICACIÓN DE REANUDACIÓN DE LABORES
         </td>
       </tr>
       <tr class="text-center font-semibold">
-        <td class="border p-1">Fecha</td>
-        <td class="border p-1">Firma Autógrafa</td>
+        <td class="border p-1 text-center">Fecha</td>
+        <td class="border p-1 text-center">Firma Autógrafa</td>
       </tr>
       <tr>
         <td class="border h-13"></td>
@@ -445,7 +478,6 @@
     </tbody>
   </table>
 
-  <!-- conceptos/elaboro/ autorizacion -->
   <table class="w-full border border-black mb-2">
     <thead>
       <tr class="bg-gray-300 border-b border-black text-center font-bold text-sm">
@@ -457,82 +489,143 @@
     <tbody>
       <tr>
         <td class="border p-1">Anticipo de viáticos</td>
-        <td class="border p-1"><input [(ngModel)]="anticipoViaticosCargo" class="w-full border-none" /></td>
-        <td class="border p-1"><input [(ngModel)]="anticipoViaticosAbono" class="w-full border-none" /></td>
+        <td class="border p-1">
+          <span *ngIf="!modoEdicion">{{ anticipoViaticosCargo }}</span>
+          <input *ngIf="modoEdicion" [(ngModel)]="anticipoViaticosCargo" class="w-full border-none" />
+        </td>
+        <td class="border p-1">
+          <span *ngIf="!modoEdicion">{{ anticipoViaticosAbono }}</span>
+          <input *ngIf="modoEdicion" [(ngModel)]="anticipoViaticosAbono" class="w-full border-none" />
+        </td>
       </tr>
       <tr>
         <td class="border p-1">Anticipo de pasajes</td>
-        <td class="border p-1"><input [(ngModel)]="anticipoPasajesCargo" class="w-full border-none" /></td>
-        <td class="border p-1"><input [(ngModel)]="anticipoPasajesAbono" class="w-full border-none" /></td>
+        <td class="border p-1">
+          <span *ngIf="!modoEdicion">{{ anticipoPasajesCargo }}</span>
+          <input *ngIf="modoEdicion" [(ngModel)]="anticipoPasajesCargo" class="w-full border-none" />
+        </td>
+        <td class="border p-1">
+          <span *ngIf="!modoEdicion">{{ anticipoPasajesAbono }}</span>
+          <input *ngIf="modoEdicion" [(ngModel)]="anticipoPasajesAbono" class="w-full border-none" />
+        </td>
       </tr>
       <tr>
         <td class="border p-1">
           Certificación de tránsito y permanencia por
-          <input [(ngModel)]="numeroDias" class="w-12 border-b border-black text-center" /> días
+          <span *ngIf="!modoEdicion">{{ numeroDias }}</span>
+          <input *ngIf="modoEdicion" [(ngModel)]="numeroDias" class="w-12 border-b border-black text-center" /> días
         </td>
-        <td class="border p-1"><input [(ngModel)]="liqCertificacionCargo" class="w-full border-none" /></td>
-        <td class="border p-1"><input [(ngModel)]="liqCertificacionAbono" class="w-full border-none" /></td>
+        <td class="border p-1">
+          <span *ngIf="!modoEdicion">{{ liqCertificacionCargo }}</span>
+          <input *ngIf="modoEdicion" [(ngModel)]="liqCertificacionCargo" class="w-full border-none" />
+        </td>
+        <td class="border p-1">
+          <span *ngIf="!modoEdicion">{{ liqCertificacionAbono }}</span>
+          <input *ngIf="modoEdicion" [(ngModel)]="liqCertificacionAbono" class="w-full border-none" />
+        </td>
       </tr>
       <tr>
         <td class="border p-1">Comprobantes de pasajes</td>
-        <td class="border p-1"><input [(ngModel)]="liqPasajesCargo" class="w-full border-none" /></td>
-        <td class="border p-1"><input [(ngModel)]="liqPasajesAbono" class="w-full border-none" /></td>
+        <td class="border p-1">
+          <span *ngIf="!modoEdicion">{{ liqPasajesCargo }}</span>
+          <input *ngIf="modoEdicion" [(ngModel)]="liqPasajesCargo" class="w-full border-none" />
+        </td>
+        <td class="border p-1">
+          <span *ngIf="!modoEdicion">{{ liqPasajesAbono }}</span>
+          <input *ngIf="modoEdicion" [(ngModel)]="liqPasajesAbono" class="w-full border-none" />
+        </td>
       </tr>
       <tr>
         <td class="border p-1">Comprobante por uso de vehículo propio</td>
-        <td class="border p-1"><input [(ngModel)]="liqVehiculoCargo" class="w-full border-none" /></td>
-        <td class="border p-1"><input [(ngModel)]="liqVehiculoAbono" class="w-full border-none" /></td>
+        <td class="border p-1">
+          <span *ngIf="!modoEdicion">{{ liqVehiculoCargo }}</span>
+          <input *ngIf="modoEdicion" [(ngModel)]="liqVehiculoCargo" class="w-full border-none" />
+        </td>
+        <td class="border p-1">
+          <span *ngIf="!modoEdicion">{{ liqVehiculoAbono }}</span>
+          <input *ngIf="modoEdicion" [(ngModel)]="liqVehiculoAbono" class="w-full border-none" />
+        </td>
       </tr>
       <tr>
         <td class="border p-1">Comprobante de costos de traslado</td>
-        <td class="border p-1"><input [(ngModel)]="liqTrasladoCargo" class="w-full border-none" /></td>
-        <td class="border p-1"><input [(ngModel)]="liqTrasladoAbono" class="w-full border-none" /></td>
+        <td class="border p-1">
+          <span *ngIf="!modoEdicion">{{ liqTrasladoCargo }}</span>
+          <input *ngIf="modoEdicion" [(ngModel)]="liqTrasladoCargo" class="w-full border-none" />
+        </td>
+        <td class="border p-1">
+          <span *ngIf="!modoEdicion">{{ liqTrasladoAbono }}</span>
+          <input *ngIf="modoEdicion" [(ngModel)]="liqTrasladoAbono" class="w-full border-none" />
+        </td>
       </tr>
       <tr>
         <td class="border p-1">Comprobante de prima de riesgo de transporte aéreo</td>
-        <td class="border p-1"><input [(ngModel)]="liqPrimaCargo" class="w-full border-none" /></td>
-        <td class="border p-1"><input [(ngModel)]="liqPrimaAbono" class="w-full border-none" /></td>
+        <td class="border p-1">
+          <span *ngIf="!modoEdicion">{{ liqPrimaCargo }}</span>
+          <input *ngIf="modoEdicion" [(ngModel)]="liqPrimaCargo" class="w-full border-none" />
+        </td>
+        <td class="border p-1">
+          <span *ngIf="!modoEdicion">{{ liqPrimaAbono }}</span>
+          <input *ngIf="modoEdicion" [(ngModel)]="liqPrimaAbono" class="w-full border-none" />
+        </td>
       </tr>
       <tr>
         <td class="border p-1 font-bold text-right">Suma</td>
-        <td class="border p-1 text-right"><input [(ngModel)]="liqSumaCargo" class="w-full border-none text-right" /></td>
-        <td class="border p-1"><input [(ngModel)]="liqSumaAbono" class="w-full border-none" /></td>
+        <td class="border p-1 text-right">
+          <span *ngIf="!modoEdicion">{{ liqSumaCargo }}</span>
+          <input *ngIf="modoEdicion" [(ngModel)]="liqSumaCargo" class="w-full border-none text-right" />
+        </td>
+        <td class="border p-1">
+          <span *ngIf="!modoEdicion">{{ liqSumaAbono }}</span>
+          <input *ngIf="modoEdicion" [(ngModel)]="liqSumaAbono" class="w-full border-none" />
+        </td>
       </tr>
       <tr>
         <td class="border p-1 font-bold text-right">Saldo</td>
-        <td class="border p-1 text-right"><input [(ngModel)]="liqSaldoCargo" class="w-full border-none text-right" /></td>
-        <td class="border p-1"><input [(ngModel)]="liqSaldoAbono" class="w-full border-none" /></td>
+        <td class="border p-1 text-right">
+          <span *ngIf="!modoEdicion">{{ liqSaldoCargo }}</span>
+          <input *ngIf="modoEdicion" [(ngModel)]="liqSaldoCargo" class="w-full border-none text-right" />
+        </td>
+        <td class="border p-1">
+          <span *ngIf="!modoEdicion">{{ liqSaldoAbono }}</span>
+          <input *ngIf="modoEdicion" [(ngModel)]="liqSaldoAbono" class="w-full border-none" />
+        </td>
       </tr>
     </tbody>
   </table>
   
+  
 
 <!-- RECIBÍ CANTIDAD -->
-<div class="border border-black p-2 mb-2 text-justify">
-  <span *ngIf="!modoEdicion">RECIBÍ LA CANTIDAD DE $_________________ (__________________________________________________) POR CONCEPTO DE SALDO A MI FAVOR COMO RESULTADO DE LA LIQUIDACIÓN.</span>
-  <div *ngIf="modoEdicion">
-    <textarea [(ngModel)]="textoRecibiCantidad" class="w-full text-xs border-none focus:outline-none"></textarea>
-  </div>
+<div class="border border-black p-4 mb-4 text-justify text-xs">
+  <span *ngIf="!modoEdicion">{{ textoRecibiCantidad }}</span>
+  <textarea *ngIf="modoEdicion" [(ngModel)]="textoRecibiCantidad" class="w-full text-xs border-none focus:outline-none"></textarea>
 </div>
 
 <!-- AUTORIZACIÓN DE PAGO -->
 <table class="w-full border border-black">
   <tbody>
-    <tr class="text-center font-bold">
+    <tr class="text-center font-bold text-xs">
       <td class="border p-1">Autorización de saldo</td>
       <td class="border p-1">Empleado comisionado</td>
       <td class="border p-1">Fecha</td>
     </tr>
-    <tr class="text-center">
-      <td class="border p-4">
-        <span *ngIf="!modoEdicion">CP Erika<br><span class="text-xs">Subdirectora Administrativa</span></span>
+    <tr class="text-center text-xs">
+      <td class="border p-2">
+        <div *ngIf="!modoEdicion">
+          {{ autorizacionNombre }}<br />
+          <span class="text-xs">{{ autorizacionCargo }}</span>
+        </div>
         <div *ngIf="modoEdicion">
           <input [(ngModel)]="autorizacionNombre" class="w-full border-b border-black text-center mb-1" />
           <input [(ngModel)]="autorizacionCargo" class="w-full border-b border-black text-center text-xs" />
         </div>
       </td>
-      <td class="border p-4">{{ nombreComisionado }}</td>
-      <td class="border p-4">
+      <td class="border p-2">
+        <span *ngIf="!modoEdicion">{{ nombreComisionadoAutorizacion }}</span>
+        <input *ngIf="modoEdicion" [(ngModel)]="nombreComisionadoAutorizacion" class="w-full border-b border-black text-center" />
+      </td>
+      
+      <td class="border p-2">
         <span *ngIf="!modoEdicion">{{ fechaAutorizacion }}</span>
         <input *ngIf="modoEdicion" type="date" [(ngModel)]="fechaAutorizacion" class="w-full border-b border-black text-center" />
       </td>
@@ -543,16 +636,19 @@
 </div>
 
 
-<!-- Botón para alternar edición -->
-<div class="print:hidden text-center mt-2 flex justify-center gap-4">
+<!-- Botones de acción -->
+<div class="print:hidden text-center mt-4 flex justify-center gap-4">
+  <!-- Botón para alternar edición -->
   <button (click)="toggleEdicion()" 
           class="px-6 py-2 bg-blue-700 text-white rounded text-sm shadow">
     {{ modoEdicion ? 'Guardar Cambios' : 'Editar Pliego' }}
   </button>
 
-<!-- Botón impresión -->
-<div class="print:hidden text-center mt-4">
-  <button (click)="imprimir()" class="px-6 py-2 bg-green-700 text-white rounded text-sm shadow">
+  <!-- Botón impresión -->
+  <button (click)="forzarImpresion()" 
+          [disabled]="modoEdicion" 
+          class="px-6 py-2 bg-green-700 text-white rounded text-sm shadow">
     Imprimir Pliego
   </button>
 </div>
+

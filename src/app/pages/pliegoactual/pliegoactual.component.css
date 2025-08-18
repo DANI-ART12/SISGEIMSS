@@ -1,31 +1,391 @@
+/* Estilos generales */
+#printArea {
+  max-width: 816px; /* ancho carta en px aprox */
+  margin: 0 auto;
+  padding: 8mm;
+  font-family: "Times New Roman", Times, serif;
+  font-size: 8.5pt;
+  background: white;
+  color: black;
+  line-height: 1.2;
+  overflow: visible;
+}
+
+/* Ajuste específico para el logo */
+#printArea img {
+  height: 50px; /* logo pequeño para no ocupar mucho espacio */
+  width: auto;
+  object-fit: contain;
+}
+
+/* Evitar saltos de página dentro de secciones */
+* {
+  page-break-inside: avoid !important;
+  break-inside: avoid !important;
+}
+
+/* Estilos para impresión */
 @media print {
-    @page {
-      size: letter;
-      margin: 8mm;
-    }
-  
-    .print\:hidden {
-      display: none !important;
-    }
-  
-    body {
-      margin: 0;
-      padding: 0;
-      background: white !important;
-      color: black !important;
-      -webkit-print-color-adjust: exact !important;
-      print-color-adjust: exact !important;
-    }
-  
-    * {
-      page-break-inside: avoid !important;
-      break-inside: avoid !important;
-    }
-  
-    #printArea {
-      max-height: 100vh;
-      overflow: visible !important;
-      font-family: "Times New Roman", Times, serif;
-    }
+  @page {
+    size: letter;
+    margin: 5mm !important;
+  }
+
+  .print\:hidden {
+    display: none !important;
+  }
+
+  body {
+    margin: 0;
+    padding: 0;
+    background: white !important;
+    color: black !important;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+    font-family: "Times New Roman", Times, serif;
+    font-size: 9pt !important;
+    zoom: 1.1 !important;
+  }
+
+  /* OCULTAR TODO LO QUE NO SEA PRINTAREA */
+  body * {
+    visibility: hidden !important;
+    display: none !important;
   }
   
+  /* MOSTRAR SOLO EL ÁREA DE IMPRESIÓN Y SUS HIJOS */
+  #printArea,
+  #printArea * {
+    visibility: visible !important;
+    display: initial !important;
+  }
+
+  /* FORZAR OCULTACIÓN TOTAL DE ELEMENTOS ESPECÍFICOS */
+  body > *:not(#printArea),
+  body > div:not(#printArea),
+  body > nav,
+  body > header,
+  body > footer,
+  body > aside {
+    display: none !important;
+    visibility: hidden !important;
+    position: absolute !important;
+    left: -9999px !important;
+  }
+  
+  /* POSICIONAR EL ÁREA DE IMPRESIÓN PARA OCUPAR TODA LA HOJA */
+  #printArea {
+    position: fixed !important;
+    left: 0 !important;
+    top: 0 !important;
+    width: 100vw !important;
+    height: 100vh !important;
+    max-width: none !important;
+    max-height: none !important;
+    overflow: visible !important;
+    padding: 8mm !important;
+    margin: 0 !important;
+    box-sizing: border-box !important;
+    z-index: 9999 !important;
+    transform: scale(1.1) !important;
+    transform-origin: top left !important;
+  }
+
+  /* OCULTAR ELEMENTOS COMUNES DE NAVEGACIÓN Y MENÚS */
+  nav,
+  .nav,
+  .navbar,
+  .navigation,
+  .sidebar,
+  .menu,
+  .header,
+  .footer,
+  .topbar,
+  .breadcrumb,
+  aside,
+  .aside,
+  button,
+  .btn,
+  .button,
+  .fab,
+  .toolbar,
+  .app-toolbar,
+  .mat-toolbar,
+  .action-bar,
+  .controls,
+  .logout,
+  .cerrar-sesion,
+  .user-menu,
+  .dropdown,
+  .menu-item,
+  .nav-item,
+  .navigation-item,
+  [class*="logout"],
+  [class*="cerrar"],
+  [class*="sesion"],
+  [class*="menu-"],
+  [class*="nav-"],
+  [class*="user-"],
+  [class*="profile-"],
+  .mat-menu,
+  .mat-menu-panel,
+  .cdk-overlay-pane,
+  .overlay-backdrop,
+  .mat-button,
+  .mat-icon-button {
+    display: none !important;
+    visibility: hidden !important;
+  }
+
+  /* ESPECÍFICO PARA ANGULAR MATERIAL */
+  .mat-toolbar *,
+  .mat-sidenav *,
+  .mat-drawer * {
+    display: none !important;
+    visibility: hidden !important;
+  }
+
+  /* Forzar impresión de todos los elementos con bordes */
+  * {
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+
+  /* CORRECCIÓN PARA BORDES - Forzar impresión de todas las clases de borde */
+  .border,
+  .border-t,
+  .border-r,
+  .border-l,
+  .border-b,
+  .border-black {
+    border-color: black !important;
+    border-style: solid !important;
+  }
+  
+  .border {
+    border-width: 1px !important;
+  }
+  
+  .border-t {
+    border-top-width: 1px !important;
+  }
+  
+  .border-r {
+    border-right-width: 1px !important;
+  }
+  
+  .border-l {
+    border-left-width: 1px !important;
+  }
+  
+  .border-b {
+    border-bottom-width: 1px !important;
+  }
+
+  /* Específico para grids con bordes */
+  .grid {
+    border-collapse: separate !important;
+    border-spacing: 0 !important;
+    display: grid !important;
+  }
+
+  /* MANTENER ESTRUCTURA DE GRID */
+  .grid-cols-2 {
+    grid-template-columns: 1fr 1fr !important;
+  }
+  
+  .grid-cols-3 {
+    grid-template-columns: 1fr 1fr 1fr !important;
+  }
+
+  /* CORRECCIÓN ESPECÍFICA PARA CERTIFICACIÓN - OCULTAR LÍNEAS INTERNAS */
+  .grid.grid-cols-3 .border-t.border-black {
+    border-top: none !important;
+  }
+
+  /* MANTENER SOLO LOS BORDES EXTERIORES DE LAS CELDAS */
+  .grid.grid-cols-3 > div {
+    border-color: black !important;
+    border-style: solid !important;
+    border-top: 1px solid black !important;
+    border-bottom: 1px solid black !important;
+    border-left: 1px solid black !important;
+  }
+
+  .grid.grid-cols-3 > div:last-child {
+    border-right: 1px solid black !important;
+  }
+
+  .grid.grid-cols-3 > div:first-child {
+    border-left: 1px solid black !important;
+  }
+
+  /* MANTENER ALINEACIÓN DE TEXTO */
+  .text-center {
+    text-align: center !important;
+  }
+  
+  .text-right {
+    text-align: right !important;
+  }
+  
+  .text-left {
+    text-align: left !important;
+  }
+
+  /* MANTENER TAMAÑOS DE FUENTE ESPECÍFICOS */
+  .text-\[7pt\] {
+    font-size: 7pt !important;
+  }
+  
+  .text-\[8pt\] {
+    font-size: 8pt !important;
+  }
+
+  /* MANTENER ESPACIADO */
+  .mt-1 { margin-top: 0.25rem !important; }
+  .mt-2 { margin-top: 0.5rem !important; }
+  .mt-3 { margin-top: 0.75rem !important; }
+  .mt-4 { margin-top: 1rem !important; }
+  .pt-2 { padding-top: 0.5rem !important; }
+  .p-2 { padding: 0.5rem !important; }
+  .mb-2 { margin-bottom: 0.5rem !important; }
+
+  /* MANTENER DIMENSIONES ESPECÍFICAS */
+  .w-\[85\%\] { width: 85% !important; }
+  .w-\[100px\] { width: 100px !important; }
+  .h-\[50px\] { height: 50px !important; }
+
+  /* EVITAR RECUADROS NO DESEADOS */
+  .border.p-1,
+  .border.p-2:not(.w-\[100px\]) {
+    border: none !important;
+  }
+
+  /* ESPECÍFICAMENTE PARA "FIRMA DEL EMPLEADO COMISIONADO" */
+  [class*="border"]:has-text("Firma del empleado comisionado"),
+  div:contains("Firma del empleado comisionado") {
+    border: none !important;
+  }
+
+  /* ALTERNATIVA - OCULTAR BORDES DE ELEMENTOS QUE CONTENGAN "FIRMA" */
+  .border:has(span:contains("Firma")),
+  .border:has(p:contains("Firma")),
+  .border:has(div:contains("Firma")) {
+    border: none !important;
+  }
+
+  /* MANTENER SOLO EL RECUADRO DEL NÚMERO DE PLIEGO */
+  .border.border-black.p-2.w-\[100px\] {
+    border: 2px solid black !important;
+    padding: 8px !important;
+    width: 100px !important;
+    min-width: 100px !important;
+    box-sizing: border-box !important;
+  }
+
+  /* ASEGURAR QUE EL FLEX FUNCIONE CORRECTAMENTE */
+  .flex.justify-between {
+    display: flex !important;
+    justify-content: space-between !important;
+    align-items: flex-start !important;
+  }
+
+  .flex.items-start {
+    display: flex !important;
+    align-items: flex-start !important;
+  }
+
+  .space-x-4 > * + * {
+    margin-left: 1rem !important;
+  }
+
+  /* OCULTAR INPUTS Y MOSTRAR COMO TEXTO */
+  input[type="text"] {
+    border: none !important;
+    background: transparent !important;
+    outline: none !important;
+    -webkit-appearance: none !important;
+    appearance: none !important;
+    font-family: "Times New Roman", Times, serif !important;
+    font-size: inherit !important;
+    text-align: inherit !important;
+    width: auto !important;
+    display: inline !important;
+    color: black !important;
+  }
+
+  /* Asegurar que cualquier elemento con clase border-black se imprima */
+  .border-black,
+  [class*="border-black"] {
+    border-color: black !important;
+    border-style: solid !important;
+    border-width: 1px !important;
+  }
+
+  /* Forzar todos los elementos que contengan "border" en su clase */
+  [class*="border"] {
+    border-color: black !important;
+    border-style: solid !important;
+  }
+
+  /* Específicamente para la certificación */
+  .text-center.font-bold.uppercase.underline {
+    text-decoration: underline !important;
+    text-decoration-color: black !important;
+  }
+
+  /* RESTABLECER DISPLAYS PARA ELEMENTOS DENTRO DE PRINTAREA */
+  #printArea .flex {
+    display: flex !important;
+  }
+  
+  #printArea .grid {
+    display: grid !important;
+  }
+  
+  #printArea .block {
+    display: block !important;
+  }
+  
+  #printArea p,
+  #printArea div,
+  #printArea span,
+  #printArea h1,
+  #printArea h2,
+  #printArea img,
+  #printArea table,
+  #printArea tr,
+  #printArea td {
+    display: initial !important;
+  }
+  
+  .items-center {
+    align-items: center !important;
+  }
+
+  .items-start {
+    align-items: flex-start !important;
+  }
+
+  .justify-between {
+    justify-content: space-between !important;
+  }
+
+  /* ESPECÍFICAMENTE PARA EL ENCABEZADO - NO CAMBIAR A BLOCK */
+  .flex.justify-between.items-start.mb-2 {
+    display: flex !important;
+    justify-content: space-between !important;
+    align-items: flex-start !important;
+  }
+
+  .flex.items-start.space-x-4 {
+    display: flex !important;
+    align-items: flex-start !important;
+  }
+
+  /* Reduce margen en encabezado si es necesario */
+  #printArea .flex.items-center.space-x-4.w-full.ml-8 {
+    margin-left: 0 !important;
+  }
+}

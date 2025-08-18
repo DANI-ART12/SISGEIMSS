@@ -1,85 +1,144 @@
 <div class="bg-white p-6 rounded-xl font-sans">
-  <h2 class="text-blue-700 text-2xl font-bold mb-4">TRASLADOS / VIAJES</h2>
+  <h2 class="text-blue-700 text-2xl font-bold mb-4">TRASLADOS</h2>
 
   <!-- Filtros -->
   <div class="flex flex-wrap gap-4 mb-6">
-    <input type="text" placeholder="Matrícula" [(ngModel)]="filtro.matricula"
-      class="px-3 py-2 border border-blue-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400" />
+    <input type="text" placeholder="Buscar traslado..."
+    [(ngModel)]="filtroGeneral"
+    class="w-1/3 px-3 py-2 border border-blue-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400 text-sm" />
 
-    
+  <!-- Fechas -->
+  <input type="date" [(ngModel)]="filtro.fechaInicio"
+    class="px-3 py-2 border border-blue-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400 text-sm" />
 
-    <input type="date" [(ngModel)]="filtro.fechaInicio"
-      class="px-3 py-2 border border-blue-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400" />
+  <input type="date" [(ngModel)]="filtro.fechaFin"
+    class="px-3 py-2 border border-blue-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400 text-sm" />
 
-    <input type="date" [(ngModel)]="filtro.fechaFin"
-      class="px-3 py-2 border border-blue-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400" />
+  <button (click)="aplicarFiltro()"
+    class="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 transition text-sm">
+    Aplicar Filtro
+  </button>
 
-    <button (click)="aplicarFiltro()"
-      class="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 transition">Aplicar Filtro</button>
-  </div>
-
-  <!-- Tabla de viajes -->
+  <!-- Tabla de viajes principal -->
   <div class="overflow-x-auto">
     <table class="min-w-full bg-white border border-green-200 rounded-lg">
-      <thead class="bg-green-100 text-green-800 font-semibold">
+      <thead class="bg-green-100 text-green-800 font-semibold text-sm">
         <tr>
-          <th class="px-4 py-2">Folio</th>
-          <th class="px-4 py-2">Fecha</th>
-          <th class="px-4 py-2">Matrícula</th>
-          <th class="px-4 py-2">Paciente</th>
-          <th class="px-4 py-2">Destino</th>
-          <th class="px-4 py-2">Acción</th>
+          <th class="px-4 py-2 border-b">Folio</th>
+          <th class="px-4 py-2 border-b">Paciente</th>
+          <th class="px-4 py-2 border-b">Fecha/Hora salida</th>
+          <th class="px-4 py-2 border-b">Operador</th>
+          <th class="px-4 py-2 border-b">Destino</th>
+          <th class="px-4 py-2 border-b">Estado</th>
+          <th class="px-4 py-2 border-b">Acción</th>
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let viaje of viajesFiltrados" class="text-center border-t">
+        <tr *ngFor="let viaje of viajesFiltrados" class="text-center text-sm border-b hover:bg-gray-50">
           <td class="px-4 py-2">{{ viaje.folio }}</td>
-          <td class="px-4 py-2">{{ viaje.fecha }}</td>
-          <td class="px-4 py-2">{{ viaje.matricula }}</td>
-          <td class="px-4 py-2">{{ viaje.paciente }}</td>
+          <td class="px-4 py-2">{{ viaje.paciente.nombre }}</td>
+          <td class="px-4 py-2">{{ viaje.ida.fecha }} {{ viaje.ida.hora }}</td>
+          <td class="px-4 py-2">{{ viaje.operador.nombre }}</td>
           <td class="px-4 py-2">{{ viaje.destino }}</td>
+          <td class="px-4 py-2">
+            <span [ngClass]="{
+                  'bg-green-100 text-green-800': viaje.estado === 'Completado',
+                  'bg-yellow-100 text-yellow-800': viaje.estado === 'Pendiente',
+                  'bg-red-100 text-red-800': viaje.estado === 'Cancelado'
+                }" class="px-2 py-1 rounded text-sm font-medium">
+              {{ viaje.estado }}
+            </span>
+          </td>
           <td class="px-4 py-2 space-x-2">
             <button (click)="verDetalles(viaje)"
-              class="bg-green-500 text-white px-3 py-1 rounded hover:bg-green-600 transition">Ver</button>
+              class="bg-green-500 text-white px-3 py-1 rounded hover:bg-green-600 transition text-sm">Ver</button>
             <button (click)="activarEdicion(viaje)"
-              class="bg-blue-500 text-white px-3 py-1 rounded hover:bg-blue-600 transition">Editar</button>
+              class="bg-blue-500 text-white px-3 py-1 rounded hover:bg-blue-600 transition text-sm">Editar</button>
           </td>
         </tr>
       </tbody>
     </table>
   </div>
 
-  <!-- Detalles / Edición -->
+  <!-- Panel de detalles / edición -->
   <div *ngIf="viajeSeleccionado" class="bg-white border border-green-300 rounded-lg mt-8 p-6 shadow-md">
-    <h3 class="text-xl text-green-700 font-bold mb-4">Detalles del Viaje</h3>
+    <div class="mb-6">
+      <h4 class="text-lg font-semibold text-gray-800 mb-3 pb-2 border-b">Detalles del Traslado</h4>
+      <div class="grid md:grid-cols-3 gap-4 text-sm">
+          <p><strong>Folio:</strong> {{viajeSeleccionado.folio}}</p>
+          <p><strong>Fecha y Hora Traslado:</strong> {{ viajeSeleccionado.ida.fecha }} {{ viajeSeleccionado.ida.hora }}</p>
+          <p><strong>Estado del Traslado:</strong>
+            <span [ngClass]="{
+                  'bg-green-100 text-green-800': viajeSeleccionado.estado === 'Completado',
+                  'bg-yellow-100 text-yellow-800': viajeSeleccionado.estado === 'Pendiente',
+                  'bg-red-100 text-red-800': viajeSeleccionado.estado === 'Cancelado'
+                }" class="px-2 py-1 rounded text-sm font-medium">
+              {{ viajeSeleccionado.estado }}
+            </span>
+          </p>
+      </div>
+    </div>
 
-    <div class="grid md:grid-cols-2 gap-4">
-      <p><strong>Paciente:</strong> {{ viajeSeleccionado.paciente }}</p>
-      <p><strong>Origen:</strong> {{ viajeSeleccionado.origen }}</p>
-      <p><strong>Destino:</strong> {{ viajeSeleccionado.destino }}</p>
+    <div class="grid md:grid-cols-2 gap-4 text-sm">
+      <!-- Datos paciente -->
+      <p><strong>Paciente:</strong> {{ viajeSeleccionado.paciente.nombre }}</p>
+      <p><strong>NSS:</strong> {{ viajeSeleccionado.paciente.nss }}</p>
+      <p><strong>Teléfono:</strong> {{ viajeSeleccionado.paciente.telefono }}</p>
+      <p class="md:col-span-2"><strong>Domicilio:</strong> {{ viajeSeleccionado.paciente.domicilio }}</p>
 
+      <!-- Operador -->
       <div>
-        <label class="block font-semibold mb-1">Ambulancia:</label>
-        <input type="text" [(ngModel)]="viajeSeleccionado.ambulancia" [readonly]="!enEdicion"
-          class="w-full px-3 py-2 border rounded focus:outline-none focus:ring-2 focus:ring-green-500" />
+        <label class="block font-semibold mb-1">Operador:</label>
+        <select [(ngModel)]="viajeSeleccionado.operador" (change)="actualizarMatricula()"
+          [disabled]="!enEdicion"
+          class="w-full border-b border-gray-400 focus:outline-none text-sm">
+          <option *ngFor="let op of operadores" [ngValue]="op">{{ op.nombre }}</option>
+        </select>
       </div>
 
+      <div>
+        <label class="block font-semibold mb-1">Matrícula:</label>
+        <input type="text" [(ngModel)]="viajeSeleccionado.operador.matricula"
+          [readonly]="true"
+          class="w-full border-b border-gray-400 focus:outline-none text-sm" />
+      </div>
+
+      <!-- fechas y horas traslados -->
+      <p><strong>Fecha Salida:</strong> {{ viajeSeleccionado.ida.fecha }}</p>
+      <p><strong>Hora salida:</strong> {{ viajeSeleccionado.ida.hora }}</p>
+      <p><strong>Hora llegada:</strong> {{ viajeSeleccionado.ida.horaLlegada }}</p>
+
+      <p><strong>Fecha Regreso:</strong> {{ viajeSeleccionado.regreso.fecha }}</p>
+      <p><strong>Hora salida:</strong> {{ viajeSeleccionado.regreso.hora }}</p>
+      <p><strong>Hora llegada:</strong> {{ viajeSeleccionado.regreso.horaLlegada }}</p>
+
+      <!-- Ambulancia -->
+      <div>
+        <label class="block font-semibold mb-1">Ambulancia:</label>
+        <select [(ngModel)]="viajeSeleccionado.ambulancia" [disabled]="!enEdicion"
+          class="w-full border-b border-gray-400 focus:outline-none text-sm">
+          <option *ngFor="let amb of ambulancias" [value]="amb">{{ amb }}</option>
+        </select>
+      </div>
+
+      <!-- Kilómetros -->
       <div>
         <label class="block font-semibold mb-1">Kilómetro Inicial:</label>
         <input type="number" [(ngModel)]="viajeSeleccionado.kmInicial" (ngModelChange)="actualizarKmTotal()"
           [readonly]="!enEdicion"
-          class="w-full px-3 py-2 border rounded focus:outline-none focus:ring-2 focus:ring-green-500" />
+          class="w-full border-b border-gray-400 focus:outline-none text-sm" />
       </div>
 
       <div>
         <label class="block font-semibold mb-1">Kilómetro Final:</label>
         <input type="number" [(ngModel)]="viajeSeleccionado.kmFinal" (ngModelChange)="actualizarKmTotal()"
           [readonly]="!enEdicion"
-          class="w-full px-3 py-2 border rounded focus:outline-none focus:ring-2 focus:ring-green-500" />
+          class="w-full border-b border-gray-400 focus:outline-none text-sm" />
       </div>
 
-      <p class="md:col-span-2 text-lg mt-2"><strong>Total recorrido:</strong> {{ kmTotal }}</p>
-      <p class="md:col-span-2 text-lg mt-1"
+      <!-- Total recorrido y alerta -->
+      <p class="md:col-span-2 mt-2"><strong>Total recorrido:</strong> {{ kmTotal }}</p>
+      <p class="md:col-span-2 mt-1"
         [ngClass]="kmRestantesParaMantenimiento <= 500 ? 'text-red-700 font-bold' : 'text-green-700'">
         <strong>Kilómetros restantes:</strong> {{ kmRestantesParaMantenimiento }}
       </p>
@@ -88,13 +147,15 @@
         ⚠️ ¡Atención! La ambulancia está cerca de su mantenimiento.
       </p>
 
+      <!-- Observaciones -->
       <div class="md:col-span-2 mt-4">
         <label class="block font-semibold mb-1">Observaciones:</label>
         <textarea [(ngModel)]="viajeSeleccionado.observaciones"
           [readonly]="!enEdicion"
-          class="w-full px-3 py-2 border rounded resize-y focus:outline-none"></textarea>
+          class="w-full border-b border-gray-400 resize-y focus:outline-none text-sm"></textarea>
       </div>
 
+      <!-- Archivo -->
       <div class="md:col-span-2 mt-4">
         <label class="block font-semibold mb-1">Archivo:</label>
         <input type="file" (change)="onArchivoSeleccionado($event)" [disabled]="!enEdicion"
@@ -102,6 +163,7 @@
       </div>
     </div>
 
+    <!-- Botones -->
     <div class="mt-4 flex gap-2">
       <button *ngIf="enEdicion" (click)="guardarViaje()"
         class="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600 transition">Guardar Cambios</button>

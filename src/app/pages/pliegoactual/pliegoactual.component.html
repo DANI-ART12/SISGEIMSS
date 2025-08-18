@@ -1,140 +1,267 @@
 <div id="printArea" class="max-w-[816px] mx-auto border p-2 bg-white text-[8.5pt] leading-tight space-y-2 print:overflow-visible">
 
-    <!-- Encabezado y No. Pliego en una sola línea -->
-    <div class="flex justify-between items-start mb-2">
-      <div class="flex items-center space-x-4 w-full ml-8">
-        <img src="assets/logoimss.png" alt="Logo IMSS" class="h-16 w-auto" />
-        <div class="text-left">
-          <h1 class="font-bold text-[11pt] uppercase">Instituto Mexicano del Seguro Social</h1>
-          <h2 class="font-bold text-[10pt] underline mt-1">PLIEGO DE COMISIÓN</h2>
-          <p class="text-[8pt] mt-1">
-            <strong>RFC:</strong> OEGP811027BQ5 |
-            <strong>CURP:</strong> OEGP811027MOCRRL08
-          </p>
+<!-- Opción alternativa con alineación más precisa -->
+<div class="flex justify-between mb-2" style="align-items: flex-start;">
+  <!-- Logo + Texto -->
+  <div class="flex items-start w-[85%] space-x-4">
+    <img src="assets/logoimss.png" alt="Logo IMSS" class="h-[50px] object-contain" />
+    <div class="text-left leading-tight">
+      <h1 class="font-bold text-[11pt] uppercase">Instituto Mexicano del Seguro Social</h1>
+      <h2 class="font-bold text-[10pt] underline mt-1">PLIEGO DE COMISIÓN</h2>
+      <p class="text-[8pt] mt-1">
+        <strong>RFC:</strong> OEGP811027BQ5 |
+        <strong>CURP:</strong> OEGP811027MOCRRL08
+      </p>
+    </div>
+  </div>
+
+  <!-- No. de Pliego -->
+  <div class="border border-black p-2 w-[100px] text-right text-[8pt]" style="margin-top: 0;">
+    <p class="border-b border-black font-bold">No. PLIEGO</p>
+    <p class="mt-1">1234/2024</p>
+    <p class="text-[7pt] mt-1">21 de mayo 2024</p>
+  </div>
+</div>
+
+  
+  <!-- Autorización de Comisión -->
+  <p class="text-center font-bold uppercase underline mb-1 mt-2 text-[7pt]">Autorización de Comisión</p>
+
+  <div class="grid grid-cols-2 gap-2">
+    <p><strong>Funcionario solicitante:</strong>
+      <span *ngIf="!modoEdicion">{{ funcionarioSolicitante }}</span>
+      <input *ngIf="modoEdicion" [(ngModel)]="funcionarioSolicitante" class="w-full border-b border-black" />
+    </p>
+    <p><strong>Matrícula:</strong>
+      <span *ngIf="!modoEdicion">{{ matriculaSolicitante }}</span>
+      <input *ngIf="modoEdicion" [(ngModel)]="matriculaSolicitante" class="w-full border-b border-black" />
+    </p>
+    <p><strong>Cargo:</strong>
+      <span *ngIf="!modoEdicion">{{ cargoSolicitante }}</span>
+      <input *ngIf="modoEdicion" [(ngModel)]="cargoSolicitante" class="w-full border-b border-black" />
+    </p>
+    <p><strong>Dependencia:</strong>
+      <span *ngIf="!modoEdicion">{{ dependencia }}</span>
+      <input *ngIf="modoEdicion" [(ngModel)]="dependencia" class="w-full border-b border-black" />
+    </p>
+    <p><strong>Empleado comisionado:</strong>
+      <span *ngIf="!modoEdicion">{{ comisionado }}</span>
+      <input *ngIf="modoEdicion" [(ngModel)]="comisionado" class="w-full border-b border-black" />
+    </p>
+    <p><strong>Tipo contratación:</strong>
+      <span *ngIf="!modoEdicion">{{ tipoContratacion }}</span>
+      <input *ngIf="modoEdicion" [(ngModel)]="tipoContratacion" class="w-full border-b border-black" />
+    </p>
+    <p><strong>Matrícula:</strong>
+      <span *ngIf="!modoEdicion">{{ matriculaComisionado }}</span>
+      <input *ngIf="modoEdicion" [(ngModel)]="matriculaComisionado" class="w-full border-b border-black" />
+    </p>
+    <p><strong>Grupo jerárquico:</strong>
+      <span *ngIf="!modoEdicion">{{ grupoJerarquico }}</span>
+      <input *ngIf="modoEdicion" [(ngModel)]="grupoJerarquico" class="w-full border-b border-black" />
+    </p>
+    <p><strong>Teléfono:</strong>
+      <span *ngIf="!modoEdicion">{{ telefono }}</span>
+      <input *ngIf="modoEdicion" [(ngModel)]="telefono" class="w-full border-b border-black" />
+    </p>
+  </div>
+
+  <p><strong>Motivo:</strong>
+    <span *ngIf="!modoEdicion">{{ motivo }}</span>
+    <input *ngIf="modoEdicion" [(ngModel)]="motivo" class="w-full border-b border-black" />
+  </p>
+
+  <div class="grid grid-cols-3 gap-2">
+    <p><strong>Lugar:</strong>
+      <span *ngIf="!modoEdicion">{{ lugar }}</span>
+      <input *ngIf="modoEdicion" [(ngModel)]="lugar" class="w-full border-b border-black" />
+    </p>
+    <p><strong>Periodo:</strong>
+      <span *ngIf="!modoEdicion">{{ periodo }}</span>
+      <input *ngIf="modoEdicion" [(ngModel)]="periodo" class="w-full border-b border-black" />
+    </p>
+    <p><strong>Total días:</strong>
+      <span *ngIf="!modoEdicion">{{ totalDias }}</span>
+      <input *ngIf="modoEdicion" [(ngModel)]="totalDias" class="w-full border-b border-black" />
+    </p>
+  </div>
+
+  <p><strong>Medio de transporte:</strong>
+    <span *ngIf="!modoEdicion">{{ transporte }}</span>
+    <input *ngIf="modoEdicion" [(ngModel)]="transporte" class="w-full border-b border-black" />
+  </p>
+
+  
+ <!-- Firmas -->
+<div class="grid grid-cols-2 text-center mt-2 border-t pt-2">
+  <div>
+    <p class="font-bold uppercase">Funcionario solicitante</p>
+    <p class="mt-1">
+      <span *ngIf="!modoEdicion">{{ funcionarioSolicitante }}</span>
+      <input *ngIf="modoEdicion" [(ngModel)]="funcionarioSolicitante" 
+             class="w-full border-b border-black text-center bg-transparent" 
+             placeholder="Nombre del funcionario" />
+    </p>
+    <p class="text-[7pt]">
+      <span *ngIf="!modoEdicion">{{ cargoSolicitante }}</span>
+      <input *ngIf="modoEdicion" [(ngModel)]="cargoSolicitante" 
+             class="w-full border-b border-black text-center bg-transparent text-[7pt]" 
+             placeholder="Cargo" />
+    </p>
+  </div>
+  <div>
+    <p class="font-bold uppercase">Funcionario que autoriza</p>
+    <p class="mt-1">
+      <span *ngIf="!modoEdicion">{{ funcionarioAutorizaFirma }}</span>
+      <input *ngIf="modoEdicion" [(ngModel)]="funcionarioAutorizaFirma" 
+             class="w-full border-b border-black text-center bg-transparent" 
+             placeholder="Nombre del funcionario" />
+    </p>
+    <p class="text-[7pt]">
+      <span *ngIf="!modoEdicion">{{ cargoAutoriza }}</span>
+      <input *ngIf="modoEdicion" [(ngModel)]="cargoAutoriza" 
+             class="w-full border-b border-black text-center bg-transparent text-[7pt]" 
+             placeholder="Cargo" />
+    </p>
+  </div>
+</div>
+
+  <!-- Autorización del importe -->
+  <div class="border-t pt-2 text-gray-900">
+    <p class="text-center font-bold uppercase underline mb-1 mt-2">Autorización del Importe de Viáticos y Pasajes</p>
+    <p class="uppercase mb-2 text-center">Cuota diaria de viáticos: 
+      <span *ngIf="!modoEdicion">${{ cuotaDiaria }}</span>
+      <input *ngIf="modoEdicion" [(ngModel)]="cuotaDiaria" class="border-b border-black" />
+    </p>
+
+    <div class="grid grid-cols-2 gap-4">
+      <div class="space-y-1">
+        <div class="flex justify-between border-b pb-0.5">
+          <span>Anticipo de gastos de peaje</span>
+          <span *ngIf="!modoEdicion">${{ anticipoPeaje }}</span>
+          <input *ngIf="modoEdicion" [(ngModel)]="anticipoPeaje" class="w-24 text-right border-b border-black" />
+        </div>
+        <div class="flex justify-between border-b pb-0.5">
+          <span>Subtotal viáticos, pasajes y uso de vehículo</span>
+          <span *ngIf="!modoEdicion">${{ subtotalViaticos }}</span>
+          <input *ngIf="modoEdicion" [(ngModel)]="subtotalViaticos" class="w-24 text-right border-b border-black" />
+        </div>
+        <div class="flex justify-between border-b pb-0.5">
+          <span>Boleto de avión</span>
+          <span *ngIf="!modoEdicion">${{ boletoAvion }}</span>
+          <input *ngIf="modoEdicion" [(ngModel)]="boletoAvion" class="w-24 text-right border-b border-black" />
         </div>
       </div>
-      <div class="border border-black p-1 w-40 text-right text-[8pt]">
-        <p class="border-b border-black font-bold">No. PLIEGO</p>
-        <p>1234/2024</p>
-        <p class="text-[7pt] mt-1">21 de mayo 2024</p>
-      </div>
-    </div>
-    
-  
-    <!-- Autorización de Comisión -->
-    <p class="text-center font-bold uppercase underline mb-1 mt-2 text-[8.5pt]">Autorización de Comisión</p>
-  
-    <div class="grid grid-cols-2 gap-2">
-      <p><strong>Funcionario solicitante:</strong> LIC. SENORINA CASTRO MORENO</p>
-      <p><strong>Matrícula:</strong> 99217598</p>
-      <p><strong>Cargo:</strong> JEFE DE SERVICIOS DE DESARROLLO DE PERSONAL</p>
-      <p><strong>Dependencia:</strong> Órgano de Operación Administrativa Desconcentrada</p>
-      <p><strong>Empleado comisionado:</strong> LIC. MARIA DEL PILAR ORTEGA GARCÍA</p>
-      <p><strong>Tipo contratación:</strong> Confianza A</p>
-      <p><strong>Matrícula:</strong> 99218665</p>
-      <p><strong>Grupo jerárquico:</strong> N49 JEFE A DEPTO CAPACIT Y TRANSP</p>
-      <p><strong>Teléfono:</strong> 951 515 27 23</p>
-    </div>
-  
-    <p><strong>Motivo:</strong> Asiste a dar capacitación y apoyo para la declaración patrimonial y de intereses 2024.</p>
-  
-    <div class="grid grid-cols-3 gap-2">
-      <p><strong>Lugar:</strong> SALINA CRUZ, OAX</p>
-      <p><strong>Periodo:</strong> Del 22 al 24 de mayo 2024</p>
-      <p><strong>Total días:</strong> TRES</p>
-    </div>
-    <p><strong>Medio de transporte:</strong> Traslado terrestre</p>
-  
-    <!-- Firmas -->
-    <div class="grid grid-cols-2 text-center mt-2 border-t pt-2">
-      <div>
-        <p class="font-bold uppercase">Funcionario solicitante</p>
-        <p class="mt-1">LIC. SENORINA CASTRO MORENO</p>
-        <p class="text-[7pt]">JEFE DE SERVICIOS DE DESARROLLO DE PERSONAL</p>
-      </div>
-      <div>
-        <p class="font-bold uppercase">Funcionario que autoriza</p>
-        <p class="mt-1">LIC. SENORINA CASTRO MORENO</p>
-        <p class="text-[7pt]">JEFE DE SERVICIOS DE DESARROLLO DE PERSONAL</p>
-      </div>
-    </div>
-  
-    <!-- Autorización del importe -->
-    
-    <div class="border-t pt-2 text-gray-900 text-[8.5pt]">
-        <p class="text-center font-bold uppercase underline mb-1 mt-2">Autorización del Importe de Viáticos y Pasajes</p>
-      <p class="uppercase mb-2 text-center">Cuota diaria de viáticos: $________</p>
-  
-      <div class="grid grid-cols-2 gap-4">
-        <div class="space-y-1">
-          <div class="flex justify-between border-b pb-0.5">
-            <span>Anticipo de gastos de peaje</span><span>$________</span>
-          </div>
-          <div class="flex justify-between border-b pb-0.5">
-            <span>Subtotal viáticos, pasajes y uso de vehículo</span><span>$________</span>
-          </div>
-          <div class="flex justify-between border-b pb-0.5">
-            <span>Boleto de avión</span><span>$________</span>
-          </div>
+      <div class="space-y-1">
+        <div class="flex justify-between border-b pb-0.5">
+          <span>Anticipo de viáticos</span>
+          <span *ngIf="!modoEdicion">${{ anticipoViaticos }}</span>
+          <input *ngIf="modoEdicion" [(ngModel)]="anticipoViaticos" class="w-24 text-right border-b border-black" />
         </div>
-        <div class="space-y-1">
-          <div class="flex justify-between border-b pb-0.5">
-            <span>Anticipo de viáticos</span><span>$________</span>
-          </div>
-          <div class="flex justify-between border-b pb-0.5">
-            <span>Anticipo de gastos por uso de vehículo</span><span>$________</span>
-          </div>
-          <div class="flex justify-between border-b pb-0.5">
-            <span>Anticipo de pasajes</span><span>$________</span>
-          </div>
+        <div class="flex justify-between border-b pb-0.5">
+          <span>Anticipo de gastos por uso de vehículo</span>
+          <span *ngIf="!modoEdicion">${{ anticipoVehiculo }}</span>
+          <input *ngIf="modoEdicion" [(ngModel)]="anticipoVehiculo" class="w-24 text-right border-b border-black" />
+        </div>
+        <div class="flex justify-between border-b pb-0.5">
+          <span>Anticipo de pasajes</span>
+          <span *ngIf="!modoEdicion">${{ anticipoPasajes }}</span>
+          <input *ngIf="modoEdicion" [(ngModel)]="anticipoPasajes" class="w-24 text-right border-b border-black" />
         </div>
       </div>
-  
-      <div class="mt-2 border-t pt-1 text-right font-semibold">
-        GASTOS TOTAL: $________
+    </div>
+
+    <div class="mt-2 border-t pt-1 text-right font-semibold">
+      GASTOS TOTAL: 
+      <span *ngIf="!modoEdicion">${{ gastosTotal }}</span>
+      <input *ngIf="modoEdicion" [(ngModel)]="gastosTotal" class="w-24 text-right border-b border-black" />
+    </div>
+
+    <div class="grid grid-cols-2 mt-1 text-[8pt]">
+      <div><strong>Disponibilidad presupuestal:</strong>
+        <span *ngIf="!modoEdicion">{{ disponibilidadPresupuestal }}</span>
+        <input *ngIf="modoEdicion" [(ngModel)]="disponibilidadPresupuestal" class="w-full border-b border-black" />
       </div>
-  
-      <div class="grid grid-cols-2 mt-1 text-[8pt]">
-        <div><strong>Disponibilidad presupuestal:</strong> ______________________</div>
-        <div class="text-right"><strong>Clave presupuestal:</strong> ______________________</div>
+      <div class="text-right"><strong>Clave presupuestal:</strong>
+        <span *ngIf="!modoEdicion">{{ clavePresupuestal }}</span>
+        <input *ngIf="modoEdicion" [(ngModel)]="clavePresupuestal" class="w-full border-b border-black" />
       </div>
     </div>
-  
-    <!-- Certificación -->
-    <p class="text-center font-bold uppercase underline mb-1 mt-3">Certificación de Tránsito y Permanencia</p>
-    <div class="border grid grid-cols-3 text-[8pt] text-center h-[120px]">
-      <div class="border-r p-3"><strong>LUGAR Y SELLO</strong></div>
-      <div class="border-r p-3"><strong>FECHA Y HORA</strong></div>
-      <div class="p-3"><strong>NOMBRE Y FIRMA AUTÓGRAFA</strong></div>
-    </div>
-  
-    <!-- Vale -->
-<!-- Vale -->
-<div class="break-inside-avoid">
-    <h3 class="text-center font-bold uppercase underline mt-6">Vale a la Tesorería del Instituto Mexicano del Seguro Social</h3>
+  </div>
+
+  <!-- Certificación (NO editable) -->
+<p class="text-center font-bold uppercase underline mb-1 mt-3">Certificación de Tránsito y Permanencia</p>
+
+<div class="border grid grid-cols-3 text-[8pt] text-center">
+  <!-- Lugar y sello -->
+  <div class="border-r p-1 flex flex-col justify-between h-[120px]">
+    <strong class="mb-1">LUGAR Y SELLO</strong>
+    <div class="border-t border-black mt-1 h-full"></div>
+  </div>
+
+  <!-- Fecha y hora -->
+  <div class="border-r p-1 flex flex-col justify-between h-[120px]">
+    <strong class="mb-1">FECHA Y HORA</strong>
+    <div class="border-t border-black mt-1 h-full"></div>
+  </div>
+
+  <!-- Nombre y firma -->
+  <div class="p-1 flex flex-col justify-between h-[120px]">
+    <strong class="mb-1">NOMBRE Y FIRMA AUTÓGRAFA</strong>
+    <div class="border-t border-black mt-1 h-full"></div>
+  </div>
+</div>
+
+  <!-- Vale -->
+  <div class="break-inside-avoid mt-4">
+    <h3 class="text-center font-bold uppercase underline">Vale a la Tesorería del Instituto Mexicano del Seguro Social</h3>
     <div class="text-[9pt] space-y-1">
-      <div class="text-right"><strong>Bueno por:</strong> $__________</div>
-      <p>Recibí la cantidad de $0.00 (PESOS 00/100 M.N.) correspondiente al anticipo de ________ días de viáticos.</p>
-      <p>$0.00 (PESOS 00/100 M.N.) valor de los pasajes o anticipos de otros gastos.</p>
-  
+      <div class="text-right"><strong>Bueno por:</strong>
+        <span *ngIf="!modoEdicion">${{ buenoPor }}</span>
+        <input *ngIf="modoEdicion" [(ngModel)]="buenoPor" class="border-b border-black w-24 text-right" />
+      </div>
+      <p>
+        Recibí la cantidad de ${{ cantidadRecibida }} (PESOS 00/100 M.N.) correspondiente al anticipo de 
+        <span *ngIf="!modoEdicion">{{ diasVale }}</span>
+        <input *ngIf="modoEdicion" [(ngModel)]="diasVale" class="w-16 border-b border-black text-center" />
+        días de viáticos.
+      </p>
+      <p>${{ valorPasajes }} (PESOS 00/100 M.N.) valor de los pasajes o anticipos de otros gastos.</p>
+
       <div class="text-right mt-6">
         <div class="border-t border-black inline-block pt-1">
           <p class="text-sm">Firma del empleado comisionado</p>
-          <p class="font-semibold uppercase">LIC. MARIA DEL PILAR ORTEGA GARCÍA</p>
+          <p class="font-semibold uppercase">{{ firmaComisionado }}</p>
         </div>
       </div>
-  
-      <p class="text-[8pt] mt-2"><strong>Nota:</strong> No se admitirán tachaduras ni enmendaduras...</p>
-      <p class="text-right text-[7pt] mt-1">1270-009-036</p>
+
+      <p class="text-[8pt] mt-2">
+        <strong>Nota:</strong>
+        <span *ngIf="!modoEdicion">{{ textoNota }}</span>
+        <input *ngIf="modoEdicion" [(ngModel)]="textoNota" class="border" />
+      </p>
+
+      
+      <p class="text-right text-[7pt] mt-1">
+        <strong></strong>
+        <span *ngIf="!modoEdicion">{{ codigoFormato }}</span>
+        <input *ngIf="modoEdicion" [(ngModel)]="codigoFormato" class="border" />
+      </p>
     </div>
   </div>
-  
-  
-  </div>
-  
-  <!-- Botón imprimir -->
-  <div class="print:hidden mt-6 text-center">
-    <button (click)="imprimir()" class="px-6 py-2 bg-green-700 text-white rounded text-sm shadow">
-      Imprimir documento
-    </button>
-  </div>  
+
+</div>
+
+<!-- Botones -->
+<div class="print:hidden flex justify-center gap-4 mt-2">
+  <button (click)="toggleEdicion()" class="px-4 py-2 bg-blue-700 text-white text-sm rounded shadow">
+    {{ modoEdicion ? 'Guardar Cambios' : 'Editar Pliego' }}
+  </button>
+  <button 
+  (click)="imprimirContenido()" 
+  class="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700 transition no-imprimir"
+  type="button">
+  <i class="fas fa-print mr-2"></i>
+  Imprimir
+</button>
+</div>

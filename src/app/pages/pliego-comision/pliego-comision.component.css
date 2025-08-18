@@ -3,11 +3,12 @@
   max-width: 816px;
   margin: 0 auto;
   padding: 8mm;
-  font-family: 'Times New Roman', serif;
-  font-size: 8.5pt;
+  font-family: 'Arial', serif;
+  font-size: 7pt;
   color: black;
   background: white;
   position: relative;
+  padding-top: 4mm;
 }
 
 /* Frases laterales giradas y centradas */
@@ -57,7 +58,7 @@ input[type="text"],
 input[type="number"] {
   border: none;
   border-bottom: 1px solid black;
-  font-size: 8pt;
+  font-size: 7pt;
   padding: 0 2px;
   width: 100%;
   box-sizing: border-box;
@@ -84,7 +85,7 @@ td {
 }
 
 .text-xs {
-  font-size: 8pt;
+  font-size: 7pt;
 }
 
 .p-1 {
@@ -103,9 +104,9 @@ td {
   padding: 3rem;
 }
 
-/* ========================================= */
-/* NUEVO: Cuadros laterales para frases rotadas */
-/* ========================================= */
+
+/* Cuadros laterales para frases rotadas */
+
 
 .vertical-text-left,
 .vertical-text-right {
@@ -153,5 +154,186 @@ td {
     top: 50%;
     transform: rotate(90deg) translate(50%, 0);
     transform-origin: center center;
+  }
+}
+
+/* === CORREGIDO: estilos para números a izquierda y derecha fuera de tabla === */
+.numeros-lados {
+  max-width: 100%;       
+  margin: 0 0 1px 0;     /* Reducir margen inferior */
+  padding: 0 2px;        
+  display: flex;
+  justify-content: space-between;
+  font-weight: bold;
+  font-size: 4pt;      /* Reducir tamaño de fuente */
+  box-sizing: border-box;
+  overflow-x: hidden;
+  page-break-inside: avoid; 
+  break-inside: avoid;      
+  page-break-before: avoid; 
+  break-before: avoid;
+  position: relative;
+}
+
+.numeros-lados > div {
+  max-width: 45%;        
+  box-sizing: border-box;
+  overflow: hidden;
+  word-wrap: break-word; 
+}
+
+.numeros-lados input {
+  max-width: 60px;       /* Reducir ancho máximo */
+  width: 100%;
+  box-sizing: border-box;
+  border: none;
+  border-bottom: 1px solid black;
+  padding: 0 1px;        
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-size: 5pt;      /* Reducir tamaño */
+  font-family: 'Arial', serif;
+}
+
+.numeros-lados span {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: inline-block;
+  max-width: 100%;
+  font-size: 7.5pt;      /* Reducir tamaño */
+}
+
+/* Alternativa: Reducir espacios y forzar en página actual */
+@media print {
+  /* Reducir espacios de elementos anteriores para hacer lugar */
+  #printArea table {
+    margin-bottom: 1px !important;
+  }
+  
+  .numeros-lados {
+    position: relative;
+    margin: 2px 0 !important;
+    padding: 1px 4px !important;
+    font-size: 6.5pt !important;
+    page-break-inside: avoid !important;
+    break-inside: avoid !important;
+    page-break-after: avoid !important;
+    break-after: avoid !important;
+  }
+  
+  .numeros-lados input,
+  .numeros-lados span {
+    font-size: 6.5pt !important;
+    max-width: 45px !important;
+  }
+  
+  /* Forzar que el salto de página ocurra después */
+  .page-break {
+    page-break-before: always !important;
+    break-before: page !important;
+  }
+}
+
+/* Mantener los estilos normales para vista */
+.numeros-lados {
+  max-width: 100%;       
+  margin: 0 0 2px 0;     
+  padding: 0 4px;        
+  display: flex;
+  justify-content: space-between;
+  font-weight: bold;
+  font-size: 7pt;      
+  box-sizing: border-box;
+  overflow-x: hidden;
+}
+
+.numeros-lados > div {
+  max-width: 45%;        /* Reducir de 48% a 45% */
+  box-sizing: border-box;
+  overflow: hidden;
+  word-wrap: break-word; /* Añadir para romper palabras largas */
+}
+
+.numeros-lados input {
+  max-width: 70px;       /* Reducir de 80px a 70px */
+  width: 100%;
+  box-sizing: border-box;
+  border: none;
+  border-bottom: 1px solid black;
+  padding: 0 1px;        /* Reducir padding interno */
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-size: 7pt;
+  font-family: 'Arial', serif;
+}
+
+.numeros-lados span {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: inline-block;
+  max-width: 100%;
+}
+
+/* Ajustes específicos para impresión */
+@media print {
+  .numeros-lados {
+    max-width: 100%;
+    padding: 0 2px;      /* Padding aún más pequeño en impresión */
+    margin: 0 0 4px 0;   /* Eliminar margin auto en impresión */
+  }
+  
+  .numeros-lados > div {
+    max-width: 42%;      /* Aún más conservador en impresión */
+  }
+  
+  .numeros-lados input {
+    max-width: 60px;     /* Más pequeño en impresión */
+    font-size: 7.5pt;    /* Reducir fuente ligeramente */
+  }
+  
+  .numeros-lados span {
+    font-size: 7.5pt;
+  }
+}
+
+/* ALTERNATIVA: Posicionamiento absoluto para casos extremos */
+.numeros-fijos-pagina {
+  position: fixed;
+  bottom: 15mm;  /* Ajustar según el margen inferior que necesites */
+  left: 8mm;     /* Alinear con el padding de #printArea */
+  right: 8mm;    /* Alinear con el padding de #printArea */
+  display: flex;
+  justify-content: space-between;
+  font-weight: bold;
+  font-size: 7pt;
+  background: white; /* Para que no se transparente con el contenido */
+  z-index: 10;
+}
+
+.numeros-fijos-pagina > div {
+  max-width: 45%;
+  box-sizing: border-box;
+  overflow: hidden;
+}
+
+.numeros-fijos-pagina input {
+  max-width: 70px;
+  border: none;
+  border-bottom: 1px solid black;
+  padding: 0 1px;
+  font-size: 7pt;
+  font-family: 'Arial', serif;
+}
+
+@media print {
+  .numeros-fijos-pagina {
+    position: fixed;
+    bottom: 10mm;
+    left: 8mm;
+    right: 8mm;
   }
 }
