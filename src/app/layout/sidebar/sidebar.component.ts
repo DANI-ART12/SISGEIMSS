@@ -70,11 +70,10 @@ const LINKS: Record<UserRole, SidebarLink[]> = {
   ],
 
   USER: [
-    { label: 'Solicitud traslados', icon: 'FileText', route: '/formatos' },
-    { label: 'Informe Comisión', icon: 'FileSearch', route: '/informecomision' },
     { label: 'Pliego Comisión', icon: 'ScrollText', route: '/pliego-comision' },
-   {label:'Pliego Confianza', icon:'BookOpenText', route:'/pliegoactual'},
+    { label: 'Pliego Confianza', icon: 'BookOpenText', route: '/pliegoactual' },
     { label: 'Registro KM', icon: 'Car', route: '/registro-km' },
+    { label: 'Informe Comisión', icon: 'FileSearch', route: '/informecomision' },
     { label: 'Historial', icon: 'History', route: '/historial' }
   ]
 };
