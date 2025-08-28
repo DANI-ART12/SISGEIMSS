@@ -1,4 +1,4 @@
-<div id="printArea" class="max-w-[816px] mx-auto text-[8.5pt] leading-tight">
+<div id="printArea" class="max-w-[816px] mx-auto text-[8.5pt] leading-tight font-[Arial]">
 
   <div
   contenteditable="true"
@@ -17,7 +17,7 @@
 ></div>
 
   <!-- ENCABEZADO -->
-<div class="flex justify-between items-center mb-0 mt-0" style="position: relative; top: -8px;">
+<div class="flex justify-between items-center mb-0 mt-0" style="position: relative; top: -8px; ">
   <!-- Título principal -->
   <div class="flex flex-col items-center flex-1">
     <h1 class="font-bold text-[12pt] uppercase">INSTITUTO MEXICANO DEL SEGURO SOCIAL</h1>
@@ -33,7 +33,7 @@
 </div>
 
 <!-- TABLA AUTORIZACIÓN DE COMISIÓN -->
-<table class="w-full border border-black mb-2 mt-2 text-[9pt]">
+<table class="w-full border border-black mb-2 mt-2 text-[9pt] font-[Arial]">
   <thead>
     <tr>
       <th colspan="6" class="bg-gray-300 text-center font-bold uppercase p-1">
@@ -66,13 +66,13 @@
 
     <!-- FILA: Nombre comisionado / RFC-CURP / Tipo de contratación -->
     <tr>
-      <td class="border font-bold uppercase p-1 text-center">Nombre comisionado</td>
+      <td class="border font-bold uppercase p-1 text-center font-[Arial]">Nombre comisionado</td>
       <td class="border p-1">
         <div *ngIf="!modoEdicion">{{ nombreComisionado }}</div>
         <input *ngIf="modoEdicion" [(ngModel)]="nombreComisionado" class="w-full" />
       </td>
 
-      <td class="border font-bold uppercase p-1 text-center">RFC / CURP</td>
+      <td class="border font-bold uppercase p-1 text-center font-[Arial]">RFC / CURP</td>
       <td class="border p-1">
         <div *ngIf="!modoEdicion">
           <div>{{ rfc }}</div>
@@ -84,7 +84,7 @@
         </div>
       </td>
 
-      <td class="border font-bold uppercase p-1 text-center">Tipo de contratación</td>
+      <td class="border font-bold uppercase p-1 text-center font-[Arial]">Tipo de contratación</td>
       <td class="border p-1 text-center">
         <div *ngIf="!modoEdicion">
           <span *ngIf="tipoBase">Base</span>
@@ -109,13 +109,13 @@
         <input *ngIf="modoEdicion" [(ngModel)]="matricula" class="w-full" />
       </td>
 
-      <td class="border font-bold uppercase p-1 text-center">Categoría<br />(Num. y Nombre)</td>
+      <td class="border font-bold uppercase p-1 text-center font-[Arial]">Categoría<br />(Num. y Nombre)</td>
       <td class="border p-1">
         <div *ngIf="!modoEdicion">{{ categoriaNumNombre }}</div>
         <input *ngIf="modoEdicion" [(ngModel)]="categoriaNumNombre" class="w-full" />
       </td>
 
-      <td class="border font-bold uppercase p-1 text-center">Teléfono oficina</td>
+      <td class="border font-bold uppercase p-1 text-center font-[Arial]">Teléfono oficina</td>
       <td class="border p-1">
         <div *ngIf="!modoEdicion">{{ telefonoOficina }}</div>
         <input *ngIf="modoEdicion" [(ngModel)]="telefonoOficina" class="w-full" />
@@ -124,7 +124,7 @@
 
     <!-- Objeto comisión -->
     <tr>
-      <td class="border font-bold uppercase p-1">Objeto de la comisión</td>
+      <td class="border font-bold uppercase p-1 font-[Arial]">Objeto de la comisión</td>
       <td class="border p-1" colspan="5">
         <div *ngIf="!modoEdicion">{{ objetoComision }}</div>
         <input *ngIf="modoEdicion" [(ngModel)]="objetoComision" class="w-full" />
@@ -133,7 +133,7 @@
 
     <!-- Lugares comisión -->
     <tr>
-      <td class="border font-bold uppercase p-1">Lugares de comisión</td>
+      <td class="border font-bold uppercase p-1 font-[Arial]">Lugares de comisión</td>
       <td class="border p-1" colspan="5">
         <div *ngIf="!modoEdicion">{{ lugaresComision }}</div>
         <input *ngIf="modoEdicion" [(ngModel)]="lugaresComision" class="w-full" />
@@ -148,7 +148,7 @@
         <input *ngIf="modoEdicion" [(ngModel)]="periodo" class="w-full" />
       </td>
 
-      <td class="border font-bold uppercase p-1 text-center">Total días</td>
+      <td class="border font-bold uppercase p-1 text-center font-[Arial]">Total días</td>
       <td class="border p-1 text-center">
         <div *ngIf="!modoEdicion">
           {{ totalDias }}<br />
@@ -164,7 +164,7 @@
     <!-- Firmas (ya corregidas previamente) -->
     <tr>
       <!-- Funcionario solicitante -->
-      <td class="border border-black p-2 text-center" colspan="3" style="vertical-align: bottom;">
+      <td class="border border-black p-2 text-center font-[Arial]" colspan="3" style="vertical-align: bottom; ">
         <div class="uppercase font-bold text-xs mb-2">FUNCIONARIO SOLICITANTE</div>
         <div *ngIf="!modoEdicion">
           <div class="font-bold text-sm">{{ funcionarioSolicitanteNombre }}</div>
@@ -178,7 +178,7 @@
       </td>
 
       <!-- Funcionario que autoriza -->
-      <td class="border border-black p-2 text-center" colspan="3" style="vertical-align: bottom;">
+      <td class="border border-black p-2 text-center font-[Arial]" colspan="3" style="vertical-align: bottom;">
         <div class="uppercase font-bold text-xs mb-2">FUNCIONARIO QUE AUTORIZA</div>
         <div *ngIf="!modoEdicion">
           <div class="font-bold text-sm">{{ funcionarioAutorizaNombre }}</div>
@@ -195,7 +195,7 @@
 </table>
 
 
-<div class="grid grid-cols-1 md:grid-cols-2 gap-2 text-[6pt] font-sans print:grid-cols-2 print:gap-2">
+<div class="grid grid-cols-1 md:grid-cols-2 gap-2 text-[6pt] font-sans print:grid-cols-2 print:gap-2 font-[Arial]">
   <!-- Tabla 1: VIÁTICOS Y PASAJES -->
 <table class="w-full border border-black table-fixed h-full">
   <thead>
@@ -268,7 +268,7 @@
 
  
 <!-- Tabla 2: AUTORIZACIONES ESPECÍFICAS -->
-<table class="w-full border border-black table-fixed h-full">
+<table class="w-full border border-black table-fixed h-full font-[Arial] ">
   <thead>
     <tr class="bg-gray-300">
       <th class="border border-black text-center font-bold p-1 uppercase">
@@ -323,11 +323,22 @@
       </td>
     </tr>
     <tr>
-      <td class="border p-1 text-center text-xs">
-        <span *ngIf="!modoEdicion">{{ disponibilidadPresupuestal }}</span>
-        <textarea *ngIf="modoEdicion" [(ngModel)]="disponibilidadPresupuestal" class="w-full border-b border-black text-center text-xs resize-none"></textarea>
+      <td class="border p-1 text-center text-xs leading-tight">
+        <span *ngIf="!modoEdicion">
+          {{ disponibilidadPresupuestal }}<br>
+          {{ disponibilidadPresupuestalnuevo }}
+        </span>
+    
+        <div *ngIf="modoEdicion" class="flex flex-col">
+          <textarea [(ngModel)]="disponibilidadPresupuestal"
+            class="w-full border-b border-black text-center text-xs resize-none"></textarea>
+          <textarea [(ngModel)]="disponibilidadPresupuestalnuevo"
+            class="w-full border-b border-black text-center text-xs resize-none mt-1"></textarea>
+        </div>
       </td>
     </tr>
+    
+
   </tbody>
 </table>
 
@@ -425,8 +436,8 @@
   <!-- SALTO DE PÁGINA -->
   <div class="page-break"></div>
 
-<!-- CERTIFICADO DE TRÁNSITO Y PERMANENCIA -->
-<table class="w-full border border-black mb-4 text-[10pt]">
+<!-- CERTIFICACIÓN DE TRÁNSITO Y PERMANENCIA -->
+<table class="w-full border border-black mb-4 text-[10pt] border-collapse">
   <thead>
     <tr>
       <th colspan="3" class="border border-black text-center font-bold uppercase bg-gray-300">
@@ -434,24 +445,45 @@
       </th>
     </tr>
     <tr class="text-center font-semibold uppercase bg-gray-200">
-      <th class="border p-1">Lugar y sello</th>
-      <th class="border p-1">Fecha y hora</th>
-      <th class="border p-1">Firma autógrafa de certificación</th>
+      <th class="border p-1 w-1/3">Lugar y sello</th>
+      <th class="border p-1 w-1/3">Fecha y hora</th>
+      <th class="border p-1 w-1/3">Firma autógrafa de certificación</th>
     </tr>
   </thead>
   <tbody>
     <tr *ngFor="let fila of certificadoFilas">
       <!-- Lugar y sello -->
-      <td class="border align-top h-[60px]"></td>
+      <td class="border align-top h-[70px]"></td>
 
-       <!-- LLEGADA / SALIDA -->
-       <td class="border align-top text-center p-0">
-        <div class="border-b border-black py-[4px]">LLEGADA</div>
-        <div class="py-[4px]">SALIDA</div>
+      <!-- Llegada / Salida en dos renglones -->
+      <td class="border p-0">
+        <div class="flex flex-col text-center h-full">
+          <div class="border-b border-black py-2">LLEGADA</div>
+          <div class="py-2">SALIDA</div>
+        </div>
       </td>
 
       <!-- Firma -->
-      <td class="border align-top h-[60px]"></td>
+      <td class="border align-top h-[70px]"></td>
+    </tr>
+  </tbody>
+</table>
+
+<!-- CERTIFICACIÓN DE REANUDACIÓN DE LABORES -->
+<table class="w-full border-2 border-black mb-6 text-[10pt] border-separate rounded-lg border-spacing-0">
+  <thead>
+    <tr>
+      <th colspan="4" class="text-center font-bold uppercase bg-white p-1 border-0">
+        CERTIFICACIÓN DE REANUDACIÓN DE LABORES
+      </th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr class="text-center">
+      <td class="border-2 border-black w-[15%] align-top p-2 font-semibold uppercase">FECHA</td>
+      <td class="border-2 border-black w-[35%] h-[60px]"></td>
+      <td class="border-2 border-black w-[15%] font-semibold uppercase align-top">FIRMA<br/>AUTÓGRAFA</td>
+      <td class="border-2 border-black w-[35%] h-[60px]"></td>
     </tr>
   </tbody>
 </table>
@@ -459,24 +491,6 @@
 
 
 
-  <!-- CERTIFICACIÓN DE REANUDACIÓN DE LABORES -->
-  <table class="w-full border border-black mb-6 text-[10pt]">
-    <tbody>
-      <tr>
-        <td colspan="3" class="bg-gray-300 border-b border-black text-center font-bold text-sm">
-          CERTIFICACIÓN DE REANUDACIÓN DE LABORES
-        </td>
-      </tr>
-      <tr class="text-center font-semibold">
-        <td class="border p-1 text-center">Fecha</td>
-        <td class="border p-1 text-center">Firma Autógrafa</td>
-      </tr>
-      <tr>
-        <td class="border h-13"></td>
-        <td class="border h-13"></td>
-      </tr>
-    </tbody>
-  </table>
 
   <table class="w-full border border-black mb-2">
     <thead>

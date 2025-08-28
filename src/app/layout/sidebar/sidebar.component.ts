@@ -9,7 +9,7 @@ import {
   Car, Users, Route as RouteIcon, File, Settings, 
   HelpCircle, LogOut, Search, History, FileSearch, ScrollText,FileText, ChartBar, BookOpenText,           // botones al pie
   HospitalIcon, FilePen, FilePenLine, FileMinus,
-  ContactRound, BadgeDollarSign,
+  ContactRound, BadgeDollarSign, Bus,
 } from 'lucide-angular';
 
 const iconMap = {
@@ -32,7 +32,8 @@ const iconMap = {
   FileMinus,
   BookOpenText,
   ContactRound,
-  BadgeDollarSign
+  BadgeDollarSign,
+  Bus,
 };
 
 interface SidebarLink {
@@ -43,6 +44,7 @@ interface SidebarLink {
 
 const LINKS: Record<UserRole, SidebarLink[]> = {
   ADMIN: [
+    { label: 'Traslados', icon: 'Bus', route: '/dashboard' },
     { label: 'Traslados Locales', icon: 'FileText', route: '/traslados' },
     { label: 'Informe Comisión', icon: 'FileSearch', route: '/informecomision' },
     { label: 'Pliego Comisión', icon: 'ScrollText', route: '/pliego-comision' },
@@ -58,6 +60,7 @@ const LINKS: Record<UserRole, SidebarLink[]> = {
   ],
 
   SUBADMIN: [
+    { label: 'Traslados', icon: 'Bus', route: '/dashboard' },
     { label: 'Traslados Locales', icon: 'FileText', route: '/traslados' },
     { label: 'Informe Comisión', icon: 'FileSearch', route: '/informecomision' },
     { label: 'Pliego Comisión', icon: 'ScrollText', route: '/pliego-comision' },

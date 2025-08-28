@@ -78,8 +78,9 @@ export class PliegoComisionComponent implements OnInit {
 
   nombrePresupuestal: string = 'M.A. SALOMON JONAS MEDINA GALLEGOS';
   textoPresupuestal: string = 'DISPONIBILIDAD PRESUPUESTAL';
-  disponibilidadPresupuestal: string = `210101 142901 42061603 $337,421.79\n210101 142901 42061623 $2,297.00`;
-
+  disponibilidadPresupuestal: string = `210101 142901 42061603 $337,421.79`;
+ disponibilidadPresupuestalnuevo:string =`210101 142901 42061623 $2,297.00`;
+  
   // --- Vale a la Tesorería General ---
   valeBuenoPor: string = '';
   valeRecibiCantidad: string = '';
@@ -94,7 +95,7 @@ export class PliegoComisionComponent implements OnInit {
   numeroDerecho: string = '67890';
 
   // Certificado Tránsito y Permanencia
-  certificadoFilas = Array.from({ length: 5 }, () => ({
+  certificadoFilas = Array.from({ length: 4 }, () => ({
     lugarFecha: '',
     llegada: '',
     salida: '',
@@ -188,6 +189,7 @@ export class PliegoComisionComponent implements OnInit {
       nombrePresupuestal: this.nombrePresupuestal,
       textoPresupuestal: this.textoPresupuestal,
       disponibilidadPresupuestal: this.disponibilidadPresupuestal,
+      
       valeBuenoPor: this.valeBuenoPor,
       valeRecibiCantidad: this.valeRecibiCantidad,
       valeCantidadLetra: this.valeCantidadLetra,
