@@ -160,42 +160,77 @@ export class ConfiguracionComponent implements OnInit {
       alert('Por favor llena todos los campos obligatorios.');
       return;
     }
+     // Mostrar datos en consola antes de enviar
+    console.log('Datos que se enviarán al backend:', this.nuevoUsuario)
+
     const nuevo: Usuario = {
       ...this.nuevoUsuario,
       idUsuario: this.usuarios.length ? Math.max(...this.usuarios.map(u => u.id ?? 0)) + 1 : 1,
       passwordUsuario: this.nuevoUsuario.matriculaUsuario
     };
+
+    this.usuarioService.addUsuario(this.nuevoUsuario).subscribe({
+      next: (response) => {
+        console.log('Usuario agregado exitosamente:', response);
+        alert('Usuario agregado exitosamente');
+        this.getUsuarios(); // Refrescar la lista de usuarios
+        this.mostrarFormularioUsuario = false;
+        this.nuevoUsuario = this.getNuevoUsuarioVacio();
+      },
+      error: (error) => {
+        console.error('Error al agregar usuario:', error);
+        alert('Error al agregar usuario. Por favor, intenta de nuevo.');
+      }
+    })
     this.usuarios.push(nuevo);
-    this.mostrarFormularioUsuario = false;
-    this.nuevoUsuario = this.getNuevoUsuarioVacio();
   }
 
   editarUsuario(usuario: Usuario) {
     this.editarUsuarioActivo = true;
     this.mostrarFormularioUsuario = false;
     this.usuarioSeleccionado = { ...usuario };
+    console.log('Usuario seleccionado para editar:', this.usuarioSeleccionado);
   }
 
-  guardarCambiosUsuario() {
-    if (!this.usuarioSeleccionado) return;
-    const index = this.usuarios.findIndex(u => u.id === this.usuarioSeleccionado!.idUsuario);
-    if (index !== -1) {
-      this.usuarios[index] = { ...this.usuarioSeleccionado };
-      this.editarUsuarioActivo = false;
-      this.usuarioSeleccionado = null;
-    }
-  }
-
-  // toggleEstatusUsuario() {
-  //   if (this.usuarioSeleccionado) {
-  //     this.usuarioSeleccionado.statusUsuario = this.usuarioSeleccionado.statusUsuario === 'alta' ? 'baja' : 'alta';
+  // guardarCambiosUsuario() {
+  //   if (!this.usuarioSeleccionado) return;
+  //   const index = this.usuarios.findIndex(u => u.id === this.usuarioSeleccionado!.idUsuario);
+  //   if (index !== -1) {
+  //     this.usuarios[index] = { ...this.usuarioSeleccionado };
+  //     this.editarUsuarioActivo = false;
+  //     this.usuarioSeleccionado = null;
   //   }
   // }
 
 
+
+  guardarCambiosUsuario() {
+  if (!this.usuarioSeleccionado || !this.usuarioSeleccionado.idUsuario) {
+    alert('No hay usuario seleccionado para editar.');
+    return;
+  }
+
+  console.log('Datos que se enviarán para actualizar:', this.usuarioSeleccionado);
+
+  this.usuarioService.updateUsuario(this.usuarioSeleccionado.idUsuario, this.usuarioSeleccionado).subscribe({
+    next: (response) => {
+      console.log('Usuario actualizado con éxito:', response);
+      alert('Usuario actualizado correctamente');
+      this.getUsuarios(); // Recargar la lista desde la API
+      this.editarUsuarioActivo = false;
+      this.usuarioSeleccionado = null; // Limpiar selección
+    },
+    error: (error) => {
+      console.error('Error al actualizar usuario:', error);
+      alert('Error al actualizar el usuario');
+    }
+  });
+}
+
+
   getStatusTexto(status: number): string {
   switch (status) {
-    case 1:
+    case 5:
       return 'Alta';
     case 0:
       return 'Baja';

@@ -22,10 +22,10 @@ export class UsuarioService {
     return this.http.post<any>(this.apiUrl, usuario, { headers });
   }
 
-  // ✅ Eliminar usuario (si lo necesitas)
-  deleteUsuario(id: number): Observable<any> {
-    return this.http.delete<any>(`${this.apiUrl}/${id}`);
-  }
+//   // ✅ Eliminar usuario (si lo necesitas)
+//   deleteUsuario(id: number): Observable<any> {
+//     return this.http.delete<any>(`${this.apiUrl}/${id}`);
+//   }
 
   // ✅ Actualizar usuario (si lo necesitas)
   updateUsuario(id: number, usuario: any): Observable<any> {
