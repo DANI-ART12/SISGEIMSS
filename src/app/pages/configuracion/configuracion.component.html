@@ -38,7 +38,7 @@
         <input
           type="text"
           placeholder="Nombre"
-          [(ngModel)]="nuevoUsuario.nombre"
+          [(ngModel)]="nuevoUsuario.nombreUsuario"
           name="nombre"
           required
           class="block mb-2 p-2 border rounded w-full"
@@ -46,7 +46,7 @@
         <input
           type="text"
           placeholder="Matrícula"
-          [(ngModel)]="nuevoUsuario.matricula"
+          [(ngModel)]="nuevoUsuario.matriculaUsuario"
           name="matricula"
           required
           class="block mb-2 p-2 border rounded w-full"
@@ -54,35 +54,35 @@
         <input
           type="text"
           placeholder="CURP"
-          [(ngModel)]="nuevoUsuario.curp"
+          [(ngModel)]="nuevoUsuario.curpUsuario"
           name="curp"
           class="block mb-2 p-2 border rounded w-full"
         />
         <input
           type="text"
           placeholder="RFC"
-          [(ngModel)]="nuevoUsuario.rfc"
+          [(ngModel)]="nuevoUsuario.rfcUsuario"
           name="rfc"
           class="block mb-2 p-2 border rounded w-full"
         />
         <input
           type="text"
           placeholder="Categoría"
-          [(ngModel)]="nuevoUsuario.categoria"
+          [(ngModel)]="nuevoUsuario.categoriaUsuario"
           name="categoria"
           class="block mb-2 p-2 border rounded w-full"
         />
         <input
           type="password"
           placeholder="Password"
-          [(ngModel)]="nuevoUsuario.password"
+          [(ngModel)]="nuevoUsuario.passwordUsuario"
           name="password"
           class="block mb-2 p-2 border rounded w-full"
         />
 
         <label class="block mb-2 font-semibold">Asignación</label>
         <select
-          [(ngModel)]="nuevoUsuario.asignacion"
+          [(ngModel)]="nuevoUsuario.fkIdTipoUsuario"
           name="asignacion"
           class="block mb-2 p-2 border rounded w-full"
           required
@@ -95,7 +95,7 @@
 
         <label class="block mb-2 font-semibold">Estatus</label>
         <select
-          [(ngModel)]="nuevoUsuario.estatus"
+          [(ngModel)]="nuevoUsuario.statusUsuario"
           name="estatus"
           class="block mb-4 p-2 border rounded w-full"
           required
@@ -127,7 +127,7 @@
         <input
           type="text"
           placeholder="Nombre"
-          [(ngModel)]="usuarioSeleccionado!.nombre"
+          [(ngModel)]="usuarioSeleccionado!.nombreUsuario"
           name="editNombre"
           required
           class="block mb-2 p-2 border rounded w-full"
@@ -135,7 +135,7 @@
         <input
           type="text"
           placeholder="Matrícula"
-          [(ngModel)]="usuarioSeleccionado!.matricula"
+          [(ngModel)]="usuarioSeleccionado!.matriculaUsuario"
           name="editMatricula"
           required
           class="block mb-2 p-2 border rounded w-full"
@@ -143,35 +143,35 @@
         <input
           type="text"
           placeholder="CURP"
-          [(ngModel)]="usuarioSeleccionado!.curp"
+          [(ngModel)]="usuarioSeleccionado!.curpUsuario"
           name="editCurp"
           class="block mb-2 p-2 border rounded w-full"
         />
         <input
           type="text"
           placeholder="RFC"
-          [(ngModel)]="usuarioSeleccionado!.rfc"
+          [(ngModel)]="usuarioSeleccionado!.rfcUsuario"
           name="editRfc"
           class="block mb-2 p-2 border rounded w-full"
         />
         <input
           type="text"
           placeholder="Categoría"
-          [(ngModel)]="usuarioSeleccionado!.categoria"
+          [(ngModel)]="usuarioSeleccionado!.categoriaUsuario"
           name="editCategoria"
           class="block mb-2 p-2 border rounded w-full"
         />
         <input
           type="password"
           placeholder="Password"
-          [(ngModel)]="usuarioSeleccionado!.password"
+          [(ngModel)]="usuarioSeleccionado!.passwordUsuario"
           name="editPassword"
           class="block mb-2 p-2 border rounded w-full"
         />
 
         <label class="block mb-2 font-semibold">Asignación</label>
         <select
-          [(ngModel)]="usuarioSeleccionado!.asignacion"
+          [(ngModel)]="usuarioSeleccionado!.fkIdTipoUsuario"
           name="editAsignacion"
           class="block mb-2 p-2 border rounded w-full"
           required
@@ -184,7 +184,7 @@
 
         <label class="block mb-2 font-semibold">Estatus</label>
         <select
-          [(ngModel)]="usuarioSeleccionado!.estatus"
+          [(ngModel)]="usuarioSeleccionado!.statusUsuario"
           name="editEstatus"
           class="block mb-4 p-2 border rounded w-full"
           required
@@ -204,10 +204,10 @@
           </button>
           <button
             type="button"
-            (click)="toggleEstatusUsuario()"
+           
             class="ml-4 bg-red-600 text-white px-4 py-2 rounded"
           >
-            Cambiar estatus ({{ usuarioSeleccionado?.estatus }})
+            Cambiar estatus ({{ usuarioSeleccionado?.statusUsuario }})
           </button>
         </div>
       </form>
@@ -226,23 +226,24 @@
         </thead>
         <tbody>
           <tr *ngFor="let usuario of usuarios">
-            <td class="border border-gray-300 p-2">{{ usuario.nombre }}</td>
-            <td class="border border-gray-300 p-2">{{ usuario.matricula }}</td>
-            <td class="border border-gray-300 p-2">{{ usuario.categoria }}</td>
+            <td class="border border-gray-300 p-2">{{ usuario.nombreUsuario }} {{usuario.apellidoPUsuario}} {{usuario.apellidoMUsuario}}</td>
+            <td class="border border-gray-300 p-2">{{ usuario.matriculaUsuario }}</td>
+            <td class="border border-gray-300 p-2">{{ usuario.categoriaUsuario }}</td>
             <td class="border border-gray-300 p-2">
               {{
-                usuario.asignacion === '14000'
-                  ? 'Administrador'
-                  : usuario.asignacion === '9000'
-                  ? 'Subadministrador'
-                  : usuario.asignacion === '4000'
-                  ? 'Operador'
-                  : usuario.asignacion === '5000'
-                  ? 'Administrativo'
-                  : 'Desconocido'
+                tipoUsuarioMap[usuario.fkIdTipoUsuario] 
+                // usuario.asignacion === '14000'
+                //   ? 'Administrador'
+                //   : usuario.asignacion === '9000'
+                //   ? 'Subadministrador'
+                //   : usuario.asignacion === '4000'
+                //   ? 'Operador'
+                //   : usuario.asignacion === '5000'
+                //   ? 'Administrativo'
+                //   : 'Desconocido'
               }}
             </td>
-            <td class="border border-gray-300 p-2 capitalize">{{ usuario.estatus }}</td>
+            <td class="border border-gray-300 p-2 capitalize">{{ getStatusTexto( usuario.statusUsuario) }}</td>
             <td class="border border-gray-300 p-2">
               <button (click)="editarUsuario(usuario)" class="bg-yellow-400 px-2 py-1 rounded mr-2">Editar</button>
             </td>

@@ -1,19 +1,22 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
+import { FormBuilder, FormGroup, FormsModule, Validators } from '@angular/forms';
+import { UsuarioService } from '../../service/usuarios.service';
 
 type Seccion = 'usuarios' | 'vehiculos';
 
 interface Usuario {
-  id?: number;
-  nombre: string;
-  matricula: string;
-  curp: string;
-  rfc: string;
-  categoria: string;
-  asignacion: string;
-  estatus: 'alta' | 'baja';
-  password: string;
+  idUsuario?: number;
+  nombreUsuario: string;
+  apellidoPUsuario: string;
+  apellidoMUsuario: string;
+  matriculaUsuario: string;
+  curpUsuario: string;
+  rfcUsuario: string;
+  categoriaUsuario: string;
+  passwordUsuario: string;
+  fkIdTipoUsuario: number;
+  statusUsuario: number;
 }
 
 interface Vehiculo {
@@ -37,8 +40,31 @@ interface Vehiculo {
   templateUrl: './configuracion.component.html',
   styleUrls: ['./configuracion.component.css']
 })
-export class ConfiguracionComponent {
+export class ConfiguracionComponent implements OnInit {
   seccionActiva: Seccion = 'usuarios';
+
+  usuarios: any[] = [];
+  usuarioForm: FormGroup;
+
+  isEditing = false;
+  selectedUserId: number | null = null;
+
+  constructor(private usuarioService: UsuarioService, private fb: FormBuilder) {
+    // ✅ Inicializamos el formulario reactivo
+    this.usuarioForm = this.fb.group({
+      nombreUsuario: ['', Validators.required],
+      apellidoPUsuario: ['', Validators.required],
+      apellidoMUsuario: ['', Validators.required],
+      matriculaUsuario: ['', Validators.required],
+      curpUsuario: ['', Validators.required],
+      rfcUsuario: ['', Validators.required],
+      categoriaUsuario: ['', Validators.required],
+      fkIdTipoUsuario: [1, Validators.required], // valor por defecto
+      statusUsuario: [1, Validators.required],   // activo por defecto
+      passwordUsuario: ['', Validators.required]
+    });
+  }
+
 
   // --- Usuarios ---
   mostrarFormularioUsuario = false;
@@ -47,35 +73,53 @@ export class ConfiguracionComponent {
 
   nuevoUsuario: Usuario = this.getNuevoUsuarioVacio();
 
-  usuarios: Usuario[] = [
-    {
-      id: 1,
-      nombre: 'Juan Pérez',
-      matricula: '12345',
-      curp: '',
-      rfc: '',
-      categoria: 'Médico',
-      asignacion: '14000',
-      estatus: 'alta',
-      password: ''
-    },
-    {
-      id: 2,
-      nombre: 'Ana Gómez',
-      matricula: '67890',
-      curp: '',
-      rfc: '',
-      categoria: 'Enfermera',
-      asignacion: '9000',
-      estatus: 'alta',
-      password: ''
-    }
-  ];
+  // usuarios: Usuario[] = [
+  //   {
+  //     id: 1,
+  //     nombre: 'Juan Pérez',
+  //     matricula: '12345',
+  //     curp: '',
+  //     rfc: '',
+  //     categoria: 'Médico',
+  //     asignacion: '14000',
+  //     estatus: 'alta',
+  //     password: ''
+  //   },
+  //   {
+  //     id: 2,
+  //     nombre: 'Ana Gómez',
+  //     matricula: '67890',
+  //     curp: '',
+  //     rfc: '',
+  //     categoria: 'Enfermera',
+  //     asignacion: '9000',
+  //     estatus: 'alta',
+  //     password: ''
+  //   }
+  // ];
 
   // --- Vehículos ---
   mostrarFormularioVehiculo = false;
   editarVehiculoActivo = false;
   vehiculoSeleccionado: Vehiculo | null = null;
+
+   ngOnInit(): void {
+    this.getUsuarios();
+  }
+
+  getUsuarios(): void {
+    this.usuarioService.getUsuarios().subscribe({
+      next: (response) => {
+        console.log('Datos recibidos:', response);
+        if (response && response.data) {
+          this.usuarios = response.data; // porque la respuesta trae { statusCode, data }
+        }
+      },
+      error: (error) => {
+        console.error('Error al obtener usuarios:', error);
+      }
+    });
+  }
 
   nuevoVehiculo: Vehiculo = this.getNuevoVehiculoVacio();
 
@@ -115,14 +159,16 @@ export class ConfiguracionComponent {
   // Métodos Usuarios
   getNuevoUsuarioVacio(): Usuario {
     return {
-      nombre: '',
-      matricula: '',
-      curp: '',
-      rfc: '',
-      categoria: '',
-      asignacion: '',
-      estatus: 'alta',
-      password: ''
+      nombreUsuario: '',
+      apellidoPUsuario: '',
+      apellidoMUsuario:'',
+      matriculaUsuario: '',
+      curpUsuario: '',
+      rfcUsuario: '',
+      categoriaUsuario: '',
+      passwordUsuario: '',
+      fkIdTipoUsuario: 1,
+      statusUsuario: 1
     };
   }
 
@@ -134,14 +180,14 @@ export class ConfiguracionComponent {
   }
 
   guardarUsuario() {
-    if (!this.nuevoUsuario.nombre || !this.nuevoUsuario.matricula) {
+    if (!this.nuevoUsuario.nombreUsuario || !this.nuevoUsuario.matriculaUsuario) {
       alert('Por favor llena todos los campos obligatorios.');
       return;
     }
     const nuevo: Usuario = {
       ...this.nuevoUsuario,
-      id: this.usuarios.length ? Math.max(...this.usuarios.map(u => u.id ?? 0)) + 1 : 1,
-      password: this.nuevoUsuario.matricula
+      idUsuario: this.usuarios.length ? Math.max(...this.usuarios.map(u => u.id ?? 0)) + 1 : 1,
+      passwordUsuario: this.nuevoUsuario.matriculaUsuario
     };
     this.usuarios.push(nuevo);
     this.mostrarFormularioUsuario = false;
@@ -156,7 +202,7 @@ export class ConfiguracionComponent {
 
   guardarCambiosUsuario() {
     if (!this.usuarioSeleccionado) return;
-    const index = this.usuarios.findIndex(u => u.id === this.usuarioSeleccionado!.id);
+    const index = this.usuarios.findIndex(u => u.id === this.usuarioSeleccionado!.idUsuario);
     if (index !== -1) {
       this.usuarios[index] = { ...this.usuarioSeleccionado };
       this.editarUsuarioActivo = false;
@@ -164,11 +210,32 @@ export class ConfiguracionComponent {
     }
   }
 
-  toggleEstatusUsuario() {
-    if (this.usuarioSeleccionado) {
-      this.usuarioSeleccionado.estatus = this.usuarioSeleccionado.estatus === 'alta' ? 'baja' : 'alta';
-    }
+  // toggleEstatusUsuario() {
+  //   if (this.usuarioSeleccionado) {
+  //     this.usuarioSeleccionado.statusUsuario = this.usuarioSeleccionado.statusUsuario === 'alta' ? 'baja' : 'alta';
+  //   }
+  // }
+
+
+  getStatusTexto(status: number): string {
+  switch (status) {
+    case 1:
+      return 'Alta';
+    case 0:
+      return 'Baja';
+    default:
+      return 'Desconocido';
   }
+}
+
+
+tipoUsuarioMap: { [key: number]: string } = {
+  1: 'Administrador',
+  2: 'Subadministrador',
+  3: 'Operador',
+  4: 'Administrativo'
+};
+
 
   // Métodos Vehículos
   getNuevoVehiculoVacio(): Vehiculo {
