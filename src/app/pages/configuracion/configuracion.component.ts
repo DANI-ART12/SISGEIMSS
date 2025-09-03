@@ -73,30 +73,6 @@ export class ConfiguracionComponent implements OnInit {
 
   nuevoUsuario: Usuario = this.getNuevoUsuarioVacio();
 
-  // usuarios: Usuario[] = [
-  //   {
-  //     id: 1,
-  //     nombre: 'Juan Pérez',
-  //     matricula: '12345',
-  //     curp: '',
-  //     rfc: '',
-  //     categoria: 'Médico',
-  //     asignacion: '14000',
-  //     estatus: 'alta',
-  //     password: ''
-  //   },
-  //   {
-  //     id: 2,
-  //     nombre: 'Ana Gómez',
-  //     matricula: '67890',
-  //     curp: '',
-  //     rfc: '',
-  //     categoria: 'Enfermera',
-  //     asignacion: '9000',
-  //     estatus: 'alta',
-  //     password: ''
-  //   }
-  // ];
 
   // --- Vehículos ---
   mostrarFormularioVehiculo = false;
