@@ -27,10 +27,16 @@ export class UsuarioService {
 //     return this.http.delete<any>(`${this.apiUrl}/${id}`);
 //   }
 
-  // ✅ Actualizar usuario (si lo necesitas)
-  updateUsuario(id: number, usuario: any): Observable<any> {
-    const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
-    return this.http.put<any>(`${this.apiUrl}/${id}`, usuario, { headers });
-  }
+  //
+  // updateUsuario(id: number, usuario: any): Observable<any> {
+  //   const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
+  //   return this.http.put<any>(`${this.apiUrl}/${id}`, usuario, { headers });
+  // }
+
+   // ✅ Actualizar usuario (si lo necesitas)
+  updateUsuario(id: number, data: any): Observable<any> {
+  return this.http.patch(`http://localhost:5001/api/v1/user/${id}`, data);
+}
+
 
 }
