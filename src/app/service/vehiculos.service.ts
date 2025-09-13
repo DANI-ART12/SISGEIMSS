@@ -5,14 +5,14 @@ import { Observable } from 'rxjs';
 @Injectable({
   providedIn: 'root'
 })
-export class CarService {
+export class VehiculoService {
 
   private apiUrl = 'http://localhost:5001/api/v1/car'; // ✅ Ruta base para car
 
   constructor(private http: HttpClient) {}
 
   // ✅ Obtener todos los carros
-  getCars(): Observable<any> {
+  getVehiculos(): Observable<any> {
     return this.http.get<any>(this.apiUrl);
   }
 

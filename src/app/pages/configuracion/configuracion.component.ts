@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, FormsModule, Validators } from '@angular/forms';
 import { UsuarioService } from '../../service/usuarios.service';
+import { VehiculoService } from '../../service/vehiculos.service';
 
 type Seccion = 'usuarios' | 'vehiculos';
 
@@ -20,11 +21,11 @@ interface Usuario {
 }
 
 interface Vehiculo {
-  id?: number;
-  tipo: string;
-  placas: string;
+  idVehiculo?: number;
+  fkIdTipoVehiculo: number;
+  placa: string;
   modelo: string;
-  actualKilometraje: number;
+  kilometrajeActual: number;
   proximoServicio: string;
   estatus: 'alta' | 'baja' | 'mantenimiento';
   ecco: string;
@@ -43,13 +44,28 @@ interface Vehiculo {
 export class ConfiguracionComponent implements OnInit {
   seccionActiva: Seccion = 'usuarios';
 
+  // --- Usuarios ---
   usuarios: any[] = [];
   usuarioForm: FormGroup;
+  mostrarFormularioUsuario = false;
+  editarUsuarioActivo = false;
+  usuarioSeleccionado: Usuario | null = null;
+  nuevoUsuario: Usuario = this.getNuevoUsuarioVacio();
+
+   // --- Vehículos ---
+  vehiculos: Vehiculo[] = [];
+  mostrarFormularioVehiculo = false;
+  editarVehiculoActivo = false;
+  vehiculoSeleccionado: Vehiculo | null = null;
+  nuevoVehiculo: Vehiculo = this.getNuevoVehiculoVacio();
 
   isEditing = false;
   selectedUserId: number | null = null;
 
-  constructor(private usuarioService: UsuarioService, private fb: FormBuilder) {
+  constructor(private usuarioService: UsuarioService,
+    private vehiculoService: VehiculoService,
+
+    private fb: FormBuilder) {
     // ✅ Inicializamos el formulario reactivo
     this.usuarioForm = this.fb.group({
       nombreUsuario: ['', Validators.required],
@@ -65,22 +81,23 @@ export class ConfiguracionComponent implements OnInit {
     });
   }
 
-
-  // --- Usuarios ---
-  mostrarFormularioUsuario = false;
-  editarUsuarioActivo = false;
-  usuarioSeleccionado: Usuario | null = null;
-
-  nuevoUsuario: Usuario = this.getNuevoUsuarioVacio();
-
-
-  // --- Vehículos ---
-  mostrarFormularioVehiculo = false;
-  editarVehiculoActivo = false;
-  vehiculoSeleccionado: Vehiculo | null = null;
-
    ngOnInit(): void {
     this.getUsuarios();
+    this.getVehiculos();
+  }
+
+    cambiarSeccion(seccion: Seccion) {
+    this.seccionActiva = seccion;
+    this.resetFormularios();
+  }
+
+  resetFormularios(){
+    this.mostrarFormularioUsuario = false;
+    this.editarUsuarioActivo = false;
+    this.mostrarFormularioVehiculo = false;
+    this.editarVehiculoActivo = false;
+    this.usuarioSeleccionado = null;
+    this.vehiculoSeleccionado = null;
   }
 
   getUsuarios(): void {
@@ -95,41 +112,6 @@ export class ConfiguracionComponent implements OnInit {
         console.error('Error al obtener usuarios:', error);
       }
     });
-  }
-
-  nuevoVehiculo: Vehiculo = this.getNuevoVehiculoVacio();
-
-  vehiculos: Vehiculo[] = [
-    {
-      id: 1,
-      tipo: 'Ambulancia',
-      placas: 'ABC-123',
-      modelo: 'Ford',
-      actualKilometraje: 12000,
-      proximoServicio: '14000',
-      estatus: 'alta',
-      ecco: 'ECCO-001'
-    },
-    {
-      id: 2,
-      tipo: 'Camioneta',
-      placas: 'XYZ-789',
-      modelo: 'Chevrolet',
-      actualKilometraje: 8000,
-      proximoServicio: '9000',
-      estatus: 'baja',
-      ecco: 'ECCO-002'
-    }
-  ];
-
-  cambiarSeccion(seccion: Seccion) {
-    this.seccionActiva = seccion;
-    this.mostrarFormularioUsuario = false;
-    this.editarUsuarioActivo = false;
-    this.mostrarFormularioVehiculo = false;
-    this.editarVehiculoActivo = false;
-    this.usuarioSeleccionado = null;
-    this.vehiculoSeleccionado = null;
   }
 
   // Métodos Usuarios
@@ -192,18 +174,6 @@ export class ConfiguracionComponent implements OnInit {
     console.log('Usuario seleccionado para editar:', this.usuarioSeleccionado);
   }
 
-  // guardarCambiosUsuario() {
-  //   if (!this.usuarioSeleccionado) return;
-  //   const index = this.usuarios.findIndex(u => u.id === this.usuarioSeleccionado!.idUsuario);
-  //   if (index !== -1) {
-  //     this.usuarios[index] = { ...this.usuarioSeleccionado };
-  //     this.editarUsuarioActivo = false;
-  //     this.usuarioSeleccionado = null;
-  //   }
-  // }
-
-
-
   guardarCambiosUsuario() {
   if (!this.usuarioSeleccionado || !this.usuarioSeleccionado.idUsuario) {
     alert('No hay usuario seleccionado para editar.');
@@ -228,9 +198,9 @@ export class ConfiguracionComponent implements OnInit {
 }
 
 
-  getStatusTexto(status: number): string {
-  switch (status) {
-    case 5:
+  getStatusTexto(statusUsuario: number): string {
+  switch (statusUsuario) {
+    case 1:
       return 'Alta';
     case 0:
       return 'Baja';
@@ -241,20 +211,30 @@ export class ConfiguracionComponent implements OnInit {
 
 
 tipoUsuarioMap: { [key: number]: string } = {
-  1: 'Administrador',
+  5: 'Administrador',
   2: 'Subadministrador',
   3: 'Operador',
   4: 'Administrativo'
 };
 
+getVehiculos(): void {
+    this.vehiculoService.getVehiculos().subscribe({
+      next: (response) => {
+        this.vehiculos = response?.data || [];
+      },
+      error: (error) => {
+        console.error('Error al obtener vehículos:', error);
+      }
+    });
+  }
 
   // Métodos Vehículos
   getNuevoVehiculoVacio(): Vehiculo {
     return {
-      tipo: '',
-      placas: '',
+      fkIdTipoVehiculo: 0,
+      placa: '',
       modelo: '',
-      actualKilometraje: 0,
+      kilometrajeActual: 0,
       proximoServicio: '',
       estatus: 'alta',
       ecco: ''
@@ -269,13 +249,13 @@ tipoUsuarioMap: { [key: number]: string } = {
   }
 
   guardarVehiculo() {
-    if (!this.nuevoVehiculo.tipo || !this.nuevoVehiculo.placas || !this.nuevoVehiculo.modelo) {
+    if (!this.nuevoVehiculo.fkIdTipoVehiculo || !this.nuevoVehiculo.placa || !this.nuevoVehiculo.modelo) {
       alert('Por favor, rellena todos los campos obligatorios del vehículo.');
       return;
     }
     const nuevo: Vehiculo = {
       ...this.nuevoVehiculo,
-      id: this.vehiculos.length ? Math.max(...this.vehiculos.map(v => v.id ?? 0)) + 1 : 1
+      idVehiculo : this.vehiculos.length ? Math.max(...this.vehiculos.map(v => v.idVehiculo ?? 0)) + 1 : 1
     };
     this.vehiculos.push(nuevo);
     this.mostrarFormularioVehiculo = false;
@@ -290,7 +270,7 @@ tipoUsuarioMap: { [key: number]: string } = {
 
   guardarCambiosVehiculo() {
     if (!this.vehiculoSeleccionado) return;
-    const index = this.vehiculos.findIndex(v => v.id === this.vehiculoSeleccionado!.id);
+    const index = this.vehiculos.findIndex(v => v.idVehiculo === this.vehiculoSeleccionado!.idVehiculo);
     if (index !== -1) {
       this.vehiculos[index] = { ...this.vehiculoSeleccionado };
       this.editarVehiculoActivo = false;

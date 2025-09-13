@@ -60,7 +60,7 @@
           class="block mb-4 p-2 border rounded w-full"
           required
         >
-          <option value="5">Alta</option>
+          <option value="1">Alta</option>
           <option value="0">Baja</option>
         </select>
 
@@ -94,7 +94,7 @@
 
         <label class="block mb-2 font-semibold">Asignación</label>
         <select  [(ngModel)]="usuarioSeleccionado!.fkIdTipoUsuario"  name="editAsignacion" class="block mb-2 p-2 border rounded w-full" required  >
-          <option value="1">Administrador</option>
+          <option value="5">Administrador</option>
           <option value="2">Subadministrador</option>
           <option value="3">Operador</option>
           <option value="4">Administrativo</option>
@@ -103,7 +103,7 @@
         <label class="block mb-2 font-semibold">Estatus</label>
         <select [(ngModel)]="usuarioSeleccionado!.statusUsuario" name="editEstatus" class="block mb-4 p-2 border rounded w-full" required >
           <option value="1">Alta</option>
-          <option value="2">Baja</option>
+          <option value="0">Baja</option>
         </select>
 
         <div class="flex gap-2 items-center">
@@ -114,13 +114,6 @@
             class="bg-gray-400 px-4 py-2 rounded"
           >
             Cancelar
-          </button>
-          <button
-            type="button"
-           
-            class="ml-4 bg-red-600 text-white px-4 py-2 rounded"
-          >
-            Cambiar estatus ({{ usuarioSeleccionado?.statusUsuario }})
           </button>
         </div>
       </form>
@@ -169,7 +162,7 @@
         <input
           type="text"
           placeholder="Tipo"
-          [(ngModel)]="nuevoVehiculo.tipo"
+          [(ngModel)]="nuevoVehiculo.fkIdTipoVehiculo"
           name="tipo"
           required
           class="block mb-2 p-2 border rounded w-full"
@@ -177,7 +170,7 @@
         <input
           type="text"
           placeholder="Placas"
-          [(ngModel)]="nuevoVehiculo.placas"
+          [(ngModel)]="nuevoVehiculo.placa"
           name="placas"
           required
           class="block mb-2 p-2 border rounded w-full"
@@ -193,7 +186,7 @@
         <input
           type="number"
           placeholder="Kilometraje Actual"
-          [(ngModel)]="nuevoVehiculo.actualKilometraje"
+          [(ngModel)]="nuevoVehiculo.kilometrajeActual"
           name="actualKilometraje"
           required
           class="block mb-2 p-2 border rounded w-full"
@@ -249,7 +242,7 @@
         <input
           type="text"
           placeholder="Tipo"
-          [(ngModel)]="vehiculoSeleccionado!.tipo"
+          [(ngModel)]="vehiculoSeleccionado!.fkIdTipoVehiculo"
           name="editTipo"
           required
           class="block mb-2 p-2 border rounded w-full"
@@ -257,7 +250,7 @@
         <input
           type="text"
           placeholder="Placas"
-          [(ngModel)]="vehiculoSeleccionado!.placas"
+          [(ngModel)]="vehiculoSeleccionado!.placa"
           name="editPlacas"
           required
           class="block mb-2 p-2 border rounded w-full"
@@ -273,7 +266,7 @@
         <input
           type="number"
           placeholder="Kilometraje Actual"
-          [(ngModel)]="vehiculoSeleccionado!.actualKilometraje"
+          [(ngModel)]="vehiculoSeleccionado!.kilometrajeActual"
           name="editActualKilometraje"
           required
           class="block mb-2 p-2 border rounded w-full"
@@ -334,10 +327,10 @@
         </thead>
         <tbody>
           <tr *ngFor="let vehiculo of vehiculos">
-            <td class="border border-gray-300 p-2">{{ vehiculo.tipo }}</td>
-            <td class="border border-gray-300 p-2">{{ vehiculo.placas }}</td>
+            <td class="border border-gray-300 p-2">{{ vehiculo.fkIdTipoVehiculo }}</td>
+            <td class="border border-gray-300 p-2">{{ vehiculo.placa }}</td>
             <td class="border border-gray-300 p-2">{{ vehiculo.modelo }}</td>
-            <td class="border border-gray-300 p-2">{{ vehiculo.actualKilometraje }}</td>
+            <td class="border border-gray-300 p-2">{{ vehiculo.kilometrajeActual }}</td>
             <td class="border border-gray-300 p-2">{{ vehiculo.proximoServicio }}</td>
             <td class="border border-gray-300 p-2 capitalize">{{ vehiculo.estatus }}</td>
             <td class="border border-gray-300 p-2">{{ vehiculo.ecco }}</td>
