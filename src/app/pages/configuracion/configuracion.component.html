@@ -194,7 +194,7 @@
         <input
           type="text"
           placeholder="Próximo Servicio"
-          [(ngModel)]="nuevoVehiculo.proximoServicio"
+          [(ngModel)]="nuevoVehiculo.proximoServicioKm"
           name="proximoServicio"
           class="block mb-2 p-2 border rounded w-full"
         />
@@ -274,7 +274,7 @@
         <input
           type="text"
           placeholder="Próximo Servicio"
-          [(ngModel)]="vehiculoSeleccionado!.proximoServicio"
+          [(ngModel)]="vehiculoSeleccionado!.proximoServicioKm"
           name="editProximoServicio"
           class="block mb-2 p-2 border rounded w-full"
         />
@@ -331,7 +331,7 @@
             <td class="border border-gray-300 p-2">{{ vehiculo.placa }}</td>
             <td class="border border-gray-300 p-2">{{ vehiculo.modelo }}</td>
             <td class="border border-gray-300 p-2">{{ vehiculo.kilometrajeActual }}</td>
-            <td class="border border-gray-300 p-2">{{ vehiculo.proximoServicio }}</td>
+            <td class="border border-gray-300 p-2">{{tipoVehiculoMap[vehiculo.fkIdTipoVehiculo] }}</td>
             <td class="border border-gray-300 p-2 capitalize">{{ vehiculo.estatus }}</td>
             <td class="border border-gray-300 p-2">{{ vehiculo.ecco }}</td>
             <td class="border border-gray-300 p-2">

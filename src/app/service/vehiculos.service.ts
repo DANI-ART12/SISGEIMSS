@@ -17,9 +17,10 @@ export class VehiculoService {
   }
 
   // ✅ Agregar un nuevo carro
-  addCar(car: any): Observable<any> {
+  addVehiculo(car: any): Observable<any> {
     const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
     return this.http.post<any>(this.apiUrl, car, { headers });
+    //  return this.http.post<any>(this.apiUrl, data);
   }
 
   // ✅ Eliminar un carro por ID
