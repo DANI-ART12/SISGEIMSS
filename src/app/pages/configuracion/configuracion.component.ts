@@ -1,30 +1,41 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
+import { FormBuilder, FormGroup, FormsModule, Validators } from '@angular/forms';
+import { UsuarioService } from '../../service/usuarios.service';
+import { VehiculoService } from '../../service/vehiculos.service';
+import { TipoVehiculoService } from '../../service/tipo_vehiculo.service';
 
 type Seccion = 'usuarios' | 'vehiculos';
 
 interface Usuario {
-  id?: number;
-  nombre: string;
-  matricula: string;
-  curp: string;
-  rfc: string;
-  categoria: string;
-  asignacion: string;
-  estatus: 'alta' | 'baja';
-  password: string;
+  idUsuario?: number;
+  nombreUsuario: string;
+  apellidoPUsuario: string;
+  apellidoMUsuario: string;
+  matriculaUsuario: string;
+  curpUsuario: string;
+  rfcUsuario: string;
+  categoriaUsuario: string;
+  passwordUsuario: string;
+  fkIdTipoUsuario: number;
+  statusUsuario: number;
 }
 
 interface Vehiculo {
-  id?: number;
-  tipo: string;
-  placas: string;
+  idVehiculo?: number;
+  fkIdTipoVehiculo: number;
+  placa: string;
+  marca: string;
   modelo: string;
-  actualKilometraje: number;
-  proximoServicio: string;
+  kilometrajeActual: number;
+  proximoServicioKm: string;
   estatus: 'alta' | 'baja' | 'mantenimiento';
   ecco: string;
+}
+
+interface TipoVehiculo {
+  idTipoVehiculo: number;
+  nombreTipo: string;
 }
 
 @Component({
@@ -37,73 +48,61 @@ interface Vehiculo {
   templateUrl: './configuracion.component.html',
   styleUrls: ['./configuracion.component.css']
 })
-export class ConfiguracionComponent {
+export class ConfiguracionComponent implements OnInit {
   seccionActiva: Seccion = 'usuarios';
 
+  tiposVehiculos: TipoVehiculo[] = []; // aquí guardaremos los tipos
+
   // --- Usuarios ---
+  usuarios: any[] = [];
+  usuarioForm: FormGroup;
   mostrarFormularioUsuario = false;
   editarUsuarioActivo = false;
   usuarioSeleccionado: Usuario | null = null;
-
   nuevoUsuario: Usuario = this.getNuevoUsuarioVacio();
 
-  usuarios: Usuario[] = [
-    {
-      id: 1,
-      nombre: 'Juan Pérez',
-      matricula: '12345',
-      curp: '',
-      rfc: '',
-      categoria: 'Médico',
-      asignacion: '14000',
-      estatus: 'alta',
-      password: ''
-    },
-    {
-      id: 2,
-      nombre: 'Ana Gómez',
-      matricula: '67890',
-      curp: '',
-      rfc: '',
-      categoria: 'Enfermera',
-      asignacion: '9000',
-      estatus: 'alta',
-      password: ''
-    }
-  ];
-
-  // --- Vehículos ---
+   // --- Vehículos ---
+  vehiculos: Vehiculo[] = [];
   mostrarFormularioVehiculo = false;
   editarVehiculoActivo = false;
   vehiculoSeleccionado: Vehiculo | null = null;
-
   nuevoVehiculo: Vehiculo = this.getNuevoVehiculoVacio();
 
-  vehiculos: Vehiculo[] = [
-    {
-      id: 1,
-      tipo: 'Ambulancia',
-      placas: 'ABC-123',
-      modelo: 'Ford',
-      actualKilometraje: 12000,
-      proximoServicio: '14000',
-      estatus: 'alta',
-      ecco: 'ECCO-001'
-    },
-    {
-      id: 2,
-      tipo: 'Camioneta',
-      placas: 'XYZ-789',
-      modelo: 'Chevrolet',
-      actualKilometraje: 8000,
-      proximoServicio: '9000',
-      estatus: 'baja',
-      ecco: 'ECCO-002'
-    }
-  ];
+  isEditing = false;
+  selectedUserId: number | null = null;
 
-  cambiarSeccion(seccion: Seccion) {
+  constructor(private usuarioService: UsuarioService,
+    private vehiculoService: VehiculoService,
+     private tipoVehiculoService: TipoVehiculoService,
+
+    private fb: FormBuilder) {
+    // ✅ Inicializamos el formulario reactivo
+    this.usuarioForm = this.fb.group({
+      nombreUsuario: ['', Validators.required],
+      apellidoPUsuario: ['', Validators.required],
+      apellidoMUsuario: ['', Validators.required],
+      matriculaUsuario: ['', Validators.required],
+      curpUsuario: ['', Validators.required],
+      rfcUsuario: ['', Validators.required],
+      categoriaUsuario: ['', Validators.required],
+      fkIdTipoUsuario: [1, Validators.required], // valor por defecto
+      statusUsuario: [1, Validators.required],   // activo por defecto
+      passwordUsuario: ['', Validators.required]
+    });
+  }
+
+   ngOnInit(): void {
+    this.getUsuarios();
+    this.getVehiculos();
+    this.getTiposVehiculos(); // 🚀 cargamos los tipos al iniciar
+  }
+
+    cambiarSeccion(seccion: Seccion) {
     this.seccionActiva = seccion;
+    this.resetFormularios();
+  }
+
+  resetFormularios(){
     this.mostrarFormularioUsuario = false;
     this.editarUsuarioActivo = false;
     this.mostrarFormularioVehiculo = false;
@@ -112,17 +111,34 @@ export class ConfiguracionComponent {
     this.vehiculoSeleccionado = null;
   }
 
+  // --- Métodos Usuarios ---
+  getUsuarios(): void {
+    this.usuarioService.getUsuarios().subscribe({
+      next: (response) => {
+        console.log('Datos recibidos:', response);
+        if (response && response.data) {
+          this.usuarios = response.data; // porque la respuesta trae { statusCode, data }
+        }
+      },
+      error: (error) => {
+        console.error('Error al obtener usuarios:', error);
+      }
+    });
+  }
+
   // Métodos Usuarios
   getNuevoUsuarioVacio(): Usuario {
     return {
-      nombre: '',
-      matricula: '',
-      curp: '',
-      rfc: '',
-      categoria: '',
-      asignacion: '',
-      estatus: 'alta',
-      password: ''
+      nombreUsuario: '',
+      apellidoPUsuario: '',
+      apellidoMUsuario:'',
+      matriculaUsuario: '',
+      curpUsuario: '',
+      rfcUsuario: '',
+      categoriaUsuario: '',
+      passwordUsuario: '',
+      fkIdTipoUsuario: 1,
+      statusUsuario: 1
     };
   }
 
@@ -134,50 +150,110 @@ export class ConfiguracionComponent {
   }
 
   guardarUsuario() {
-    if (!this.nuevoUsuario.nombre || !this.nuevoUsuario.matricula) {
+    if (!this.nuevoUsuario.nombreUsuario || !this.nuevoUsuario.matriculaUsuario) {
       alert('Por favor llena todos los campos obligatorios.');
       return;
     }
+     // Mostrar datos en consola antes de enviar
+    console.log('Datos que se enviarán al backend:', this.nuevoUsuario)
+
     const nuevo: Usuario = {
       ...this.nuevoUsuario,
-      id: this.usuarios.length ? Math.max(...this.usuarios.map(u => u.id ?? 0)) + 1 : 1,
-      password: this.nuevoUsuario.matricula
+      idUsuario: this.usuarios.length ? Math.max(...this.usuarios.map(u => u.id ?? 0)) + 1 : 1,
+      passwordUsuario: this.nuevoUsuario.matriculaUsuario
     };
+
+    
+
+    this.usuarioService.addUsuario(this.nuevoUsuario).subscribe({
+      next: (response) => {
+        console.log('Usuario agregado exitosamente:', response);
+        alert('Usuario agregado exitosamente');
+        this.getUsuarios(); // Refrescar la lista de usuarios
+        this.mostrarFormularioUsuario = false;
+        this.nuevoUsuario = this.getNuevoUsuarioVacio();
+      },
+      error: (error) => {
+        console.error('Error al agregar usuario:', error);
+        alert('Error al agregar usuario. Por favor, intenta de nuevo.');
+      }
+    })
     this.usuarios.push(nuevo);
-    this.mostrarFormularioUsuario = false;
-    this.nuevoUsuario = this.getNuevoUsuarioVacio();
   }
 
   editarUsuario(usuario: Usuario) {
     this.editarUsuarioActivo = true;
     this.mostrarFormularioUsuario = false;
     this.usuarioSeleccionado = { ...usuario };
+    console.log('Usuario seleccionado para editar:', this.usuarioSeleccionado);
   }
 
   guardarCambiosUsuario() {
-    if (!this.usuarioSeleccionado) return;
-    const index = this.usuarios.findIndex(u => u.id === this.usuarioSeleccionado!.id);
-    if (index !== -1) {
-      this.usuarios[index] = { ...this.usuarioSeleccionado };
-      this.editarUsuarioActivo = false;
-      this.usuarioSeleccionado = null;
-    }
+  if (!this.usuarioSeleccionado || !this.usuarioSeleccionado.idUsuario) {
+    alert('No hay usuario seleccionado para editar.');
+    return;
   }
 
-  toggleEstatusUsuario() {
-    if (this.usuarioSeleccionado) {
-      this.usuarioSeleccionado.estatus = this.usuarioSeleccionado.estatus === 'alta' ? 'baja' : 'alta';
+  console.log('Datos que se enviarán para actualizar:', this.usuarioSeleccionado);
+
+  this.usuarioService.updateUsuario(this.usuarioSeleccionado.idUsuario, this.usuarioSeleccionado).subscribe({
+    next: (response) => {
+      console.log('Usuario actualizado con éxito:', response);
+      alert('Usuario actualizado correctamente');
+      this.getUsuarios(); // Recargar la lista desde la API
+      this.editarUsuarioActivo = false;
+      this.usuarioSeleccionado = null; // Limpiar selección
+    },
+    error: (error) => {
+      console.error('Error al actualizar usuario:', error);
+      alert('Error al actualizar el usuario');
     }
+  });
+}
+
+
+  getStatusTexto(statusUsuario: number): string {
+  switch (statusUsuario) {
+    case 1:
+      return 'Alta';
+    case 0:
+      return 'Baja';
+    default:
+      return 'Desconocido';
+  }
+}
+
+
+tipoUsuarioMap: { [key: number]: string } = {
+  5: 'Administrador',
+  2: 'Subadministrador',
+  3: 'Operador',
+  4: 'Administrativo'
+};
+
+
+ // --- Métodos Vehículos ---
+getVehiculos(): void {
+    this.vehiculoService.getVehiculos().subscribe({
+      next: (response) => {
+        console.log('Datos recibidos:', response);
+        this.vehiculos = response?.data || [];
+      },
+      error: (error) => {
+        console.error('Error al obtener vehículos:', error);
+      }
+    });
   }
 
   // Métodos Vehículos
   getNuevoVehiculoVacio(): Vehiculo {
     return {
-      tipo: '',
-      placas: '',
+      fkIdTipoVehiculo: 0,
+      placa: '',
       modelo: '',
-      actualKilometraje: 0,
-      proximoServicio: '',
+      marca: '',
+      kilometrajeActual: 0,
+      proximoServicioKm: '',
       estatus: 'alta',
       ecco: ''
     };
@@ -190,39 +266,152 @@ export class ConfiguracionComponent {
     this.vehiculoSeleccionado = null;
   }
 
-  guardarVehiculo() {
-    if (!this.nuevoVehiculo.tipo || !this.nuevoVehiculo.placas || !this.nuevoVehiculo.modelo) {
-      alert('Por favor, rellena todos los campos obligatorios del vehículo.');
-      return;
-    }
-    const nuevo: Vehiculo = {
-      ...this.nuevoVehiculo,
-      id: this.vehiculos.length ? Math.max(...this.vehiculos.map(v => v.id ?? 0)) + 1 : 1
-    };
-    this.vehiculos.push(nuevo);
-    this.mostrarFormularioVehiculo = false;
-    this.nuevoVehiculo = this.getNuevoVehiculoVacio();
+
+
+
+// guardarVehiculo() {
+//   if (!this.nuevoVehiculo.placa || !this.nuevoVehiculo.modelo) {
+//     alert('Rellena todos los campos obligatorios.');
+//     return;
+//   }
+
+//   this.vehiculoService.addVehiculo(this.nuevoVehiculo).subscribe({
+//     next: (response) => {
+//       alert('Vehículo agregado exitosamente');
+//       this.getVehiculos(); // ✅ Recarga la lista desde la BD
+//       this.mostrarFormularioVehiculo = false;
+//       this.nuevoVehiculo = this.getNuevoVehiculoVacio();
+//     },
+//     error: (error) => {
+//       console.error('Error al agregar vehículo:', error);
+//       alert('Error al agregar vehículo');
+//     }
+//   });
+// }
+
+
+
+guardarVehiculo() {
+  if (!this.nuevoVehiculo.placa || !this.nuevoVehiculo.modelo) {
+    alert('Rellena todos los campos obligatorios.');
+    return;
   }
 
+  // 👀 Mostrar en consola los datos que se van a enviar
+  console.log('Datos del vehículo a enviar:', this.nuevoVehiculo);
+
+  this.vehiculoService.addVehiculo(this.nuevoVehiculo).subscribe({
+    next: (response) => {
+      alert('Vehículo agregado exitosamente');
+      this.getVehiculos(); // ✅ Recarga la lista desde la BD
+      this.mostrarFormularioVehiculo = false;
+      this.nuevoVehiculo = this.getNuevoVehiculoVacio();
+    },
+    error: (error) => {
+      console.error('Error al agregar vehículo:', error);
+      alert('Error al agregar vehículo');
+    }
+  });
+}
+
+
+ getTiposVehiculos(): void {
+    this.tipoVehiculoService.getTiposVehiculos().subscribe({
+      next: (response) => {
+        console.log('Tipos de vehículos recibidos:', response);
+        this.tiposVehiculos = response?.data || []; // asumiendo que tu API devuelve {data: [...]}
+      },
+      error: (error) => {
+        console.error('Error al obtener tipos de vehículos:', error);
+      }
+    });
+  }
   editarVehiculo(vehiculo: Vehiculo) {
     this.editarVehiculoActivo = true;
     this.mostrarFormularioVehiculo = false;
     this.vehiculoSeleccionado = { ...vehiculo };
   }
 
-  guardarCambiosVehiculo() {
-    if (!this.vehiculoSeleccionado) return;
-    const index = this.vehiculos.findIndex(v => v.id === this.vehiculoSeleccionado!.id);
-    if (index !== -1) {
-      this.vehiculos[index] = { ...this.vehiculoSeleccionado };
-      this.editarVehiculoActivo = false;
-      this.vehiculoSeleccionado = null;
-    }
+
+
+   guardarCambiosVehiculo() {
+    if (!this.vehiculoSeleccionado?.idVehiculo) return;
+
+    this.vehiculoService.updateCar(this.vehiculoSeleccionado.idVehiculo, this.vehiculoSeleccionado).subscribe({
+      next: () => {
+        alert('Vehículo actualizado correctamente');
+        this.getVehiculos();
+        this.editarVehiculoActivo = false;
+        this.vehiculoSeleccionado = null;
+      },
+      error: (error) => {
+        console.error('Error al actualizar vehículo:', error);
+        alert('Error al actualizar vehículo');
+      }
+    });
   }
+
+
+  tipoVehiculoMap: { [key: number]: string } = {
+  1: 'CAMIENOTA',
+  2: 'Subadministrador',
+  3: 'Operador',
+  4: 'Administrativo'
+};
+
 
   toggleEstatusVehiculo() {
     if (this.vehiculoSeleccionado) {
       this.vehiculoSeleccionado.estatus = this.vehiculoSeleccionado.estatus === 'alta' ? 'baja' : 'alta';
     }
-  }
+  } 
 }
+
+
+
+
+
+  // guardarVehiculo() {
+  //   if (!this.nuevoVehiculo.fkIdTipoVehiculo || !this.nuevoVehiculo.placa || !this.nuevoVehiculo.modelo) {
+  //     alert('Por favor, rellena todos los campos obligatorios del vehículo.');
+  //     return;
+  //   }
+  //   const nuevo: Vehiculo = {
+  //     ...this.nuevoVehiculo,
+  //     idVehiculo : this.vehiculos.length ? Math.max(...this.vehiculos.map(v => v.idVehiculo ?? 0)) + 1 : 1
+  //   };
+  //   this.vehiculos.push(nuevo);
+  //   this.mostrarFormularioVehiculo = false;
+  //   this.nuevoVehiculo = this.getNuevoVehiculoVacio();
+  // }
+
+
+
+
+  
+  // guardarCambiosVehiculo() {
+  //   if (!this.vehiculoSeleccionado) return;
+  //   const index = this.vehiculos.findIndex(v => v.idVehiculo === this.vehiculoSeleccionado!.idVehiculo);
+  //   if (index !== -1) {
+  //     this.vehiculos[index] = { ...this.vehiculoSeleccionado };
+  //     this.editarVehiculoActivo = false;
+  //     this.vehiculoSeleccionado = null;
+  //   }
+  // }
+
+
+    //  guardarVehiculo() {
+  //   console.log('Datos que se enviarán al backend:', this.nuevoVehiculo);
+
+  //   this.vehiculoService.addVehiculo(this.nuevoVehiculo).subscribe({
+  //     next: () => {
+  //       alert('Vehículo agregado exitosamente');
+  //       this.getVehiculos();
+  //       this.mostrarFormularioVehiculo = false;
+  //     },
+  //     error: (error) => {
+  //       console.error('Error al agregar vehículo:', error);
+  //       alert('Error al agregar vehículo');
+  //     }
+  //   });
+  // }

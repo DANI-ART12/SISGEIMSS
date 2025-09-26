@@ -34,74 +34,34 @@
         class="mb-6 p-4 border rounded bg-gray-50"
       >
         <h3 class="text-lg font-semibold mb-3">Registrar nuevo usuario</h3>
+         <input type="text" placeholder="Matrícula" [(ngModel)]="nuevoUsuario.matriculaUsuario" name="matricula" required class="block mb-2 p-2 border rounded w-full"  />
 
-        <input
-          type="text"
-          placeholder="Nombre"
-          [(ngModel)]="nuevoUsuario.nombre"
-          name="nombre"
-          required
-          class="block mb-2 p-2 border rounded w-full"
-        />
-        <input
-          type="text"
-          placeholder="Matrícula"
-          [(ngModel)]="nuevoUsuario.matricula"
-          name="matricula"
-          required
-          class="block mb-2 p-2 border rounded w-full"
-        />
-        <input
-          type="text"
-          placeholder="CURP"
-          [(ngModel)]="nuevoUsuario.curp"
-          name="curp"
-          class="block mb-2 p-2 border rounded w-full"
-        />
-        <input
-          type="text"
-          placeholder="RFC"
-          [(ngModel)]="nuevoUsuario.rfc"
-          name="rfc"
-          class="block mb-2 p-2 border rounded w-full"
-        />
-        <input
-          type="text"
-          placeholder="Categoría"
-          [(ngModel)]="nuevoUsuario.categoria"
-          name="categoria"
-          class="block mb-2 p-2 border rounded w-full"
-        />
-        <input
-          type="password"
-          placeholder="Password"
-          [(ngModel)]="nuevoUsuario.password"
-          name="password"
-          class="block mb-2 p-2 border rounded w-full"
-        />
+        <input type="text" placeholder="Nombre" [(ngModel)]="nuevoUsuario.nombreUsuario" name="nombre" required class="block mb-2 p-2 border rounded w-full" />
+        <input type="text" placeholder="Apellido paterno" [(ngModel)]="nuevoUsuario.apellidoPUsuario" name="apellidoP" required class="block mb-2 p-2 border rounded w-full" />
+        <input type="text" placeholder="Apellido materno" [(ngModel)]="nuevoUsuario.apellidoMUsuario" name="apellidoM" required class="block mb-2 p-2 border rounded w-full" />
+       
+        <input type="text" placeholder="CURP" [(ngModel)]="nuevoUsuario.curpUsuario" name="curp" class="block mb-2 p-2 border rounded w-full"  />
+        <input type="text" placeholder="RFC" [(ngModel)]="nuevoUsuario.rfcUsuario"  name="rfc" class="block mb-2 p-2 border rounded w-full" />
+        <input type="text" placeholder="Categoría"  [(ngModel)]="nuevoUsuario.categoriaUsuario" name="categoria" class="block mb-2 p-2 border rounded w-full" />
+        <input type="password"  placeholder="Password"  [(ngModel)]="nuevoUsuario.passwordUsuario"  name="password" class="block mb-2 p-2 border rounded w-full" />
 
         <label class="block mb-2 font-semibold">Asignación</label>
-        <select
-          [(ngModel)]="nuevoUsuario.asignacion"
-          name="asignacion"
-          class="block mb-2 p-2 border rounded w-full"
-          required
-        >
-          <option value="14000">Administrador</option>
-          <option value="9000">Subadministrador</option>
-          <option value="4000">Operador</option>
-          <option value="5000">Administrativo</option>
+        <select [(ngModel)]="nuevoUsuario.fkIdTipoUsuario"  name="asignacion" class="block mb-2 p-2 border rounded w-full" required  >
+          <option value="1">Administrador</option>
+          <option value="2">Subadministrador</option>
+          <option value="3">Operador</option>
+          <option value="4">Administrativo</option>
         </select>
 
         <label class="block mb-2 font-semibold">Estatus</label>
         <select
-          [(ngModel)]="nuevoUsuario.estatus"
+          [(ngModel)]="nuevoUsuario.statusUsuario"
           name="estatus"
           class="block mb-4 p-2 border rounded w-full"
           required
         >
-          <option value="alta">Alta</option>
-          <option value="baja">Baja</option>
+          <option value="1">Alta</option>
+          <option value="0">Baja</option>
         </select>
 
         <div class="flex gap-2">
@@ -124,73 +84,26 @@
       >
         <h3 class="text-lg font-semibold mb-3">Editar usuario</h3>
 
-        <input
-          type="text"
-          placeholder="Nombre"
-          [(ngModel)]="usuarioSeleccionado!.nombre"
-          name="editNombre"
-          required
-          class="block mb-2 p-2 border rounded w-full"
-        />
-        <input
-          type="text"
-          placeholder="Matrícula"
-          [(ngModel)]="usuarioSeleccionado!.matricula"
-          name="editMatricula"
-          required
-          class="block mb-2 p-2 border rounded w-full"
-        />
-        <input
-          type="text"
-          placeholder="CURP"
-          [(ngModel)]="usuarioSeleccionado!.curp"
-          name="editCurp"
-          class="block mb-2 p-2 border rounded w-full"
-        />
-        <input
-          type="text"
-          placeholder="RFC"
-          [(ngModel)]="usuarioSeleccionado!.rfc"
-          name="editRfc"
-          class="block mb-2 p-2 border rounded w-full"
-        />
-        <input
-          type="text"
-          placeholder="Categoría"
-          [(ngModel)]="usuarioSeleccionado!.categoria"
-          name="editCategoria"
-          class="block mb-2 p-2 border rounded w-full"
-        />
-        <input
-          type="password"
-          placeholder="Password"
-          [(ngModel)]="usuarioSeleccionado!.password"
-          name="editPassword"
-          class="block mb-2 p-2 border rounded w-full"
-        />
+        <input  type="text"  placeholder="Nombre" [(ngModel)]="usuarioSeleccionado!.nombreUsuario" name="editNombre" requiredclass="block mb-2 p-2 border rounded w-full"/>
+        <input  type="text" placeholder="Matrícula" [(ngModel)]="usuarioSeleccionado!.matriculaUsuario"
+          name="editMatricula" required  class="block mb-2 p-2 border rounded w-full" />
+        <input  type="text"  placeholder="CURP" [(ngModel)]="usuarioSeleccionado!.curpUsuario"  name="editCurp"  class="block mb-2 p-2 border rounded w-full" />
+        <input  type="text" placeholder="RFC" [(ngModel)]="usuarioSeleccionado!.rfcUsuario" name="editRfc"  class="block mb-2 p-2 border rounded w-full" />
+        <input type="text" placeholder="Categoría"  [(ngModel)]="usuarioSeleccionado!.categoriaUsuario" name="editCategoria"  class="block mb-2 p-2 border rounded w-full" />
+        <input type="password" placeholder="Password"  [(ngModel)]="usuarioSeleccionado!.passwordUsuario" name="editPassword" class="block mb-2 p-2 border rounded w-full" />
 
         <label class="block mb-2 font-semibold">Asignación</label>
-        <select
-          [(ngModel)]="usuarioSeleccionado!.asignacion"
-          name="editAsignacion"
-          class="block mb-2 p-2 border rounded w-full"
-          required
-        >
-          <option value="14000">Administrador</option>
-          <option value="9000">Subadministrador</option>
-          <option value="4000">Operador</option>
-          <option value="5000">Administrativo</option>
+        <select  [(ngModel)]="usuarioSeleccionado!.fkIdTipoUsuario"  name="editAsignacion" class="block mb-2 p-2 border rounded w-full" required  >
+          <option value="5">Administrador</option>
+          <option value="2">Subadministrador</option>
+          <option value="3">Operador</option>
+          <option value="4">Administrativo</option>
         </select>
 
         <label class="block mb-2 font-semibold">Estatus</label>
-        <select
-          [(ngModel)]="usuarioSeleccionado!.estatus"
-          name="editEstatus"
-          class="block mb-4 p-2 border rounded w-full"
-          required
-        >
-          <option value="alta">Alta</option>
-          <option value="baja">Baja</option>
+        <select [(ngModel)]="usuarioSeleccionado!.statusUsuario" name="editEstatus" class="block mb-4 p-2 border rounded w-full" required >
+          <option value="1">Alta</option>
+          <option value="0">Baja</option>
         </select>
 
         <div class="flex gap-2 items-center">
@@ -201,13 +114,6 @@
             class="bg-gray-400 px-4 py-2 rounded"
           >
             Cancelar
-          </button>
-          <button
-            type="button"
-            (click)="toggleEstatusUsuario()"
-            class="ml-4 bg-red-600 text-white px-4 py-2 rounded"
-          >
-            Cambiar estatus ({{ usuarioSeleccionado?.estatus }})
           </button>
         </div>
       </form>
@@ -226,23 +132,11 @@
         </thead>
         <tbody>
           <tr *ngFor="let usuario of usuarios">
-            <td class="border border-gray-300 p-2">{{ usuario.nombre }}</td>
-            <td class="border border-gray-300 p-2">{{ usuario.matricula }}</td>
-            <td class="border border-gray-300 p-2">{{ usuario.categoria }}</td>
-            <td class="border border-gray-300 p-2">
-              {{
-                usuario.asignacion === '14000'
-                  ? 'Administrador'
-                  : usuario.asignacion === '9000'
-                  ? 'Subadministrador'
-                  : usuario.asignacion === '4000'
-                  ? 'Operador'
-                  : usuario.asignacion === '5000'
-                  ? 'Administrativo'
-                  : 'Desconocido'
-              }}
-            </td>
-            <td class="border border-gray-300 p-2 capitalize">{{ usuario.estatus }}</td>
+            <td class="border border-gray-300 p-2">{{ usuario.nombreUsuario }} {{usuario.apellidoPUsuario}} {{usuario.apellidoMUsuario}}</td>
+            <td class="border border-gray-300 p-2">{{ usuario.matriculaUsuario }}</td>
+            <td class="border border-gray-300 p-2">{{ usuario.categoriaUsuario }}</td>
+            <td class="border border-gray-300 p-2">{{tipoUsuarioMap[usuario.fkIdTipoUsuario] }}</td>
+            <td class="border border-gray-300 p-2 capitalize">{{ getStatusTexto( usuario.statusUsuario) }}</td>
             <td class="border border-gray-300 p-2">
               <button (click)="editarUsuario(usuario)" class="bg-yellow-400 px-2 py-1 rounded mr-2">Editar</button>
             </td>
@@ -265,18 +159,33 @@
       >
         <h3 class="text-lg font-semibold mb-3">Registrar nuevo vehículo</h3>
 
-        <input
+        <!-- <input
           type="text"
           placeholder="Tipo"
-          [(ngModel)]="nuevoVehiculo.tipo"
+          [(ngModel)]="nuevoVehiculo.fkIdTipoVehiculo"
           name="tipo"
           required
           class="block mb-2 p-2 border rounded w-full"
-        />
+        /> -->
+
+<label class="block mb-2 font-semibold">Tipo de Vehículo</label>
+<select
+  [(ngModel)]="nuevoVehiculo.fkIdTipoVehiculo"
+  name="tipoVehiculo"
+  class="block mb-2 p-2 border rounded w-full"
+  required
+>
+  <option value="" disabled selected hidden>Seleccione un tipo</option>
+  <option *ngFor="let tipo of tiposVehiculos" [value]="tipo.idTipoVehiculo">
+    {{ tipo.nombreTipo }}
+  </option>
+</select>
+
+
         <input
           type="text"
           placeholder="Placas"
-          [(ngModel)]="nuevoVehiculo.placas"
+          [(ngModel)]="nuevoVehiculo.placa"
           name="placas"
           required
           class="block mb-2 p-2 border rounded w-full"
@@ -290,17 +199,25 @@
           class="block mb-2 p-2 border rounded w-full"
         />
         <input
+          type="text"
+          placeholder="Marca"
+          [(ngModel)]="nuevoVehiculo.marca"
+          name="marca"
+          required
+          class="block mb-2 p-2 border rounded w-full"
+        />
+        <input
           type="number"
           placeholder="Kilometraje Actual"
-          [(ngModel)]="nuevoVehiculo.actualKilometraje"
+          [(ngModel)]="nuevoVehiculo.kilometrajeActual"
           name="actualKilometraje"
           required
           class="block mb-2 p-2 border rounded w-full"
         />
         <input
-          type="text"
+          type="number"
           placeholder="Próximo Servicio"
-          [(ngModel)]="nuevoVehiculo.proximoServicio"
+          [(ngModel)]="nuevoVehiculo.proximoServicioKm"
           name="proximoServicio"
           class="block mb-2 p-2 border rounded w-full"
         />
@@ -348,7 +265,7 @@
         <input
           type="text"
           placeholder="Tipo"
-          [(ngModel)]="vehiculoSeleccionado!.tipo"
+          [(ngModel)]="vehiculoSeleccionado!.fkIdTipoVehiculo"
           name="editTipo"
           required
           class="block mb-2 p-2 border rounded w-full"
@@ -356,7 +273,7 @@
         <input
           type="text"
           placeholder="Placas"
-          [(ngModel)]="vehiculoSeleccionado!.placas"
+          [(ngModel)]="vehiculoSeleccionado!.placa"
           name="editPlacas"
           required
           class="block mb-2 p-2 border rounded w-full"
@@ -372,7 +289,7 @@
         <input
           type="number"
           placeholder="Kilometraje Actual"
-          [(ngModel)]="vehiculoSeleccionado!.actualKilometraje"
+          [(ngModel)]="vehiculoSeleccionado!.kilometrajeActual"
           name="editActualKilometraje"
           required
           class="block mb-2 p-2 border rounded w-full"
@@ -380,7 +297,7 @@
         <input
           type="text"
           placeholder="Próximo Servicio"
-          [(ngModel)]="vehiculoSeleccionado!.proximoServicio"
+          [(ngModel)]="vehiculoSeleccionado!.proximoServicioKm"
           name="editProximoServicio"
           class="block mb-2 p-2 border rounded w-full"
         />
@@ -433,11 +350,11 @@
         </thead>
         <tbody>
           <tr *ngFor="let vehiculo of vehiculos">
-            <td class="border border-gray-300 p-2">{{ vehiculo.tipo }}</td>
-            <td class="border border-gray-300 p-2">{{ vehiculo.placas }}</td>
+            <td class="border border-gray-300 p-2">{{tipoVehiculoMap[vehiculo.fkIdTipoVehiculo]}} </td>
+            <td class="border border-gray-300 p-2">{{ vehiculo.placa }}</td>
             <td class="border border-gray-300 p-2">{{ vehiculo.modelo }}</td>
-            <td class="border border-gray-300 p-2">{{ vehiculo.actualKilometraje }}</td>
-            <td class="border border-gray-300 p-2">{{ vehiculo.proximoServicio }}</td>
+            <td class="border border-gray-300 p-2">{{ vehiculo.kilometrajeActual }}</td>
+            <td class="border border-gray-300 p-2">{{ vehiculo.fkIdTipoVehiculo }}</td>
             <td class="border border-gray-300 p-2 capitalize">{{ vehiculo.estatus }}</td>
             <td class="border border-gray-300 p-2">{{ vehiculo.ecco }}</td>
             <td class="border border-gray-300 p-2">
