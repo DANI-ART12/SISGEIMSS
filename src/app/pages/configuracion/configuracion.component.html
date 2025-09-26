@@ -159,14 +159,29 @@
       >
         <h3 class="text-lg font-semibold mb-3">Registrar nuevo vehículo</h3>
 
-        <input
+        <!-- <input
           type="text"
           placeholder="Tipo"
           [(ngModel)]="nuevoVehiculo.fkIdTipoVehiculo"
           name="tipo"
           required
           class="block mb-2 p-2 border rounded w-full"
-        />
+        /> -->
+
+<label class="block mb-2 font-semibold">Tipo de Vehículo</label>
+<select
+  [(ngModel)]="nuevoVehiculo.fkIdTipoVehiculo"
+  name="tipoVehiculo"
+  class="block mb-2 p-2 border rounded w-full"
+  required
+>
+  <option value="" disabled selected hidden>Seleccione un tipo</option>
+  <option *ngFor="let tipo of tiposVehiculos" [value]="tipo.idTipoVehiculo">
+    {{ tipo.nombreTipo }}
+  </option>
+</select>
+
+
         <input
           type="text"
           placeholder="Placas"
@@ -184,6 +199,14 @@
           class="block mb-2 p-2 border rounded w-full"
         />
         <input
+          type="text"
+          placeholder="Marca"
+          [(ngModel)]="nuevoVehiculo.marca"
+          name="marca"
+          required
+          class="block mb-2 p-2 border rounded w-full"
+        />
+        <input
           type="number"
           placeholder="Kilometraje Actual"
           [(ngModel)]="nuevoVehiculo.kilometrajeActual"
@@ -192,7 +215,7 @@
           class="block mb-2 p-2 border rounded w-full"
         />
         <input
-          type="text"
+          type="number"
           placeholder="Próximo Servicio"
           [(ngModel)]="nuevoVehiculo.proximoServicioKm"
           name="proximoServicio"
@@ -327,11 +350,11 @@
         </thead>
         <tbody>
           <tr *ngFor="let vehiculo of vehiculos">
-            <td class="border border-gray-300 p-2">{{ vehiculo.fkIdTipoVehiculo }}</td>
+            <td class="border border-gray-300 p-2">{{tipoVehiculoMap[vehiculo.fkIdTipoVehiculo]}} </td>
             <td class="border border-gray-300 p-2">{{ vehiculo.placa }}</td>
             <td class="border border-gray-300 p-2">{{ vehiculo.modelo }}</td>
             <td class="border border-gray-300 p-2">{{ vehiculo.kilometrajeActual }}</td>
-            <td class="border border-gray-300 p-2">{{tipoVehiculoMap[vehiculo.fkIdTipoVehiculo] }}</td>
+            <td class="border border-gray-300 p-2">{{ vehiculo.fkIdTipoVehiculo }}</td>
             <td class="border border-gray-300 p-2 capitalize">{{ vehiculo.estatus }}</td>
             <td class="border border-gray-300 p-2">{{ vehiculo.ecco }}</td>
             <td class="border border-gray-300 p-2">

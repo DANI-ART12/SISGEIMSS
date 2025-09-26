@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, FormsModule, Validators } from '@angular/forms';
 import { UsuarioService } from '../../service/usuarios.service';
 import { VehiculoService } from '../../service/vehiculos.service';
+import { TipoVehiculoService } from '../../service/tipo_vehiculo.service';
 
 type Seccion = 'usuarios' | 'vehiculos';
 
@@ -32,6 +33,11 @@ interface Vehiculo {
   ecco: string;
 }
 
+interface TipoVehiculo {
+  idTipoVehiculo: number;
+  nombreTipo: string;
+}
+
 @Component({
   selector: 'app-configuraciones',
   standalone: true,
@@ -44,6 +50,8 @@ interface Vehiculo {
 })
 export class ConfiguracionComponent implements OnInit {
   seccionActiva: Seccion = 'usuarios';
+
+  tiposVehiculos: TipoVehiculo[] = []; // aquí guardaremos los tipos
 
   // --- Usuarios ---
   usuarios: any[] = [];
@@ -65,6 +73,7 @@ export class ConfiguracionComponent implements OnInit {
 
   constructor(private usuarioService: UsuarioService,
     private vehiculoService: VehiculoService,
+     private tipoVehiculoService: TipoVehiculoService,
 
     private fb: FormBuilder) {
     // ✅ Inicializamos el formulario reactivo
@@ -85,6 +94,7 @@ export class ConfiguracionComponent implements OnInit {
    ngOnInit(): void {
     this.getUsuarios();
     this.getVehiculos();
+    this.getTiposVehiculos(); // 🚀 cargamos los tipos al iniciar
   }
 
     cambiarSeccion(seccion: Seccion) {
@@ -256,56 +266,71 @@ getVehiculos(): void {
     this.vehiculoSeleccionado = null;
   }
 
-  // guardarVehiculo() {
-  //   if (!this.nuevoVehiculo.fkIdTipoVehiculo || !this.nuevoVehiculo.placa || !this.nuevoVehiculo.modelo) {
-  //     alert('Por favor, rellena todos los campos obligatorios del vehículo.');
-  //     return;
-  //   }
-  //   const nuevo: Vehiculo = {
-  //     ...this.nuevoVehiculo,
-  //     idVehiculo : this.vehiculos.length ? Math.max(...this.vehiculos.map(v => v.idVehiculo ?? 0)) + 1 : 1
-  //   };
-  //   this.vehiculos.push(nuevo);
-  //   this.mostrarFormularioVehiculo = false;
-  //   this.nuevoVehiculo = this.getNuevoVehiculoVacio();
-  // }
 
 
-   guardarVehiculo() {
-    console.log('Datos que se enviarán al backend:', this.nuevoVehiculo);
 
-    this.vehiculoService.addVehiculo(this.nuevoVehiculo).subscribe({
-      next: () => {
-        alert('Vehículo agregado exitosamente');
-        this.getVehiculos();
-        this.mostrarFormularioVehiculo = false;
+// guardarVehiculo() {
+//   if (!this.nuevoVehiculo.placa || !this.nuevoVehiculo.modelo) {
+//     alert('Rellena todos los campos obligatorios.');
+//     return;
+//   }
+
+//   this.vehiculoService.addVehiculo(this.nuevoVehiculo).subscribe({
+//     next: (response) => {
+//       alert('Vehículo agregado exitosamente');
+//       this.getVehiculos(); // ✅ Recarga la lista desde la BD
+//       this.mostrarFormularioVehiculo = false;
+//       this.nuevoVehiculo = this.getNuevoVehiculoVacio();
+//     },
+//     error: (error) => {
+//       console.error('Error al agregar vehículo:', error);
+//       alert('Error al agregar vehículo');
+//     }
+//   });
+// }
+
+
+
+guardarVehiculo() {
+  if (!this.nuevoVehiculo.placa || !this.nuevoVehiculo.modelo) {
+    alert('Rellena todos los campos obligatorios.');
+    return;
+  }
+
+  // 👀 Mostrar en consola los datos que se van a enviar
+  console.log('Datos del vehículo a enviar:', this.nuevoVehiculo);
+
+  this.vehiculoService.addVehiculo(this.nuevoVehiculo).subscribe({
+    next: (response) => {
+      alert('Vehículo agregado exitosamente');
+      this.getVehiculos(); // ✅ Recarga la lista desde la BD
+      this.mostrarFormularioVehiculo = false;
+      this.nuevoVehiculo = this.getNuevoVehiculoVacio();
+    },
+    error: (error) => {
+      console.error('Error al agregar vehículo:', error);
+      alert('Error al agregar vehículo');
+    }
+  });
+}
+
+
+ getTiposVehiculos(): void {
+    this.tipoVehiculoService.getTiposVehiculos().subscribe({
+      next: (response) => {
+        console.log('Tipos de vehículos recibidos:', response);
+        this.tiposVehiculos = response?.data || []; // asumiendo que tu API devuelve {data: [...]}
       },
       error: (error) => {
-        console.error('Error al agregar vehículo:', error);
-        alert('Error al agregar vehículo');
+        console.error('Error al obtener tipos de vehículos:', error);
       }
     });
   }
-
-
-
-
-
   editarVehiculo(vehiculo: Vehiculo) {
     this.editarVehiculoActivo = true;
     this.mostrarFormularioVehiculo = false;
     this.vehiculoSeleccionado = { ...vehiculo };
   }
-
-  // guardarCambiosVehiculo() {
-  //   if (!this.vehiculoSeleccionado) return;
-  //   const index = this.vehiculos.findIndex(v => v.idVehiculo === this.vehiculoSeleccionado!.idVehiculo);
-  //   if (index !== -1) {
-  //     this.vehiculos[index] = { ...this.vehiculoSeleccionado };
-  //     this.editarVehiculoActivo = false;
-  //     this.vehiculoSeleccionado = null;
-  //   }
-  // }
 
 
 
@@ -328,7 +353,7 @@ getVehiculos(): void {
 
 
   tipoVehiculoMap: { [key: number]: string } = {
-  1: 'CAMIENOTE',
+  1: 'CAMIENOTA',
   2: 'Subadministrador',
   3: 'Operador',
   4: 'Administrativo'
@@ -341,3 +366,52 @@ getVehiculos(): void {
     }
   } 
 }
+
+
+
+
+
+  // guardarVehiculo() {
+  //   if (!this.nuevoVehiculo.fkIdTipoVehiculo || !this.nuevoVehiculo.placa || !this.nuevoVehiculo.modelo) {
+  //     alert('Por favor, rellena todos los campos obligatorios del vehículo.');
+  //     return;
+  //   }
+  //   const nuevo: Vehiculo = {
+  //     ...this.nuevoVehiculo,
+  //     idVehiculo : this.vehiculos.length ? Math.max(...this.vehiculos.map(v => v.idVehiculo ?? 0)) + 1 : 1
+  //   };
+  //   this.vehiculos.push(nuevo);
+  //   this.mostrarFormularioVehiculo = false;
+  //   this.nuevoVehiculo = this.getNuevoVehiculoVacio();
+  // }
+
+
+
+
+  
+  // guardarCambiosVehiculo() {
+  //   if (!this.vehiculoSeleccionado) return;
+  //   const index = this.vehiculos.findIndex(v => v.idVehiculo === this.vehiculoSeleccionado!.idVehiculo);
+  //   if (index !== -1) {
+  //     this.vehiculos[index] = { ...this.vehiculoSeleccionado };
+  //     this.editarVehiculoActivo = false;
+  //     this.vehiculoSeleccionado = null;
+  //   }
+  // }
+
+
+    //  guardarVehiculo() {
+  //   console.log('Datos que se enviarán al backend:', this.nuevoVehiculo);
+
+  //   this.vehiculoService.addVehiculo(this.nuevoVehiculo).subscribe({
+  //     next: () => {
+  //       alert('Vehículo agregado exitosamente');
+  //       this.getVehiculos();
+  //       this.mostrarFormularioVehiculo = false;
+  //     },
+  //     error: (error) => {
+  //       console.error('Error al agregar vehículo:', error);
+  //       alert('Error al agregar vehículo');
+  //     }
+  //   });
+  // }
