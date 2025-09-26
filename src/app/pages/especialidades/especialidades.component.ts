@@ -1,5 +1,5 @@
-import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { Component, OnInit, HostListener } from '@angular/core';
+import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 
@@ -20,6 +20,7 @@ interface LugarComision {
 })
 export class EspecialidadesComponent implements OnInit {
   form: FormGroup;
+
   registros: LugarComision[] = [
     {
       estado: 'Jalisco',
@@ -55,6 +56,7 @@ export class EspecialidadesComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    // Habilitar/deshabilitar porcentaje según checkbox
     this.form.get('altoCosteVida')?.valueChanges.subscribe((valor: boolean) => {
       const porcentajeControl = this.form.get('porcentaje');
       if (valor) {
@@ -69,25 +71,30 @@ export class EspecialidadesComponent implements OnInit {
     });
   }
 
+  // Filtrado de registros
   get registrosFiltrados(): LugarComision[] {
-    return this.registros.filter((r) =>
-      (!this.filtrarEstado || r.estado.toLowerCase().includes(this.filtrarEstado.toLowerCase())) &&
-      (!this.filtrarRegion || r.region.toLowerCase().includes(this.filtrarRegion.toLowerCase()))
+    return this.registros.filter(
+      (r) =>
+        (!this.filtrarEstado || r.estado.toLowerCase().includes(this.filtrarEstado.toLowerCase())) &&
+        (!this.filtrarRegion || r.region.toLowerCase().includes(this.filtrarRegion.toLowerCase()))
     );
   }
 
-  nuevoRegistro(): void {
+  // Abrir modal
+  abrirModal(): void {
     this.form.reset({ altoCosteVida: false });
     this.indiceEditando = null;
     this.mostrandoFormulario = true;
   }
 
+  // Cerrar modal
   cancelar(): void {
     this.form.reset({ altoCosteVida: false });
     this.mostrandoFormulario = false;
     this.indiceEditando = null;
   }
 
+  // Guardar nuevo registro o edición
   guardar(): void {
     if (this.form.invalid) return;
 
@@ -102,6 +109,7 @@ export class EspecialidadesComponent implements OnInit {
     this.cancelar();
   }
 
+  // Editar registro existente
   editar(index: number): void {
     const r = this.registros[index];
     this.form.setValue({
@@ -123,11 +131,19 @@ export class EspecialidadesComponent implements OnInit {
     this.mostrandoFormulario = true;
   }
 
+  // Eliminar registro
   eliminar(index: number): void {
     const confirmacion = confirm('¿Deseas eliminar este registro?');
     if (confirmacion) {
       this.registros.splice(index, 1);
     }
   }
-}
 
+  // Cierre con tecla ESC
+  @HostListener('document:keydown.escape', ['$event'])
+  onEsc(event: KeyboardEvent) {
+    if (this.mostrandoFormulario) {
+      this.cancelar();
+    }
+  }
+}

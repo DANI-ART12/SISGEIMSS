@@ -1,25 +1,24 @@
 <div class="bg-white p-6 rounded-xl font-sans">
+
+  <!-- Título -->
   <h2 class="text-blue-700 text-2xl font-bold mb-4">TRASLADOS</h2>
 
   <!-- Filtros -->
   <div class="flex flex-wrap gap-4 mb-6">
     <input type="text" placeholder="Buscar traslado..."
-    [(ngModel)]="filtroGeneral"
-    class="w-1/3 px-3 py-2 border border-blue-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400 text-sm" />
+           [(ngModel)]="filtroGeneral"
+           class="w-1/3 px-3 py-2 border border-blue-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400 text-sm" />
+    <input type="date" [(ngModel)]="filtro.fechaInicio"
+           class="px-3 py-2 border border-blue-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400 text-sm" />
+    <input type="date" [(ngModel)]="filtro.fechaFin"
+           class="px-3 py-2 border border-blue-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400 text-sm" />
+    <button (click)="aplicarFiltro()"
+            class="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 transition text-sm">
+      Aplicar Filtro
+    </button>
+  </div>
 
-  <!-- Fechas -->
-  <input type="date" [(ngModel)]="filtro.fechaInicio"
-    class="px-3 py-2 border border-blue-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400 text-sm" />
-
-  <input type="date" [(ngModel)]="filtro.fechaFin"
-    class="px-3 py-2 border border-blue-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400 text-sm" />
-
-  <button (click)="aplicarFiltro()"
-    class="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 transition text-sm">
-    Aplicar Filtro
-  </button>
-
-  <!-- Tabla de viajes principal -->
+  <!-- Tabla de viajes -->
   <div class="overflow-x-auto">
     <table class="min-w-full bg-white border border-green-200 rounded-lg">
       <thead class="bg-green-100 text-green-800 font-semibold text-sm">
@@ -42,133 +41,125 @@
           <td class="px-4 py-2">{{ viaje.destino }}</td>
           <td class="px-4 py-2">
             <span [ngClass]="{
-                  'bg-green-100 text-green-800': viaje.estado === 'Completado',
-                  'bg-yellow-100 text-yellow-800': viaje.estado === 'Pendiente',
-                  'bg-red-100 text-red-800': viaje.estado === 'Cancelado'
-                }" class="px-2 py-1 rounded text-sm font-medium">
+              'bg-green-100 text-green-800': viaje.estado === 'Completado',
+              'bg-yellow-100 text-yellow-800': viaje.estado === 'Pendiente',
+              'bg-red-100 text-red-800': viaje.estado === 'Cancelado'
+            }" class="px-2 py-1 rounded text-sm font-medium">
               {{ viaje.estado }}
             </span>
           </td>
           <td class="px-4 py-2 space-x-2">
             <button (click)="verDetalles(viaje)"
-              class="bg-green-500 text-white px-3 py-1 rounded hover:bg-green-600 transition text-sm">Ver</button>
+                    class="bg-green-500 text-white px-3 py-1 rounded hover:bg-green-600 transition text-sm">
+              Ver
+            </button>
             <button (click)="activarEdicion(viaje)"
-              class="bg-blue-500 text-white px-3 py-1 rounded hover:bg-blue-600 transition text-sm">Editar</button>
+                    class="bg-blue-500 text-white px-3 py-1 rounded hover:bg-blue-600 transition text-sm">
+              Editar
+            </button>
           </td>
         </tr>
       </tbody>
     </table>
   </div>
+</div>
 
-  <!-- Panel de detalles / edición -->
-  <div *ngIf="viajeSeleccionado" class="bg-white border border-green-300 rounded-lg mt-8 p-6 shadow-md">
-    <div class="mb-6">
-      <h4 class="text-lg font-semibold text-gray-800 mb-3 pb-2 border-b">Detalles del Traslado</h4>
-      <div class="grid md:grid-cols-3 gap-4 text-sm">
-          <p><strong>Folio:</strong> {{viajeSeleccionado.folio}}</p>
-          <p><strong>Fecha y Hora Traslado:</strong> {{ viajeSeleccionado.ida.fecha }} {{ viajeSeleccionado.ida.hora }}</p>
-          <p><strong>Estado del Traslado:</strong>
-            <span [ngClass]="{
-                  'bg-green-100 text-green-800': viajeSeleccionado.estado === 'Completado',
-                  'bg-yellow-100 text-yellow-800': viajeSeleccionado.estado === 'Pendiente',
-                  'bg-red-100 text-red-800': viajeSeleccionado.estado === 'Cancelado'
-                }" class="px-2 py-1 rounded text-sm font-medium">
-              {{ viajeSeleccionado.estado }}
-            </span>
-          </p>
+<!-- Modal transparente amigable -->
+<div *ngIf="viajeSeleccionado" 
+     class="fixed inset-0 flex items-center justify-center z-50 overflow-auto bg-white/50 backdrop-blur-sm">
+
+  <div class="bg-white w-[95%] max-w-[1200px] p-6 rounded-2xl shadow-2xl max-h-[90vh] overflow-auto border border-gray-200 relative">
+
+    <!-- Cerrar -->
+    <button (click)="cerrarDetalles()" 
+            class="absolute top-4 right-4 text-gray-600 hover:text-gray-900 font-bold text-2xl">&times;</button>
+
+    <!-- Encabezado -->
+    <div class="flex items-center justify-between mb-6">
+      <h2 class="text-blue-700 text-3xl font-bold">Detalles del Traslado</h2>
+      <span class="text-sm text-gray-500">Revisa la información del traslado</span>
+    </div>
+
+    <!-- Datos generales -->
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 text-sm">
+
+      <div class="bg-gray-50 p-4 rounded-lg border border-gray-200 shadow-sm">
+        <p><strong>Folio:</strong> {{ viajeSeleccionado.folio }}</p>
+        <p><strong>Paciente:</strong> {{ viajeSeleccionado.paciente.nombre }}</p>
+        <p><strong>NSS:</strong> {{ viajeSeleccionado.paciente.nss }}</p>
+        <p><strong>Teléfono:</strong> {{ viajeSeleccionado.paciente.telefono }}</p>
+        <p><strong>Domicilio:</strong> {{ viajeSeleccionado.paciente.domicilio }}</p>
+      </div>
+
+      <div class="bg-gray-50 p-4 rounded-lg border border-gray-200 shadow-sm">
+        <p><strong>Operador:</strong> {{ viajeSeleccionado.operador.nombre }}</p>
+        <p><strong>Matrícula:</strong> {{ viajeSeleccionado.operador.matricula }}</p>
+        <p><strong>Destino:</strong> {{ viajeSeleccionado.destino }}</p>
+        <p><strong>Estado:</strong> {{ viajeSeleccionado.estado }}</p>
+      </div>
+
+    </div>
+
+    <!-- Fechas y horas -->
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6 text-sm">
+      <div class="bg-gray-50 p-4 rounded-lg border border-gray-200 shadow-sm">
+        <p><strong>Fecha Salida:</strong> {{ viajeSeleccionado.ida.fecha }}</p>
+        <p><strong>Hora salida:</strong> {{ viajeSeleccionado.ida.hora }}</p>
+        <p><strong>Hora llegada:</strong> {{ viajeSeleccionado.ida.horaLlegada }}</p>
+      </div>
+      <div class="bg-gray-50 p-4 rounded-lg border border-gray-200 shadow-sm">
+        <p><strong>Fecha Regreso:</strong> {{ viajeSeleccionado.regreso.fecha }}</p>
+        <p><strong>Hora salida:</strong> {{ viajeSeleccionado.regreso.hora }}</p>
+        <p><strong>Hora llegada:</strong> {{ viajeSeleccionado.regreso.horaLlegada }}</p>
       </div>
     </div>
 
-    <div class="grid md:grid-cols-2 gap-4 text-sm">
-      <!-- Datos paciente -->
-      <p><strong>Paciente:</strong> {{ viajeSeleccionado.paciente.nombre }}</p>
-      <p><strong>NSS:</strong> {{ viajeSeleccionado.paciente.nss }}</p>
-      <p><strong>Teléfono:</strong> {{ viajeSeleccionado.paciente.telefono }}</p>
-      <p class="md:col-span-2"><strong>Domicilio:</strong> {{ viajeSeleccionado.paciente.domicilio }}</p>
-
-      <!-- Operador -->
-      <div>
-        <label class="block font-semibold mb-1">Operador:</label>
-        <select [(ngModel)]="viajeSeleccionado.operador" (change)="actualizarMatricula()"
-          [disabled]="!enEdicion"
-          class="w-full border-b border-gray-400 focus:outline-none text-sm">
-          <option *ngFor="let op of operadores" [ngValue]="op">{{ op.nombre }}</option>
-        </select>
-      </div>
-
-      <div>
-        <label class="block font-semibold mb-1">Matrícula:</label>
-        <input type="text" [(ngModel)]="viajeSeleccionado.operador.matricula"
-          [readonly]="true"
-          class="w-full border-b border-gray-400 focus:outline-none text-sm" />
-      </div>
-
-      <!-- fechas y horas traslados -->
-      <p><strong>Fecha Salida:</strong> {{ viajeSeleccionado.ida.fecha }}</p>
-      <p><strong>Hora salida:</strong> {{ viajeSeleccionado.ida.hora }}</p>
-      <p><strong>Hora llegada:</strong> {{ viajeSeleccionado.ida.horaLlegada }}</p>
-
-      <p><strong>Fecha Regreso:</strong> {{ viajeSeleccionado.regreso.fecha }}</p>
-      <p><strong>Hora salida:</strong> {{ viajeSeleccionado.regreso.hora }}</p>
-      <p><strong>Hora llegada:</strong> {{ viajeSeleccionado.regreso.horaLlegada }}</p>
-
-      <!-- Ambulancia -->
+    <!-- Ambulancia y kilómetros -->
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6 text-sm">
       <div>
         <label class="block font-semibold mb-1">Ambulancia:</label>
-        <select [(ngModel)]="viajeSeleccionado.ambulancia" [disabled]="!enEdicion"
-          class="w-full border-b border-gray-400 focus:outline-none text-sm">
+        <select [(ngModel)]="viajeSeleccionado.ambulancia" class="w-full border-b border-gray-400 focus:outline-none text-sm">
           <option *ngFor="let amb of ambulancias" [value]="amb">{{ amb }}</option>
         </select>
       </div>
-
-      <!-- Kilómetros -->
       <div>
         <label class="block font-semibold mb-1">Kilómetro Inicial:</label>
-        <input type="number" [(ngModel)]="viajeSeleccionado.kmInicial" (ngModelChange)="actualizarKmTotal()"
-          [readonly]="!enEdicion"
-          class="w-full border-b border-gray-400 focus:outline-none text-sm" />
+        <input type="number" [(ngModel)]="viajeSeleccionado.kmInicial" class="w-full border-b border-gray-400 focus:outline-none text-sm" />
       </div>
-
       <div>
         <label class="block font-semibold mb-1">Kilómetro Final:</label>
-        <input type="number" [(ngModel)]="viajeSeleccionado.kmFinal" (ngModelChange)="actualizarKmTotal()"
-          [readonly]="!enEdicion"
-          class="w-full border-b border-gray-400 focus:outline-none text-sm" />
+        <input type="number" [(ngModel)]="viajeSeleccionado.kmFinal" class="w-full border-b border-gray-400 focus:outline-none text-sm" />
       </div>
-
-      <!-- Total recorrido y alerta -->
-      <p class="md:col-span-2 mt-2"><strong>Total recorrido:</strong> {{ kmTotal }}</p>
-      <p class="md:col-span-2 mt-1"
-        [ngClass]="kmRestantesParaMantenimiento <= 500 ? 'text-red-700 font-bold' : 'text-green-700'">
-        <strong>Kilómetros restantes:</strong> {{ kmRestantesParaMantenimiento }}
-      </p>
-
-      <p *ngIf="kmRestantesParaMantenimiento <= 500" class="md:col-span-2 text-red-700 font-bold">
-        ⚠️ ¡Atención! La ambulancia está cerca de su mantenimiento.
-      </p>
-
-      <!-- Observaciones -->
-      <div class="md:col-span-2 mt-4">
-        <label class="block font-semibold mb-1">Observaciones:</label>
-        <textarea [(ngModel)]="viajeSeleccionado.observaciones"
-          [readonly]="!enEdicion"
-          class="w-full border-b border-gray-400 resize-y focus:outline-none text-sm"></textarea>
+      <div class="md:col-span-2 mt-2">
+        <p><strong>Total recorrido:</strong> {{ kmTotal }}</p>
+        <p [ngClass]="kmRestantesParaMantenimiento <= 500 ? 'text-red-700 font-bold' : 'text-green-700'">
+          <strong>Kilómetros restantes:</strong> {{ kmRestantesParaMantenimiento }}
+        </p>
+        <p *ngIf="kmRestantesParaMantenimiento <= 500" class="text-red-700 font-bold">
+          ⚠️ ¡Atención! La ambulancia está cerca de su mantenimiento.
+        </p>
       </div>
+    </div>
 
-      <!-- Archivo -->
-      <div class="md:col-span-2 mt-4">
-        <label class="block font-semibold mb-1">Archivo:</label>
-        <input type="file" (change)="onArchivoSeleccionado($event)" [disabled]="!enEdicion"
-          class="file:py-2 file:px-4 file:rounded file:bg-green-100 file:text-green-700 hover:file:bg-green-200 transition" />
-      </div>
+    <!-- Observaciones y archivo -->
+    <div class="mt-6 text-sm">
+      <label class="block font-semibold mb-1">Observaciones:</label>
+      <textarea [(ngModel)]="viajeSeleccionado.observaciones" class="w-full border-b border-gray-400 resize-y focus:outline-none text-sm"></textarea>
+
+      <label class="block font-semibold mt-4 mb-1">Archivo:</label>
+      <input type="file" (change)="onArchivoSeleccionado($event)"
+             class="file:py-2 file:px-4 file:rounded file:bg-green-100 file:text-green-700 hover:file:bg-green-200 transition" />
     </div>
 
     <!-- Botones -->
-    <div class="mt-4 flex gap-2">
-      <button *ngIf="enEdicion" (click)="guardarViaje()"
-        class="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600 transition">Guardar Cambios</button>
-      <button (click)="cerrarDetalles()"
-        class="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600 transition">Cerrar</button>
+    <div class="flex justify-end gap-3 mt-6">
+      <button (click)="guardarViaje()" class="bg-green-500 text-white px-4 py-2 rounded-lg hover:bg-green-600 transition">
+        Guardar Cambios
+      </button>
+      <button (click)="cerrarDetalles()" class="bg-red-500 text-white px-4 py-2 rounded-lg hover:bg-red-600 transition">
+        Cerrar
+      </button>
     </div>
+
   </div>
 </div>

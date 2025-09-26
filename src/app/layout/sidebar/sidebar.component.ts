@@ -7,9 +7,9 @@ import { UserRole } from '../../core/auth/user.model';
 import {
   LucideAngularModule,
   Car, Users, Route as RouteIcon, File, Settings, 
-  HelpCircle, LogOut, Search, History, FileSearch, ScrollText,FileText, ChartBar, BookOpenText,           // botones al pie
+  HelpCircle, LogOut, Search, History, FileSearch, ScrollText,FileText, Wrench, ChartBar, BookOpenText,           // botones al pie
   HospitalIcon, FilePen, FilePenLine, FileMinus,
-  ContactRound, BadgeDollarSign, Bus,
+  ContactRound, BadgeDollarSign, Bus, 
 } from 'lucide-angular';
 
 const iconMap = {
@@ -34,6 +34,7 @@ const iconMap = {
   ContactRound,
   BadgeDollarSign,
   Bus,
+  Wrench,
 };
 
 interface SidebarLink {
@@ -44,32 +45,35 @@ interface SidebarLink {
 
 const LINKS: Record<UserRole, SidebarLink[]> = {
   ADMIN: [
-    { label: 'Traslados', icon: 'Bus', route: '/dashboard' },
+    { label: 'Traslados', icon: 'Bus', route: '/trasladosfl' },
     { label: 'Traslados Locales', icon: 'FileText', route: '/traslados' },
     { label: 'Informe Comisión', icon: 'FileSearch', route: '/informecomision' },
     { label: 'Pliego Comisión', icon: 'ScrollText', route: '/pliego-comision' },
     { label: 'Registro KM', icon: 'Car', route: '/registro-km' },
     {label:'Pliego Confianza', icon:'BookOpenText', route:'/pliegoactual'},
     {label:'Historial de Pacientes',icon:'ContactRound',route:'/registropacientes'},
-    { label: 'Traslados Viajes', icon: 'Route', route: '/viajes' },
+    { label: 'Traslados ', icon: 'Route', route: '/viajes' },
     { label: 'Gráficos', icon: 'ChartBar', route: '/graficos' },
     { label: 'Hospitales', icon: 'HospitalIcon', route: '/especialidades' },
     { label: 'Historial', icon: 'History', route: '/historial' },
     {label:'Pagados',icon:'BadgeDollarSign',route:'/historialpagos'},
+    {label:'Historial de Vehiculos',icon:'Wrench',route:'/historialvehiculos'},
     { label: 'Configuración', icon: 'Settings', route: '/configuracion' }
   ],
 
   SUBADMIN: [
-    { label: 'Traslados', icon: 'Bus', route: '/dashboard' },
+    { label: 'Traslados', icon: 'Bus', route: '/trasladosfl' },
     { label: 'Traslados Locales', icon: 'FileText', route: '/traslados' },
     { label: 'Informe Comisión', icon: 'FileSearch', route: '/informecomision' },
     { label: 'Pliego Comisión', icon: 'ScrollText', route: '/pliego-comision' },
     {label:'Pliego Confianza', icon:'BookOpenText', route:'/pliegoactual'},
     {label:'Historial de Pacientes',icon:'ContactRound',route:'/registropacientes'},
     { label: 'Registro KM', icon: 'Car', route: '/registro-km' },
-    { label: 'Traslados Viajes', icon: 'Route', route: '/viajes' },
+    { label: 'Traslados ', icon: 'Route', route: '/viajes' },
     { label: 'Historial', icon: 'History', route: '/historial' },
-    {label:'Pagados',icon:'BadgeDollarSign',route:'/historialpagos'}
+    {label:'Pagados',icon:'BadgeDollarSign',route:'/historialpagos'},
+    {label:'Historial de Vehiculos',icon:'Wrench',route:'/historialvehiculos'},
+    { label: 'Configuración', icon: 'Settings', route: '/configuracion' }
   ],
 
   USER: [

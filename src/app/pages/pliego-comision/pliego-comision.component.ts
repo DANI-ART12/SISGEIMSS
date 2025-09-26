@@ -28,6 +28,66 @@ export class PliegoComisionComponent implements OnInit {
     const target = event.target as HTMLElement;
     this.fraseDerecha = target.innerText;
   }
+  mostrarFormulario = false;
+
+  pliego = {
+    numeroFolio: '',          // Número de folio
+    usuario: '',              // Usuario logueado
+    objetoComision: '',       // Objeto de comisión
+    lugaresComision: '',      // Lugares de comisión
+    periodo: '',              // Periodo
+    totalDias: 0,             // Total de días
+  
+    // Alto Costo de Vida
+    altoCostoVida: 'No',      // "Sí" o "No"
+    porcentajeCostoVida: 0,   // Porcentaje de costo de vida
+    cantidadBase: 0,          // Cantidad base
+    resultadoCostoVida: 0,     // Resultado calculado
+  
+    // Certificación por Días
+    montoDiario: 0,           // Monto diario
+    operadorCertificacion: '*', // Operador: +, -, *, /
+    constanteCertificacion: 0, // Constante para operar
+    resultadoCertificacion: 0,  // Resultado calculado
+    constante: 1.31 * 1870.53,
+    operador: '+',   
+
+ // Alto Coste de Vida
+      acvBase: 0,
+     acvPorcentaje: 0,
+     acvOperador: '+',
+    acvConstante: 0,
+     resultadoACV: 0,
+
+
+     funcionarioSolicitante:'',
+     funcionarioAutoriza:'',
+     categoria:'',
+     dependencia:'',
+     matricula:'',
+     nombreComisionado:'',
+     cantidadBCertificacion:'0',
+
+
+     operador1:'0',
+     operador2:'0',
+     operador3:'0',
+    
+     paciente:'',
+     pacientenss:'',
+     
+
+     
+
+  };
+
+  otroPaciente: boolean = false;
+  pacienteB = {
+    nombre: '',
+    nss: '',
+    lugarComision: '',
+    objetoComision: ''
+  };
 
   // --- Variables primera tabla ---
   funcionarioSolicitante = '';
@@ -139,6 +199,10 @@ export class PliegoComisionComponent implements OnInit {
 
   modoEdicion: boolean = false;
 
+  fechaInicio:string='';
+  fechaFin:string='';
+  altoCostoVida:boolean=false;
+ 
   ngOnInit() {
     this.cargarDatos();
   }
@@ -237,6 +301,73 @@ export class PliegoComisionComponent implements OnInit {
     console.log('Datos guardados en localStorage');
   }
 
+  toggleFormulario() {
+    this.mostrarFormulario = !this.mostrarFormulario;
+  }
+  
+  guardarPliego() {
+    // Aquí después puedes implementar la lógica real de guardado
+    alert('Datos del pliego guardados (simulado)');
+    this.mostrarFormulario = false; // oculta el formulario después de guardar
+  }
+  
+  cancelarTraslado() {
+    this.mostrarFormulario = false; // simplemente oculta el formulario
+  }
+
+  onOtroPacienteChange(event: any) {
+    this.otroPaciente = event.target.value === 'true';
+  }
+  // Calcular ACV
+  calcularCostoVida() {
+    let res = 0;
+    switch(this.pliego.acvOperador) {
+      case '+': res = this.pliego.acvBase + (this.pliego.acvPorcentaje * this.pliego.acvConstante); break;
+      case '-': res = this.pliego.acvBase - (this.pliego.acvPorcentaje * this.pliego.acvConstante); break;
+      case '*': res = this.pliego.acvBase * (this.pliego.acvPorcentaje * this.pliego.acvConstante); break;
+      case '/': res = this.pliego.acvConstante !== 0 ? this.pliego.acvBase / (this.pliego.acvPorcentaje * this.pliego.acvConstante) : 0; break;
+    }
+    this.pliego.resultadoACV = +res.toFixed(2);
+  }
+
+// Calcular Certificación por Días
+calcularCertificacion() {
+  let { montoDiario, totalDias, constanteCertificacion, cantidadBCertificacion,
+        operador1, operador2, operador3 } = this.pliego;
+
+  let resultado = montoDiario ?? 0;
+
+  // KM operador1 divisor
+  if (totalDias !== undefined && totalDias !== null && operador1) {
+    resultado = this.aplicarOperacion(resultado, operador1, totalDias);
+  }
+
+  // resultado operador2 factor
+  if (constanteCertificacion !== undefined && constanteCertificacion !== null && operador2) {
+    resultado = this.aplicarOperacion(resultado, operador2, constanteCertificacion);
+  }
+
+  // resultado operador3 cantidad base
+  if (cantidadBCertificacion !== undefined && cantidadBCertificacion !== null && operador3) {
+    resultado = this.aplicarOperacion(resultado, operador3, Number(cantidadBCertificacion));
+  }
+
+  // Truncar a 2 decimales
+  this.pliego.resultadoCertificacion = Math.trunc(resultado * 100) / 100;
+}
+
+aplicarOperacion(a: number, operador: string, b: number): number {
+  switch (operador) {
+    case '+': return a + b;
+    case '-': return a - b;
+    case '*': return a * b;
+    case '/': return b !== 0 ? a / b : 0;
+    default: return a;
+  }
+}
+
+   
+  
   cargarDatos() {
     const datos = localStorage.getItem('pliegoComisionDatos');
     if (datos) {

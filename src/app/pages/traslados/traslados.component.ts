@@ -7,7 +7,7 @@ interface Paciente {
   segundoApellido?: string;
   nss: string;
   telefono?: string;
-  domicilio?: string;
+  domicilio: string;
 }
 
 @Component({
@@ -25,13 +25,15 @@ export class TrasladosComponent implements OnInit {
     folio: '',
     nombre: '',
     afiliacion: '',
+    domicilio:'',
     telefono: '',
     fecha: '',
     origen: '',
     destino: '',
     requiere: '',
     tipoServicio: '',
-    posicion: ''
+    posicion: '',
+    
   };
 
   pacientes: Paciente[] = [
@@ -95,6 +97,7 @@ export class TrasladosComponent implements OnInit {
     this.traslado.nombre = `${paciente.nombre} ${paciente.primerApellido} ${paciente.segundoApellido ?? ''}`.trim();
     this.traslado.telefono = paciente.telefono ?? '';
     this.traslado.afiliacion = paciente.nss;
+    this.traslado.domicilio = paciente.domicilio;
     // Opcional: llenar domicilio u otros datos en traslado si quieres
 
     this.mostrarSugerencias = false;

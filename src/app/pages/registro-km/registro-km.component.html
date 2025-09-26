@@ -67,26 +67,53 @@
     </div>
   </div>
 
-  <!-- Fecha y hora de ida y vuelta -->
+  <!-- Fecha y hora de ida  -->
+  <h2 class=" font-bold text-center text-blue-400">REGISTRO HORAS SALIDA</h2>
   <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
     <div>
-      <label class="block mb-1 font-medium text-indigo-700">Fecha Ida</label>
+      <label class="block mb-1 font-medium text-indigo-700">Fecha Salida</label>
       <input type="date" formControlName="idaFecha"
         class="w-full border border-indigo-300 rounded-md focus:ring-2 focus:ring-indigo-400 p-2" />
     </div>
     <div>
-      <label class="block mb-1 font-medium text-indigo-700">Hora Ida</label>
+      <label class="block mb-1 font-medium text-indigo-700">Hora Salida</label>
       <input type="time" formControlName="idaHora"
         class="w-full border border-indigo-300 rounded-md focus:ring-2 focus:ring-indigo-400 p-2" />
     </div>
     <div>
-      <label class="block mb-1 font-medium text-purple-700">Fecha Vuelta</label>
-      <input type="date" formControlName="vueltaFecha"
+      <label class="block mb-1 font-medium text-purple-700">Fecha llegada</label>
+      <input type="date" formControlName="fechallegada"
         class="w-full border border-purple-300 rounded-md focus:ring-2 focus:ring-purple-400 p-2" />
     </div>
     <div>
-      <label class="block mb-1 font-medium text-purple-700">Hora Vuelta</label>
-      <input type="time" formControlName="vueltaHora"
+      <label class="block mb-1 font-medium text-purple-700">Hora llegada</label>
+      <input type="time" formControlName="horallegada"
+        class="w-full border border-purple-300 rounded-md focus:ring-2 focus:ring-purple-400 p-2" />
+    </div>
+  </div>
+
+  <!-- Fecha y hora de regreso  -->
+  <h2 class=" font-bold text-center text-blue-400">REGISTRO HORAS REGRESO</h2>
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+    <div>
+      <label class="block mb-1 font-medium text-indigo-700">Fecha Salida</label>
+      <input type="date" formControlName="fechasalida"
+        class="w-full border border-indigo-300 rounded-md focus:ring-2 focus:ring-indigo-400 p-2" />
+    </div>
+    
+    <div>
+      <label class="block mb-1 font-medium text-indigo-700">Hora Salida</label>
+      <input type="time" formControlName="horasalida"
+        class="w-full border border-indigo-300 rounded-md focus:ring-2 focus:ring-indigo-400 p-2" />
+    </div>
+    <div>
+      <label class="block mb-1 font-medium text-purple-700">Fecha llegada</label>
+      <input type="date" formControlName="llegadafecha"
+        class="w-full border border-purple-300 rounded-md focus:ring-2 focus:ring-purple-400 p-2" />
+    </div>
+    <div>
+      <label class="block mb-1 font-medium text-purple-700">Hora llegada</label>
+      <input type="time" formControlName="llegadahora"
         class="w-full border border-purple-300 rounded-md focus:ring-2 focus:ring-purple-400 p-2" />
     </div>
   </div>
@@ -113,7 +140,7 @@
   <!-- Botón Registrar -->
   <button type="submit"
     class="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 rounded-md transition">
-    Registrar
+    GUARDAR
   </button>
 
 </form>

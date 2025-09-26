@@ -252,6 +252,80 @@
 
 </div>
 
+<!-- modal y formulario para llenado -->
+ <!-- Botón Traslado Nuevo -->
+<div class="flex justify-center mb-4">
+  <button (click)="abrirModal()" 
+          class="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition">
+    Traslado Nuevo
+  </button>
+</div>
+
+<!-- Modal emergente -->
+<div *ngIf="mostrarModal" 
+     class="fixed inset-0 bg-white/50  flex items-center justify-center z-50 print:hidden"
+     tabindex="0">
+  <div class="bg-white w-[95%] max-w-[1200px] p-6 rounded shadow-lg relative overflow-auto max-h-[90vh]">
+
+    <!-- Botón cerrar -->
+    <button (click)="cerrarModal()" 
+            class="absolute top-2 right-2 text-gray-700 hover:text-gray-900 font-bold">
+      X
+    </button>
+
+    <h2 class="text-center text-lg font-bold mb-4">Nuevo Traslado</h2>
+
+    <div class="grid grid-cols-2 gap-6 text-sm">
+      <!-- Columna izquierda -->
+      <div class="space-y-2">
+        <p><strong>Funcionario solicitante:</strong></p>
+        <input type="text" [(ngModel)]="modalFuncionarioSolicitante" class="w-full border-b border-black px-1 py-1" />
+
+        <p><strong>Matrícula:</strong></p>
+        <input type="text" [(ngModel)]="modalMatriculaSolicitante" class="w-full border-b border-black px-1 py-1" />
+
+        <p><strong>Cargo:</strong></p>
+        <input type="text" [(ngModel)]="modalCargoSolicitante" class="w-full border-b border-black px-1 py-1" />
+
+        <p><strong>Dependencia:</strong></p>
+        <input type="text" [(ngModel)]="modalDependencia" class="w-full border-b border-black px-1 py-1" />
+      </div>
+
+      <!-- Columna derecha -->
+      <div class="space-y-2">
+        <p><strong>Funcionario que autoriza:</strong></p>
+        <input type="text" [(ngModel)]="modalFuncionarioAutoriza" class="w-full border-b border-black px-1 py-1" />
+
+        <p><strong>Motivo:</strong></p>
+        <input type="text" [(ngModel)]="modalMotivo" class="w-full border-b border-black px-1 py-1" />
+
+        <p><strong>Lugar:</strong></p>
+        <input type="text" [(ngModel)]="modalLugar" class="w-full border-b border-black px-1 py-1" />
+
+        <p><strong>Periodo:</strong></p>
+        <input type="text" [(ngModel)]="modalPeriodo" class="w-full border-b border-black px-1 py-1" />
+
+        <p><strong>Total días:</strong></p>
+        <input type="text" [(ngModel)]="modalTotalDias" class="w-full border-b border-black px-1 py-1" />
+
+        <p><strong>Transporte:</strong></p>
+        <input type="text" [(ngModel)]="modalTransporte" class="w-full border-b border-black px-1 py-1" />
+      </div>
+    </div>
+
+    <!-- Botones de acción -->
+    <div class="flex justify-end gap-2 mt-6">
+      <button (click)="cerrarModal()" 
+              class="px-4 py-2 bg-gray-300 rounded hover:bg-gray-400 transition">
+        Cancelar
+      </button>
+      <button (click)="enviarFormularioModal()" 
+              class="px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700 transition">
+        Confirmar
+      </button>
+    </div>
+  </div>
+</div>
 <!-- Botones -->
 <div class="print:hidden flex justify-center gap-4 mt-2">
   <button (click)="toggleEdicion()" class="px-4 py-2 bg-blue-700 text-white text-sm rounded shadow">

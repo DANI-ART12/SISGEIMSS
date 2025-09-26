@@ -1,7 +1,7 @@
 
-
 import { Routes } from '@angular/router';
 import { AuthGuard } from './core/auth/auth.guard';
+import path from 'path';
 
 
 export const routes: Routes = [
@@ -83,6 +83,16 @@ export const routes: Routes = [
           loadComponent: () =>
             import('./pages/registropacientes/registropacientes.component').then(m => m.RegistropacientesComponent)
         },
+        {
+         path: 'historialvehiculos',
+         loadComponent:()=>
+          import('./pages/historialvehiculos/historialvehiculos.component').then(m => m.HistorialvehiculosComponent)
+          },
+          {
+            path: 'trasladosfl',
+            loadComponent:()=>
+             import('./pages/trasladosfl/trasladosfl.component').then(m => m.TrasladosflComponent)
+             },
       
 
         // Fin nuevas rutas

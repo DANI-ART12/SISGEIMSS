@@ -161,7 +161,7 @@
       </td>
     </tr>
 
-    <!-- Firmas (ya corregidas previamente) -->
+    <!-- Firmas  -->
     <tr>
       <!-- Funcionario solicitante -->
       <td class="border border-black p-2 text-center font-[Arial]" colspan="3" style="vertical-align: bottom; ">
@@ -645,9 +645,260 @@
       </td>
     </tr>
   </tbody>
-</table>
+ </table>
+</div> 
 
+
+<div class="p-6 bg-white rounded-xl shadow-md font-sans text-sm">
+
+  <!-- BOTONES -->
+  <div class="mb-4 text-center">
+    <button type="button"
+            (click)="toggleFormulario()"
+            class="px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700">
+      {{ mostrarFormulario ? 'Ocultar formulario' : 'Nuevo traslado' }}
+    </button>
+  </div>
+  <div class="flex justify-end gap-2 mt-6">
+    <button type="button"
+            (click)="guardarPliego()"
+            class="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700">
+      Guardar
+    </button>
+    <button type="button"
+            (click)="cancelarTraslado()"
+            class="px-4 py-2 bg-gray-500 text-white rounded hover:bg-gray-600">
+      Cancelar
+    </button>
+  </div>
+
+
+
+  <!-- FORMULARIO  RELLAR PACIENTES-->
+  <form *ngIf="mostrarFormulario" class="grid grid-cols-2 gap-4">
+
+    <!-- Número de Folio -->
+    <div>
+      <label class="block font-semibold">Número de Folio:</label>
+      <input type="text" [(ngModel)]="pliego.numeroFolio" name="folio"
+             class="w-full border rounded p-2" />
+    </div>
+<!-- paciente -->
+<div>
+  <label class="block font-semibold">usuario:</label>
+  <input type="text" [(ngModel)]="pliego.paciente" name="paciente"
+         class="w-full border rounded p-2" />
 </div>
+
+
+<!-- paciente B -->
+<select (change)="onOtroPacienteChange($event)">
+  <option value="true">Sí</option>
+  <option value="false">No</option>
+</select>
+
+<!-- Bloque de datos del paciente B -->
+<div *ngIf="otroPaciente === true" class="mt-4 p-4 border rounded bg-gray-50">
+  <h3 class="font-bold mb-2">Datos del Paciente B</h3>
+  <div class="mb-2">
+    <label>Nombre:</label>
+    <input type="text" [(ngModel)]="pacienteB.nombre" class="border p-1 w-full" />
+  </div>
+  <div class="mb-2">
+    <label>NSS:</label>
+    <input type="text" [(ngModel)]="pacienteB.nss" class="border p-1 w-full" />
+  </div>
+  <div class="mb-2">
+    <label>Lugar de comisión:</label>
+    <input type="text" [(ngModel)]="pacienteB.lugarComision" class="border p-1 w-full" />
+  </div>
+  <div class="mb-2">
+    <label>Objeto de comisión:</label>
+    <input type="text" [(ngModel)]="pacienteB.objetoComision" class="border p-1 w-full" />
+  </div>
+</div>
+
+
+
+<!-- paciente -->
+<div>
+  <label class="block font-semibold">NSS:</label>
+  <input type="text" [(ngModel)]="pliego.pacientenss" name="NSS"
+         class="w-full border rounded p-2" />
+</div>
+
+    <!-- Usuario -->
+    <div>
+      <label class="block font-semibold">paciente:</label>
+      <input type="text" [(ngModel)]="pliego.usuario" name="usuario"
+             class="w-full border rounded p-2" />
+    </div>
+
+    <!-- Objeto de Comisión -->
+    <div>
+      <label class="block font-semibold">objeto de comision</label>
+      <select [(ngModel)]="pliego.objetoComision" name="operador1"
+              class="w-full border rounded p-2">
+        <option value="trasladop">traslado de paciente</option>
+        <option value="trasladof">traslado de funcionario</option>
+        <option value="otros">otros</option>
+      </select>
+    </div>
+
+
+    <!-- Lugares de Comisión -->
+    <div>
+      <label class="block font-semibold">lugares de comision</label>
+      <select [(ngModel)]="pliego.lugaresComision" name="operador1"
+              class="w-full border rounded p-2">
+        <option value="trasladop">hospital A</option>
+        <option value="trasladof">hospital B</option>
+        <option value="trasladof">traumas</option>
+        <option value="otros">otros</option>
+      </select>
+    </div>
+
+    <!-- Periodo -->
+    <div>
+      <label class="block font-semibold">Periodo del :</label>
+      <input type="date" [(ngModel)]="pliego.periodo" name="periodo"
+             class="w-full border rounded p-2" />
+    </div>
+    <div>
+      <label class="block font-semibold">Al periodo :</label>
+      <input type="date" [(ngModel)]="pliego.periodo" name="periodo"
+             class="w-full border rounded p-2" />
+    </div>
+
+    <!-- Total de Días -->
+    <div>
+      <label class="block font-semibold">Total de Días:</label>
+      <input type="number" [(ngModel)]="pliego.totalDias" name="dias"
+             class="w-full border rounded p-2" />
+    </div>
+
+
+
+    <!-- Certificación por Días -->
+<div class="col-span-2 mt-6">
+  <h3 class="font-bold text-gray-800 mb-2">Certificación por Días</h3>
+  <div class="grid grid-cols-6 gap-4">
+    
+    <!-- KM -->
+    <div>
+      <label class="block font-semibold">Ingresar KM</label>
+      <input type="number" [(ngModel)]="pliego.montoDiario" name="montoDiario"
+             (input)="calcularCertificacion()"
+             class="w-full border rounded p-2" />
+    </div>
+
+    <!-- Operador 1 -->
+    <div>
+      <label class="block font-semibold">Operador</label>
+      <select [(ngModel)]="pliego.operador1" name="operador1"
+              (change)="calcularCertificacion()"
+              class="w-full border rounded p-2">
+        <option value="+">+</option>
+        <option value="-">-</option>
+        <option value="*">*</option>
+        <option value="/">/</option>
+      </select>
+    </div>
+
+    <!-- Divisor -->
+    <div>
+      <label class="block font-semibold">Cantidad Divisoria</label>
+      <input type="number" [(ngModel)]="pliego.totalDias" name="diasCert"
+             (input)="calcularCertificacion()"
+             class="w-full border rounded p-2" />
+    </div>
+
+    <!-- Operador 2 -->
+    <div>
+      <label class="block font-semibold">Operador</label>
+      <select [(ngModel)]="pliego.operador2" name="operador2"
+              (change)="calcularCertificacion()"
+              class="w-full border rounded p-2">
+        <option value="+">+</option>
+        <option value="-">-</option>
+        <option value="*">*</option>
+        <option value="/">/</option>
+      </select>
+    </div>
+
+    <!-- Factor -->
+    <div>
+      <label class="block font-semibold">Factor</label>
+      <input type="number" [(ngModel)]="pliego.constanteCertificacion" name="constante"
+             (input)="calcularCertificacion()"
+             class="w-full border rounded p-2" />
+    </div>
+
+    <!-- Operador 3 -->
+    <div>
+      <label class="block font-semibold">Operador</label>
+      <select [(ngModel)]="pliego.operador3" name="operador3"
+              (change)="calcularCertificacion()"
+              class="w-full border rounded p-2">
+        <option value="+">+</option>
+        <option value="-">-</option>
+        <option value="*">*</option>
+        <option value="/">/</option>
+      </select>
+    </div>
+
+    <!-- Cantidad base -->
+    <div>
+      <label class="block font-semibold">Cantidad Base</label>
+      <input type="number" [(ngModel)]="pliego.cantidadBCertificacion" name="cantidadBase"
+             (input)="calcularCertificacion()"
+             class="w-full border rounded p-2" />
+    </div>
+
+    <!-- Resultado -->
+    <div>
+      <label class="block font-semibold">Resultado</label>
+      <input type="text" [value]="pliego.resultadoCertificacion"
+             readonly
+             class="w-full border rounded p-2 bg-gray-100" />
+    </div>
+  </div>
+</div>
+
+    <!-- Funcionario Solicitante -->
+    <div>
+      <label class="block font-semibold">Funcionario Solicitante:</label>
+      <input type="text" [(ngModel)]="pliego.funcionarioSolicitante" name="solicitante"
+             class="w-full border rounded p-2" />
+    </div>
+
+    <!-- Categoría -->
+    <div>
+      <label class="block font-semibold">Categoría:</label>
+      <input type="text" [(ngModel)]="pliego.categoria" name="categoria"
+             class="w-full border rounded p-2" />
+    </div>
+
+    <!-- Funcionario que Autoriza -->
+    <div class="col-span-2">
+      <label class="block font-semibold">Funcionario que Autoriza:</label>
+      <input type="text" [(ngModel)]="pliego.funcionarioAutoriza" name="autoriza"
+             class="w-full border rounded p-2" />
+    </div>
+
+    <!-- BOTÓN CALCULAR -->
+    <div class="col-span-2 text-center mt-6">
+      <button type="button" (click)="calcularCertificacion()"
+              class="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700">
+        Calcular
+      </button>
+    </div>
+
+  </form>
+</div>
+
+
+
 
 
 <!-- Botones de acción -->
