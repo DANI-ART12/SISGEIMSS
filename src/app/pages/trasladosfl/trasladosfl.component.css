@@ -1,0 +1,71 @@
+.carretera-container {
+    position: relative;
+    width: 100%;
+    height: 130px;
+    overflow: visible; /* para que no corte la animación */
+  }
+  
+  .carretera {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    height: 50px;
+    background: #444;
+    display: flex;
+    align-items: center;
+  }
+  
+  .linea {
+    width: 100%;
+    height: 4px;
+    background: repeating-linear-gradient(to right, white 0 20px, transparent 20px 40px);
+    margin: auto;
+  }
+  
+  .ambulancia {
+    position: absolute;
+    bottom: 30px; /* mismo valor que la altura de la carretera */
+    width: 100px;
+  }
+  
+  
+  .ambulancia img {
+    width: 100%;
+    display: block; /* evita espacios abajo */
+  }
+  
+  /* Ambulancia 1 */
+  .ambulancia1 {
+    left: -50px;
+    animation: moverAmbulancia 5s linear infinite;
+  }
+  
+  /* Ambulancia 2 */
+  .ambulancia2 {
+    left: -50px;
+    animation: moverAmbulancia 5s linear infinite;
+    animation-delay: 3s; /* retrasa la animación para que no coincidan */
+    bottom: 50px;
+  }
+  
+  .sirena {
+    position: absolute;
+    top: 0;
+    left: 40%;
+    width: 20px;
+    height: 10px;
+    background: red;
+    border-radius: 4px;
+    animation: parpadeo 0.5s infinite alternate;
+  }
+  
+  @keyframes moverAmbulancia {
+    0% { left: -120px; }
+    100% { left: 100%; }
+  }
+  
+  @keyframes parpadeo {
+    0% { background: red; }
+    100% { background: blue; }
+  }
+  

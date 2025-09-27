@@ -1,0 +1,153 @@
+<div class="max-w-4xl mx-auto p-8 bg-white shadow rounded-2xl">
+  <h1 class="text-3xl font-bold text-center mb-6">Historial Mantenimiento Vehículos</h1>
+
+  <!-- Botón agregar mantenimiento -->
+  <div class="flex justify-end mb-4">
+    <button (click)="toggleFormulario()"
+            class="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700">
+      {{ mostrarFormulario ? 'Cancelar' : 'Registrar Mantenimiento' }}
+    </button>
+  </div>
+
+  <!-- Formulario Modal -->
+  <div *ngIf="mostrarFormulario" class="fixed inset-0 bg-white/50 flex items-center justify-center z-50">
+    <div class="bg-white rounded-2xl shadow-2xl w-full max-w-3xl p-6 relative">
+      <h2 class="text-xl font-semibold mb-4 text-center">Nuevo Mantenimiento</h2>
+      <button (click)="toggleFormulario()" class="absolute top-3 right-3 text-gray-500 hover:text-red-600">✕</button>
+
+      <form (ngSubmit)="guardarMantenimiento()" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div>
+          <label>Vehículo</label>
+          <input type="text" [(ngModel)]="nuevoMantenimiento.vehiculo" name="vehiculo" class="w-full border px-3 py-2 rounded"/>
+        </div>
+        <div>
+          <label>Placas</label>
+          <select [(ngModel)]="nuevoMantenimiento.placas" name="placas" class="w-full border px-3 py-2 rounded">
+            <option value="">-- Seleccionar --</option>
+            <option *ngFor="let placa of listaPlacas" [value]="placa">{{ placa }}</option>
+          </select>
+        </div>
+        <div>
+          <label>Kilometraje</label>
+          <input type="number" [(ngModel)]="nuevoMantenimiento.kilometraje" name="kilometraje" class="w-full border px-3 py-2 rounded"/>
+        </div>
+        <div>
+          <label>Lugar</label>
+          <input type="text" [(ngModel)]="nuevoMantenimiento.lugar" name="lugar" class="w-full border px-3 py-2 rounded"/>
+        </div>
+        <div>
+          <label>Fecha Ingreso</label>
+          <input type="date" [(ngModel)]="nuevoMantenimiento.fechaIngreso" name="fechaIngreso" class="w-full border px-3 py-2 rounded"/>
+        </div>
+        <div>
+          <label>Fecha Salida</label>
+          <input type="date" [(ngModel)]="nuevoMantenimiento.fechaSalida" name="fechaSalida" class="w-full border px-3 py-2 rounded"/>
+        </div>
+
+        <!-- Servicios -->
+        <div>
+          <label>Afinación Mayor</label>
+          <select [(ngModel)]="nuevoMantenimiento.afinacionMayor" name="afinacionMayor" class="w-full border px-3 py-2 rounded">
+            <option value="">-- Seleccionar --</option>
+            <option *ngFor="let a of listaAfinacionMayor" [value]="a">{{ a }}</option>
+          </select>
+        </div>
+        <div>
+          <label>Frenos</label>
+          <select [(ngModel)]="nuevoMantenimiento.frenos" name="frenos" class="w-full border px-3 py-2 rounded">
+            <option value="">-- Seleccionar --</option>
+            <option *ngFor="let f of listaFrenos" [value]="f">{{ f }}</option>
+          </select>
+        </div>
+        <div>
+          <label>Suspención</label>
+          <select [(ngModel)]="nuevoMantenimiento.suspencion" name="suspencion" class="w-full border px-3 py-2 rounded">
+            <option value="">-- Seleccionar --</option>
+            <option *ngFor="let s of listasuspencion" [value]="s">{{ s }}</option>
+          </select>
+        </div>
+        <div>
+          <label>Complementarios</label>
+          <select [(ngModel)]="nuevoMantenimiento.complementarios" name="complementarios" class="w-full border px-3 py-2 rounded">
+            <option value="">-- Seleccionar --</option>
+            <option *ngFor="let c of listaComplementarios" [value]="c">{{ c }}</option>
+          </select>
+        </div>
+
+        <div class="md:col-span-2">
+          <label>Observaciones</label>
+          <textarea [(ngModel)]="nuevoMantenimiento.observaciones" name="observaciones" rows="3" class="w-full border px-3 py-2 rounded"></textarea>
+        </div>
+
+        <div class="md:col-span-2 flex justify-end gap-2 mt-4">
+          <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">Guardar</button>
+          <button type="button" (click)="toggleFormulario()" class="bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600">Cancelar</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Tabla resumida -->
+  <div class="overflow-x-auto bg-white rounded-2xl shadow">
+    <table class="min-w-full text-sm text-left text-gray-700">
+      <thead class="bg-gray-100 text-gray-800 uppercase text-xs font-semibold">
+        <tr>
+          <th class="px-4 py-2">#</th>
+          <th class="px-4 py-2">Vehículo</th>
+          <th class="px-4 py-2">Placas</th>
+          <th class="px-4 py-2">Kilometraje</th>
+          <th class="px-4 py-2">Lugar</th>
+          <th class="px-4 py-2">Acciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let h of historial" class="border-b hover:bg-gray-50">
+          <td class="px-4 py-2">{{ h.id }}</td>
+          <td class="px-4 py-2 font-medium">{{ h.vehiculo }}</td>
+          <td class="px-4 py-2">{{ h.placas }}</td>
+          <td class="px-4 py-2">{{ h.kilometraje | number }} km</td>
+          <td class="px-4 py-2">{{ h.lugar }}</td>
+          <td class="px-4 py-2">
+            <button (click)="abrirDetalles(h)" class="bg-blue-600 text-white px-2 py-1 rounded hover:bg-blue-700">Ver detalles</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Modal detalles -->
+  <div *ngIf="mostrarDetalles" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+    <div class="bg-white rounded-2xl shadow-2xl w-full max-w-3xl p-6 relative">
+      <h2 class="text-xl font-semibold mb-4 text-center">Detalles del Mantenimiento</h2>
+      <button (click)="cerrarDetalles()" class="absolute top-3 right-3 text-gray-500 hover:text-red-600">✕</button>
+      <table class="min-w-full text-sm text-left text-gray-700">
+        <tbody>
+          <tr><td class="font-semibold px-4 py-2">#</td><td class="px-4 py-2">{{ mantenimientoSeleccionado.id }}</td></tr>
+          <tr><td class="font-semibold px-4 py-2">Vehículo</td><td class="px-4 py-2">{{ mantenimientoSeleccionado.vehiculo }}</td></tr>
+          <tr><td class="font-semibold px-4 py-2">Placas</td><td class="px-4 py-2">{{ mantenimientoSeleccionado.placas }}</td></tr>
+          <tr><td class="font-semibold px-4 py-2">Kilometraje</td><td class="px-4 py-2">{{ mantenimientoSeleccionado.kilometraje | number }} km</td></tr>
+          <tr><td class="font-semibold px-4 py-2">Lugar</td><td class="px-4 py-2">{{ mantenimientoSeleccionado.lugar }}</td></tr>
+          <tr><td class="font-semibold px-4 py-2">Ingreso</td><td class="px-4 py-2">{{ mantenimientoSeleccionado.fechaIngreso }}</td></tr>
+          <tr><td class="font-semibold px-4 py-2">Salida</td><td class="px-4 py-2">{{ mantenimientoSeleccionado.fechaSalida }}</td></tr>
+          <tr><td class="font-semibold px-4 py-2">Tipo de servicio(s)</td>
+              <td class="px-4 py-2">
+                {{ mantenimientoSeleccionado.afinacionMayor ? 'Afinación Mayor' : '' }}
+                {{ mantenimientoSeleccionado.frenos ? 'Frenos' : '' }}
+                {{ mantenimientoSeleccionado.suspencion ? 'Suspensión' : '' }}
+                {{ mantenimientoSeleccionado.complementarios ? 'Complementarios' : '' }}
+              </td>
+          </tr>
+          <tr><td class="font-semibold px-4 py-2">Servicio(s)</td>
+              <td class="px-4 py-2">
+                {{ mantenimientoSeleccionado.afinacionMayor }} 
+                {{ mantenimientoSeleccionado.frenos }} 
+                {{ mantenimientoSeleccionado.suspencion }} 
+                {{ mantenimientoSeleccionado.complementarios }}
+              </td>
+          </tr>
+          <tr><td class="font-semibold px-4 py-2">Observaciones</td><td class="px-4 py-2">{{ mantenimientoSeleccionado.observaciones }}</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>

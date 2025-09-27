@@ -1,0 +1,189 @@
+<!-- Botón para abrir modal -->
+<div class="mb-4 text-center">
+    <button (click)="abrirModal()" 
+            class="px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700">
+      Nuevo Traslado
+    </button>
+  </div>
+  
+  <!--  mostra modal emergente-->
+  <div *ngIf="mostrarModal" 
+       class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+  
+    <div class="bg-white rounded-lg shadow-lg p-6 w-full max-w-md relative">
+      <!-- Botón cerrar -->
+      <button (click)="cerrarModal()" 
+              class="absolute top-2 right-2 text-gray-600 hover:text-red-600">
+        ✕
+      </button>
+  
+      <h2 class="text-lg font-bold mb-4">Registrar Traslado</h2>
+  
+      <!-- Tipo de traslado -->
+      <div class="mb-3">
+        <label class="block font-medium">Tipo de Traslado</label>
+        <select [(ngModel)]="trasladoNuevo.tipoTraslado" name="tipoTraslado"
+                class="w-full border p-2 rounded text-sm">
+          <option value="Local">Local</option>
+          <option value="Foráneo">Foráneo</option>
+        </select>
+      </div>
+  
+      <!-- Folio manual para Local -->
+      <div *ngIf="trasladoNuevo.tipoTraslado === 'Local'" class="mb-3">
+        <label class="block font-medium">Número de Pliego / Folio</label>
+        <input type="text" [(ngModel)]="trasladoNuevo.numeroPliego" name="numeroPliego"
+               class="w-full border p-2 rounded text-sm" placeholder="Ej. L001/2025" required>
+      </div>
+  
+      <!-- Folio automático para Foráneo -->
+      <div *ngIf="trasladoNuevo.tipoTraslado === 'Foráneo' && trasladoNuevo.numeroPliego" class="mb-3">
+        <label class="block font-medium">Folio Foráneo Generado</label>
+        <input type="text" [value]="trasladoNuevo.numeroPliego"
+               class="w-full border p-2 rounded text-sm bg-gray-100" readonly>
+      </div>
+  
+      <!-- Paciente -->
+      <div class="mb-3">
+        <label class="block font-medium">Paciente</label>
+        <input type="text" [(ngModel)]="trasladoNuevo.paciente" name="paciente"
+               class="w-full border p-2 rounded text-sm" required>
+      </div>
+  
+      <!-- Lugar -->
+      <div class="mb-3">
+        <label class="block font-medium">Lugar</label>
+        <input type="text" [(ngModel)]="trasladoNuevo.lugar" name="lugar"
+               class="w-full border p-2 rounded text-sm" required>
+      </div>
+  
+      <!-- Operador (lista desplegable) -->
+      <div class="mb-3">
+        <label class="block font-medium">Operador</label>
+        <select [(ngModel)]="trasladoNuevo.operador" name="operador"
+                class="w-full border p-2 rounded text-sm" required>
+          <option *ngFor="let op of operadores" [value]="op">{{ op }}</option>
+        </select>
+      </div>
+  
+      <!-- Fecha y hora -->
+      <div class="grid grid-cols-2 gap-2 mb-3">
+        <div>
+          <label class="block font-medium">Fecha</label>
+          <input type="date" [(ngModel)]="trasladoNuevo.fecha" name="fecha"
+                 class="w-full border p-2 rounded text-sm" required>
+        </div>
+        <div>
+          <label class="block font-medium">Hora</label>
+          <input type="time" [(ngModel)]="trasladoNuevo.hora" name="hora"
+                 class="w-full border p-2 rounded text-sm" required>
+        </div>
+      </div>
+  
+        <!-- Estado del traslado -->
+        <div class="mb-4">
+          <label class="block font-medium mb-1">Estado del Traslado</label>
+          <div class="flex gap-2">
+            <button type="button"
+                    (click)="cambiarEstado('Pendiente')"
+                    [class.bg-green-600]="trasladoNuevo.estado === 'Pendiente'"
+                    [class.text-white]="trasladoNuevo.estado === 'Pendiente'"
+                    class="px-3 py-1 rounded border">
+              Pendiente
+            </button>
+            <button type="button"
+                    (click)="cambiarEstado('En Proceso')"
+                    [class.bg-blue-600]="trasladoNuevo.estado === 'En Proceso'"
+                    [class.text-white]="trasladoNuevo.estado === 'En Proceso'"
+                    class="px-3 py-1 rounded border">
+              En Proceso
+            </button>
+            <button type="button"
+                    (click)="cambiarEstado('Finalizado')"
+                    [class.bg-gray-700]="trasladoNuevo.estado === 'Finalizado'"
+                    [class.text-white]="trasladoNuevo.estado === 'Finalizado'"
+                    class="px-3 py-1 rounded border">
+              Finalizado
+            </button>
+          </div>
+        </div>
+    
+  
+      <!-- Guardar -->
+      <div class="text-right">
+        <button (click)="guardarTraslado()" 
+                class="px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700">
+          Guardar Traslado
+        </button>
+      </div>
+    </div>
+  </div>
+  
+  <!-- ================= TABLEROS ================= -->
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">
+    <!-- Traslados de Hoy -->
+    <div class="bg-white p-4 rounded shadow">
+      <h2 class="text-lg font-bold mb-3">Traslados de Hoy</h2>
+      <table class="w-full text-sm border">
+        <thead class="bg-gray-200">
+          <tr>
+            <th class="border p-1">Folio</th>
+            <th class="border p-1">Paciente</th>
+            <th class="border p-1">Lugar</th>
+            <th class="border p-1">Operador</th>
+            <th class="border p-1">Estado</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let t of trasladosHoy">
+            <td class="border p-1">{{ t.numeroPliego }}</td>
+            <td class="border p-1">{{ t.paciente }}</td>
+            <td class="border p-1">{{ t.lugar }}</td>
+            <td class="border p-1">{{ t.operador }}</td>
+            <td class="border p-1">{{ t.estado }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  
+    <!-- Traslados Próximos -->
+    <div class="bg-white p-4 rounded shadow">
+      <h2 class="text-lg font-bold mb-3">Traslados Próximos</h2>
+      <table class="w-full text-sm border">
+        <thead class="bg-gray-200">
+          <tr>
+            <th class="border p-1">Folio</th>
+            <th class="border p-1">Paciente</th>
+            <th class="border p-1">Lugar</th>
+            <th class="border p-1">Operador</th>
+            <th class="border p-1">Estado</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let t of trasladosProximos">
+            <td class="border p-1">{{ t.numeroPliego }}</td>
+            <td class="border p-1">{{ t.paciente }}</td>
+            <td class="border p-1">{{ t.lugar }}</td>
+            <td class="border p-1">{{ t.operador }}</td>
+            <td class="border p-1">{{ t.estado }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  
+  <div class="carretera-container">
+    <div class="carretera">
+      <div class="linea"></div>
+    </div>
+  
+    <div class="ambulancia ambulancia1">
+      <img src="assets/imsslogo.png" alt="Ambulancia" />
+    </div>
+  
+    <div class="ambulancia ambulancia2">
+      <img src="assets/imsslogo.png" alt="Ambulancia" />
+    </div>
+  
+    </div>
+  
