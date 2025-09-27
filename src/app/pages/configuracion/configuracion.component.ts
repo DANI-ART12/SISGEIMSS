@@ -267,43 +267,24 @@ getVehiculos(): void {
   }
 
 
-
-
-// guardarVehiculo() {
-//   if (!this.nuevoVehiculo.placa || !this.nuevoVehiculo.modelo) {
-//     alert('Rellena todos los campos obligatorios.');
-//     return;
-//   }
-
-//   this.vehiculoService.addVehiculo(this.nuevoVehiculo).subscribe({
-//     next: (response) => {
-//       alert('Vehículo agregado exitosamente');
-//       this.getVehiculos(); // ✅ Recarga la lista desde la BD
-//       this.mostrarFormularioVehiculo = false;
-//       this.nuevoVehiculo = this.getNuevoVehiculoVacio();
-//     },
-//     error: (error) => {
-//       console.error('Error al agregar vehículo:', error);
-//       alert('Error al agregar vehículo');
-//     }
-//   });
-// }
-
-
-
 guardarVehiculo() {
   if (!this.nuevoVehiculo.placa || !this.nuevoVehiculo.modelo) {
     alert('Rellena todos los campos obligatorios.');
     return;
   }
 
-  // 👀 Mostrar en consola los datos que se van a enviar
-  console.log('Datos del vehículo a enviar:', this.nuevoVehiculo);
+  const vehiculoAEnviar = {
+    ...this.nuevoVehiculo,
+    fkIdTipoVehiculo: Number(this.nuevoVehiculo.fkIdTipoVehiculo), // 👈 forzar número
+    estatus: this.nuevoVehiculo.estatus?.toUpperCase() || 'ALTA'   // 👈 forzar mayúsculas
+  };
 
-  this.vehiculoService.addVehiculo(this.nuevoVehiculo).subscribe({
+  console.log('Datos del vehículo a enviar:', vehiculoAEnviar);
+
+  this.vehiculoService.addVehiculo(vehiculoAEnviar).subscribe({
     next: (response) => {
       alert('Vehículo agregado exitosamente');
-      this.getVehiculos(); // ✅ Recarga la lista desde la BD
+      this.getVehiculos();
       this.mostrarFormularioVehiculo = false;
       this.nuevoVehiculo = this.getNuevoVehiculoVacio();
     },
@@ -367,27 +348,6 @@ guardarVehiculo() {
   } 
 }
 
-
-
-
-
-  // guardarVehiculo() {
-  //   if (!this.nuevoVehiculo.fkIdTipoVehiculo || !this.nuevoVehiculo.placa || !this.nuevoVehiculo.modelo) {
-  //     alert('Por favor, rellena todos los campos obligatorios del vehículo.');
-  //     return;
-  //   }
-  //   const nuevo: Vehiculo = {
-  //     ...this.nuevoVehiculo,
-  //     idVehiculo : this.vehiculos.length ? Math.max(...this.vehiculos.map(v => v.idVehiculo ?? 0)) + 1 : 1
-  //   };
-  //   this.vehiculos.push(nuevo);
-  //   this.mostrarFormularioVehiculo = false;
-  //   this.nuevoVehiculo = this.getNuevoVehiculoVacio();
-  // }
-
-
-
-
   
   // guardarCambiosVehiculo() {
   //   if (!this.vehiculoSeleccionado) return;
@@ -399,19 +359,3 @@ guardarVehiculo() {
   //   }
   // }
 
-
-    //  guardarVehiculo() {
-  //   console.log('Datos que se enviarán al backend:', this.nuevoVehiculo);
-
-  //   this.vehiculoService.addVehiculo(this.nuevoVehiculo).subscribe({
-  //     next: () => {
-  //       alert('Vehículo agregado exitosamente');
-  //       this.getVehiculos();
-  //       this.mostrarFormularioVehiculo = false;
-  //     },
-  //     error: (error) => {
-  //       console.error('Error al agregar vehículo:', error);
-  //       alert('Error al agregar vehículo');
-  //     }
-  //   });
-  // }
