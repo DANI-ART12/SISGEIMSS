@@ -149,37 +149,36 @@ export class ConfiguracionComponent implements OnInit {
     this.usuarioSeleccionado = null;
   }
 
-  guardarUsuario() {
-    if (!this.nuevoUsuario.nombreUsuario || !this.nuevoUsuario.matriculaUsuario) {
-      alert('Por favor llena todos los campos obligatorios.');
-      return;
-    }
-     // Mostrar datos en consola antes de enviar
-    console.log('Datos que se enviarán al backend:', this.nuevoUsuario)
 
-    const nuevo: Usuario = {
-      ...this.nuevoUsuario,
-      idUsuario: this.usuarios.length ? Math.max(...this.usuarios.map(u => u.id ?? 0)) + 1 : 1,
-      passwordUsuario: this.nuevoUsuario.matriculaUsuario
-    };
-
-    
-
-    this.usuarioService.addUsuario(this.nuevoUsuario).subscribe({
-      next: (response) => {
-        console.log('Usuario agregado exitosamente:', response);
-        alert('Usuario agregado exitosamente');
-        this.getUsuarios(); // Refrescar la lista de usuarios
-        this.mostrarFormularioUsuario = false;
-        this.nuevoUsuario = this.getNuevoUsuarioVacio();
-      },
-      error: (error) => {
-        console.error('Error al agregar usuario:', error);
-        alert('Error al agregar usuario. Por favor, intenta de nuevo.');
-      }
-    })
-    this.usuarios.push(nuevo);
+    guardarUsuario() {
+  if (!this.nuevoUsuario.nombreUsuario || !this.nuevoUsuario.matriculaUsuario) {
+    alert('Por favor llena todos los campos obligatorios.');
+    return;
   }
+
+  // Convertir fkIdTipoUsuario a número 👈
+  const nuevo: Usuario = {
+    ...this.nuevoUsuario,
+    fkIdTipoUsuario: Number(this.nuevoUsuario.fkIdTipoUsuario),  // 🔥 fuerza a número
+    idUsuario: this.usuarios.length
+      ? Math.max(...this.usuarios.map(u => u.id ?? 0)) + 1
+      : 1,
+    passwordUsuario: this.nuevoUsuario.matriculaUsuario
+  };
+
+  // Mostrar datos en consola antes de enviar
+  console.log('Datos que se enviarán al backend:', nuevo);
+
+  this.usuarioService.addUsuario(nuevo).subscribe({
+    next: () => {
+      console.log('Usuario creado correctamente');
+      // aquí podrías refrescar la lista o limpiar el formulario
+    },
+    error: (err) => {
+      console.error('Error al agregar usuario:', err);
+    }
+  });
+}
 
   editarUsuario(usuario: Usuario) {
     this.editarUsuarioActivo = true;
@@ -214,7 +213,7 @@ export class ConfiguracionComponent implements OnInit {
 
   getStatusTexto(statusUsuario: number): string {
   switch (statusUsuario) {
-    case 1:
+    case 5:
       return 'Alta';
     case 0:
       return 'Baja';
@@ -228,7 +227,7 @@ tipoUsuarioMap: { [key: number]: string } = {
   5: 'Administrador',
   2: 'Subadministrador',
   3: 'Operador',
-  4: 'Administrativo'
+  1: 'Administrativo'
 };
 
 
