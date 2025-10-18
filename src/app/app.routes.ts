@@ -105,3 +105,32 @@ export const routes: Routes = [
     },
     { path: '**', redirectTo: 'login', pathMatch: 'full'  }
   ];
+
+
+// import { RenderMode, ServerRoute } from '@angular/ssr';
+
+// export const serverRoutes: ServerRoute[] = [
+//   // Login: renderizado en cada request (SSR clásico)
+//   { path: 'login', renderMode: RenderMode.Server },
+
+//   // Rutas internas: renderizadas también en el servidor
+//   { path: 'dashboard', renderMode: RenderMode.Server },
+//   { path: 'registro-km', renderMode: RenderMode.Server },
+//   { path: 'viajes', renderMode: RenderMode.Server },
+//   { path: 'traslados', renderMode: RenderMode.Server },
+//   { path: 'configuracion', renderMode: RenderMode.Server },
+//   { path: 'especialidades', renderMode: RenderMode.Server },
+//   { path: 'informecomision', renderMode: RenderMode.Server },
+//   { path: 'historial', renderMode: RenderMode.Server },
+//   { path: 'pliego-comision', renderMode: RenderMode.Server },
+//   { path: 'graficos', renderMode: RenderMode.Server },
+//   { path: 'pliegoactual', renderMode: RenderMode.Server },
+//   { path: 'historialpagos', renderMode: RenderMode.Server },
+//   { path: 'registropacientes', renderMode: RenderMode.Server },
+//   { path: 'historialvehiculos', renderMode: RenderMode.Server },
+//   { path: 'trasladosfl', renderMode: RenderMode.Server },
+//   { path: '403', renderMode: RenderMode.Server },
+
+//   // Wildcard: prerender de todo lo demás
+//   { path: '**', renderMode: RenderMode.Prerender }
+// ];
