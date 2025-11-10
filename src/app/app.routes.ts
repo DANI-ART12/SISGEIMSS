@@ -93,7 +93,40 @@ export const routes: Routes = [
             loadComponent:()=>
              import('./pages/trasladosfl/trasladosfl.component').then(m => m.TrasladosflComponent)
              },
-      
+             {
+              path: 'comprobacion',
+              loadComponent:()=>
+               import('./pages/comprobacion/comprobacion.component').then(m => m.ComprobacionComponent)
+               },
+               {
+                path: 'viaticos-pasajes',
+                loadComponent:()=>
+                 import('./pages/viaticos-pasajes/viaticos-pasajes.component').then(m => m.ViaticosPasajesComponent)
+                 },
+        {
+          path: 'gastos',
+          loadComponent:()=>
+            import('./pages/gastos/gastos.component').then(m => m.GastosComponent)
+        },
+        {
+          path: 'solicitudvyp',
+          loadComponent:()=>
+            import('./pages/solicitudvyp/solicitudvyp.component').then(m => m.SolicitudvypComponent)
+        },
+        {
+          path: 'nuevoinforme',
+          loadComponent:()=>
+            import('./pages/nuevoinforme/nuevoinforme.component').then(m => m.NuevoinformeComponent)
+        },
+        {
+          path: 'pliego',
+          loadComponent:()=>
+            import('./pages/pliego/pliego.component').then(m => m.PliegoComponent)
+        },
+  
+  
+  
+  
 
         // Fin nuevas rutas
         {

@@ -1,1 +1,200 @@
-<p>comprobacion works!</p>
+<div class="bg-white text-xs text-black  font-sans  shadow-xl border border-gray-400 p-8 w-[210mm] min-h-[297mm] mx-auto" id="pliego">
+
+  <div class="mb-4 print:hidden">
+      <button (click)="openModal()" class="bg-green-600 text-white px-4 py-2 rounded shadow hover:bg-green-700">
+          Agregar Datos
+      </button>
+  </div>
+
+  <div class="flex items-start mb-2">
+      <div class="flex-shrink-0 text-center mr-4">
+          <img src="assets/logoimss.png" alt="IMSS" class="w-16 h-16 mx-auto mb-1"/>
+          <p class="text-[10px] font-bold">IMSS</p>
+      </div>
+      <div class="flex-grow text-center">
+          <p class="font-bold text-sm">INSTITUTO MEXICANO DEL SEGURO SOCIAL</p>
+          <p class="mt-1">RFC OEGP811027BQ5 &nbsp;&nbsp; CURP OEGP811027MOCRRL08</p>
+          <p class="font-bold underline mt-2">COMPROBACIÓN DEL PLIEGO DE COMISIÓN Nº 493/2024</p>
+      </div>
+  </div>
+  
+  <div class="flex justify-between text-[11px] mb-4">
+      <div class="flex-grow">
+          <div class="mx-auto w-fit text-left"> 
+              <p class="flex items-center space-x-2">
+                  <span class="font-bold">CUENTA:</span>
+                  <span>{{ datos.cuenta }}</span>
+              </p>
+              <p>
+                  <span class="opacity-0 invisible">CUENTA: </span> <span class="pl-2">{{ datos.cuenta_secundaria || '219001 760110 4206 1623' }}</span> 
+              </p>
+          </div>
+      </div>
+      
+      <div class="text-right">
+          <p>OAXACA DE JUÁREZ, OAX. 08/11/2024</p>
+      </div>
+  </div>
+
+
+
+  <div class="border border-black p-2 mb-4 no-break text-[12px]">
+    
+    <div class="grid grid-cols-12 gap-x-2 border-b border-gray-300">
+        <span class="col-span-3 font-bold">FUNCIONARIO SOLICITANTE:</span>
+        <span class="col-span-9">{{ datos.funcionario_solicitante || 'DRA. TANIA GONZALEZ GUZMAN' }}</span>
+    </div>
+    
+    <div class="grid grid-cols-12 gap-x-2 border-b border-gray-300">
+        <span class="col-span-3 font-bold">CARGO:</span>
+        <span class="col-span-5 mr-4">{{ datos.cargo_solicitante || 'JEFA DE SERVICIOS DE DESARROLLO DE PERSONAL' }}</span>
+        <span class="col-span-2 font-bold text-right">MATRICULA:</span>
+        <span class="col-span-2 text-right">{{ datos.matricula_solicitante || '98210795' }}</span>
+    </div>
+
+    <div class="grid grid-cols-12 gap-x-2 border-b border-gray-300">
+        <span class="col-span-3 font-bold">DEPENDENCIA:</span>
+        <span class="col-span-9">{{ datos.dependencia || 'ÓRGANO DE OPERACIÓN ADMINISTRATIVA DESCONCENTRADA' }}</span>
+    </div>
+
+    <div class="grid grid-cols-12 gap-x-2 border-b border-gray-300">
+        <span class="col-span-3 font-bold">EMPLEADO COMISIONADO:</span>
+        <span class="col-span-6 mr-2">{{ datos.empleado_comisionado || 'ENF. IVONNE ADELA MARTINEZ MENDOZA' }}</span>
+        <span class="col-span-2 font-bold text-right">TIPO CONTRATACION:</span>
+        <span class="col-span-1 text-right">{{ datos.tipo_contratacion || 'CONFIANZA B' }}</span>
+    </div>
+
+    <div class="grid grid-cols-12 gap-x-2 border-b border-gray-300">
+        <span class="col-span-2 font-bold">MATRICULA:</span>
+        <span class="col-span-2 mr-2">{{ datos.matricula_comisionado || '11871156' }}</span>
+        <span class="col-span-3 font-bold">GRUPO JERÁRQUICO:</span>
+        <span class="col-span-3 mr-2">{{ datos.grupo_jerarquico || 'COORD. EDUC E INV EN SALUD' }}</span>
+        <span class="col-span-1 font-bold">TELEFONO OFICINA:</span>
+        <span class="col-span-1 text-right">{{ datos.telefono || '9515152033' }}</span>
+    </div>
+
+    <div class="grid grid-cols-12 gap-x-2 border-b border-gray-300">
+        <span class="col-span-3 font-bold">MOTIVO DE LA COMISIÓN:</span>
+        <span class="col-span-9">{{ datos.motivo || 'ASISTE A CAPACITACIÓN "SEGUNDO TALLER PARA LA IMPARTICION DEL PROGRAMA DE DESARROLLO GERENCIAL"' }}</span>
+    </div>
+
+    <div class="grid grid-cols-12 gap-x-2 border-b border-gray-300">
+        <span class="col-span-3 font-bold">PERÍODO SOLICITADO:</span>
+        <span class="col-span-3 mr-2">{{ datos.periodo_solicitado || 'DEL 3 AL 5 DE NOVIEMBRE DEL 2024' }}</span>
+        <span class="col-span-3 font-bold">PERÍODO COMPROBADO:</span>
+        <span class="col-span-3">{{ datos.periodo_comprobado || 'DEL 3 AL 5 DE NOVIEMBRE DEL 2024' }}</span>
+    </div>
+
+    <div class="grid grid-cols-12 gap-x-2"> <span class="col-span-3 font-bold">LUGAR (ES) DE LA COMISION:</span>
+        <span class="col-span-3 mr-2">{{ datos.lugar_comision || 'CIUDAD DE MEXICO' }}</span>
+        <span class="col-span-3 font-bold">MEDIO DE TRANSPORTE:</span>
+        <span class="col-span-3">{{ datos.transporte || 'TRASLADO TERRESTRE' }}</span>
+    </div>
+</div>
+
+
+  <table class="w-full border-collapse text-[11px] mb-6 border-2 border-black">
+      <thead>
+          <tr>
+              <th colspan="3" class="bg-white border-b-2 border-black py-1 text-center font-bold text-base">
+                  LIQUIDACIÓN
+              </th>
+          </tr>
+          <tr class="bg-white border-b-2 border-black">
+              <th class="border border-black px-2 py-1 font-bold w-1/2 text-left">CONCEPTO :</th>
+              <th class="border border-black px-2 py-1 font-bold w-1/4 text-center">CARGO :</th>
+              <th class="border border-black px-2 py-1 font-bold w-1/4 text-center">ABONO :</th>
+          </tr>
+      </thead>
+      <tbody>
+          <tr><td class="border border-black px-2 py-1">COMPROBANTE(S) DE HOSPEDAJE</td><td class="border border-black px-2 py-1 text-right">$ -</td><td class="border border-black px-2 py-1 text-right">$ -</td></tr>
+          <tr><td class="border border-black px-2 py-1">COMPROBANTES DE ALIMENTACIÓN</td><td class="border border-black px-2 py-1 text-right">$ -</td><td class="border border-black px-2 py-1 text-right">$ -</td></tr>
+          <tr><td class="border border-black px-2 py-1">COMPROBANTES DE PEAJE O TRANSPORTE</td><td class="border border-black px-2 py-1 text-right">$ -</td><td class="border border-black px-2 py-1 text-right">$ -</td></tr>
+          <tr><td class="border border-black px-2 py-1">COMPROBANTES DE COMBUSTIBLE</td><td class="border border-black px-2 py-1 text-right">$ -</td><td class="border border-black px-2 py-1 text-right">$ -</td></tr>
+          <tr class="border-b-2 border-black"><td class="border border-black px-2 py-1">OTROS GASTOS</td><td class="border border-black px-2 py-1 text-right">$ -</td><td class="border border-black px-2 py-1 text-right">$ -</td></tr>
+          <tr class="font-bold"><td class="border border-black px-2 py-1">SUMAS</td><td class="border border-black px-2 py-1 text-right">$ -</td><td class="border border-black px-2 py-1 text-right">$ -</td></tr>
+          <tr class="font-bold border-b-2 border-black"><td class="border border-black px-2 py-1">SALDO</td><td class="border border-black px-2 py-1 text-right">$ -</td><td class="border border-black px-2 py-1 text-right">$ -</td></tr>
+          <tr><td class="border border-black px-2 py-1">BOLETO DE AVION</td><td class="border border-black px-2 py-1 text-right">$ -</td><td class="border border-black px-2 py-1 text-right">$ -</td></tr>
+          <tr class="font-bold"><td class="border border-black px-2 py-1">SUMA FINAL</td><td class="border border-black px-2 py-1 text-right">$ -</td><td class="border border-black px-2 py-1 text-right">$ -</td></tr>
+      </tbody>
+  </table>
+
+  <div class="grid grid-cols-3 border-t-2 border-black border-l border-r border-b border-collapse text-center text-[11px] mb-6">
+      <div class="border-r border-black p-0">
+          <p class="border-b border-black font-bold py-1">ELABORÓ</p>
+          <div class="h-24"></div> 
+      </div>
+      <div class="border-r border-black p-0">
+          <p class="border-b border-black font-bold py-1">REVISÓ</p>
+          <div class="h-24"></div> 
+      </div>
+      <div class="p-0">
+          <p class="border-b border-black font-bold py-1">CONFORME RESULTADO LIQUIDACIÓN</p>
+          <div class="h-24"></div> 
+      </div>
+  </div>
+
+  <div class="w-full border border-black border-collapse text-[11px] mt-6">
+      <div class="border-b border-black text-center font-bold py-1">
+          RECIBO A LA TESORERÍA DEL INSTITUTO MEXICANO DEL SEGURO SOCIAL
+      </div>
+
+      <div class="flex justify-between border-b border-black">
+          <div class="px-2 py-2 flex-grow border-r border-black">
+              <span class="inline-block">RECIBÍ LA CANTIDAD DE $ ____________________ </span>
+              (<span class="italic">_______________________________________</span>)
+          </div>
+          <div class="px-2 py-2 text-right flex-shrink-0">
+              BUENO POR $ ____________________
+          </div>
+      </div>
+
+      <div class="px-2 py-2 border-b border-black">
+          POR CONCEPTO DE SALDO A MI FAVOR COMO RESULTADO DE LA LIQUIDACIÓN POR COMPROBACIÓN
+          DE LA COMISIÓN EFECTUADA.
+      </div>
+
+      <div class="grid grid-cols-2">
+          <div class="border-r border-black text-center py-6 h-full flex flex-col justify-center items-center">
+              <p class="font-bold">AUTORIZA EL PAGO DEL SALDO</p>
+          </div>
+          <div class="text-center py-4">
+              <p class="font-bold">ENF. IVONNE ADELA MARTINEZ MENDOZA</p>
+              <p>11871156</p>
+              <p class="border-t border-black inline-block px-8 mt-2">FIRMA DEL EMPLEADO COMISIONADO</p>
+          </div>
+      </div>
+      
+      <div class="border-t border-black text-right text-[10px] px-2 py-1">
+          1270-009-037
+      </div>
+  </div>
+  
+  <div class="mt-6 text-center print:hidden">
+    <button (click)="imprimir()" class="bg-blue-600 text-white px-4 py-2 rounded shadow hover:bg-blue-700">
+        Imprimir Pliego
+    </button>
+  </div>
+</div>
+
+<div *ngIf="mostrarModal" class="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center">
+  <div class="bg-white p-6 rounded-xl w-96">
+      <h3 class="text-lg font-bold mb-4">Datos del Pliego</h3>
+      <form>
+          <label class="block mb-2 font-semibold">Cuenta</label>
+          <input type="text" [(ngModel)]="tempDatos.cuenta" name="cuenta" class="w-full border rounded p-2 mb-3"/>
+
+          <label class="block mb-2 font-semibold">Funcionario solicitante</label>
+          <input type="text" [(ngModel)]="tempDatos.funcionario_solicitante" name="funcionario_solicitante" class="w-full border rounded p-2 mb-3"/>
+
+          <label class="block mb-2 font-semibold">Cargo / Dependencia</label>
+          <input type="text" [(ngModel)]="tempDatos.cargo_solicitante" name="cargo_solicitante" class="w-full border rounded p-2 mb-3"/>
+          
+          </form>
+
+      <div class="flex justify-end space-x-2 mt-4">
+          <button (click)="closeModal()" class="px-3 py-2 bg-gray-400 rounded-lg text-white">Cancelar</button>
+          <button (click)="confirmarDatos()" class="px-3 py-2 bg-green-600 rounded-lg text-white">Guardar</button>
+      </div>
+  </div>
+</div>

@@ -607,7 +607,46 @@
     </tbody>
   </table>
   
+
+
+  <div class="border border-black w-full text-xs font-sans">
+    <div class="grid grid-cols-3 divide-x divide-black text-center">
+      
+      <!-- Columna 1: ELABORO -->
+      <div class="p-2">
+        <div class="border-b border-black font-bold">ELABORO</div>
+        <div class="mt-2">
+          <p>M.A. SALOMON JONAS MEDINA GALLEGOS</p>
+          <p class="text-[10px]">JEFE DEPTO SERV. GRALES HGZ. 01</p>
+        </div>
+      </div>
   
+      <!-- Columna 2: REVISO -->
+      <div class="p-2">
+        <div class="border-b border-black font-bold">REVISO</div>
+        <div class="mt-2">
+          <p>M.A. SALOMON JONAS MEDINA GALLEGOS</p>
+          <p class="text-[10px]">JEFE DEPTO SERV. GRALES HGZ. 01</p>
+        </div>
+      </div>
+  
+      <!-- Columna 3: LIQUIDACION -->
+      <div class="p-2">
+        <div class="border-b border-black font-bold">
+          CONFORME RESULTADO LIQUIDACIÓN
+        </div>
+        <div class="mt-2">
+          <p class="font-bold">VIRIDIANA EDEN ENRIQUEZ DIAZ</p>
+          <p class="text-[10px] italic">
+            Firma autógrafa empleado comisionado
+          </p>
+        </div>
+      </div>
+  
+    </div>
+  </div>
+  
+
 
 <!-- RECIBÍ CANTIDAD -->
 <div class="border border-black p-4 mb-4 text-justify text-xs">
@@ -649,6 +688,23 @@
 </div> 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 <div class="p-6 bg-white rounded-xl shadow-md font-sans text-sm">
 
   <!-- BOTONES -->
@@ -659,6 +715,24 @@
       {{ mostrarFormulario ? 'Ocultar formulario' : 'Nuevo traslado' }}
     </button>
   </div>
+
+
+
+   <!-- MODAL -->
+   <div *ngIf="mostrarFormulario" 
+   class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+
+<div class="bg-white rounded-xl shadow-lg w-full max-w-4xl p-6 relative overflow-y-auto max-h-[90vh]">
+  
+  <!-- BOTÓN CERRAR -->
+  <button (click)="toggleFormulario()" 
+          class="absolute top-3 right-3 text-gray-600 hover:text-gray-900 text-2xl">
+    ✖
+  </button>
+
+  <!-- TÍTULO -->
+  <h2 class="text-xl font-bold mb-4 text-center">Formulario de Traslado</h2>
+
   <div class="flex justify-end gap-2 mt-6">
     <button type="button"
             (click)="guardarPliego()"
@@ -671,9 +745,6 @@
       Cancelar
     </button>
   </div>
-
-
-
   <!-- FORMULARIO  RELLAR PACIENTES-->
   <form *ngIf="mostrarFormulario" class="grid grid-cols-2 gap-4">
 
@@ -717,9 +788,6 @@
     <input type="text" [(ngModel)]="pacienteB.objetoComision" class="border p-1 w-full" />
   </div>
 </div>
-
-
-
 <!-- paciente -->
 <div>
   <label class="block font-semibold">NSS:</label>
@@ -776,7 +844,6 @@
       <input type="number" [(ngModel)]="pliego.totalDias" name="dias"
              class="w-full border rounded p-2" />
     </div>
-
 
 
     <!-- Certificación por Días -->

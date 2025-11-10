@@ -1,120 +1,177 @@
-<div class="bg-white p-6 rounded-xl font-sans">
-    <div class="p-6">
-      <h2 class="text-2xl font-semibold mb-6 text-blue-600">HISTORIAL DE PAGOS</h2>
-  
-      <!-- Filtros -->
-      <div class="flex flex-wrap items-center gap-2 mb-6">
-        <input
-          type="text"
-          [(ngModel)]="filtroMatricula"
-          placeholder="Buscar por matrícula"
-          class="border border-blue-300 rounded px-3 py-2 w-full md:w-1/4 focus:ring-2 focus:ring-blue-400"
-        />
-        <input
-          type="text"
-          [(ngModel)]="filtroFolio"
-          placeholder="Buscar por folio"
-          class="border border-green-300 rounded px-3 py-2 w-full md:w-1/4 focus:ring-2 focus:ring-green-400"
-        />
+<div class="p-6">
+  <h1 class="text-2xl font-bold mb-4">Pagos</h1>
+
+  <!-- ====== FILTROS ====== -->
+  <div class="flex flex-wrap gap-4 mb-6">
+    <input type="text" [(ngModel)]="filtroFolio" placeholder="Buscar por folio"
+      class="border border-gray-300 rounded-lg px-3 py-2 w-48" />
+
+    <input type="text" [(ngModel)]="filtroOperador" placeholder="Buscar por operador"
+      class="border border-gray-300 rounded-lg px-3 py-2 w-48" />
+
+    <div class="flex items-center gap-2">
+      <label class="text-sm">De:</label>
+      <input type="date" [(ngModel)]="fechaDesde"
+        class="border border-gray-300 rounded-lg px-2 py-1">
+      <label class="text-sm">A:</label>
+      <input type="date" [(ngModel)]="fechaHasta"
+        class="border border-gray-300 rounded-lg px-2 py-1">
+    </div>
+
+    <button (click)="limpiarFiltros()"
+      class="bg-gray-200 hover:bg-gray-300 text-gray-700 px-3 py-2 rounded-lg">Limpiar</button>
+  </div>
+
+  <!-- ====== TABLA PAGOS ====== -->
+  <div class="overflow-x-auto border rounded-lg shadow-sm">
+    <table class="w-full text-sm text-left border-collapse">
+      <thead class="bg-gray-100">
+        <tr>
+          <th class="p-2 border">Folio</th>
+          <th class="p-2 border">Operador</th>
+          <th class="p-2 border">Cantidad</th>
+          <th class="p-2 border">Cantidad en letra</th>
+          <th class="p-2 border">Fecha de pago</th>
+          <th class="p-2 border text-center">Acciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let pago of pagosFiltrados()" class="hover:bg-gray-50">
+          <td class="p-2 border">{{ pago.folio }}</td>
+          <td class="p-2 border">{{ pago.operador }}</td>
+          <td class="p-2 border">
+            <div class="flex items-center justify-between">
+              <span>{{ pago.cantidad ? ('$' + pago.cantidad.toFixed(2)) : '-' }}</span>
+              <button *ngIf="pago.cantidad"
+                class="ml-2 text-xs text-blue-600 hover:underline"
+                (click)="copiarTexto(pago.cantidadLetra!)">Copiar</button>
+            </div>
+          </td>
+         <!-- <td class="p-2 border text-gray-600">{{ pago.cantidadLetra || '-' }}</td>-->
+         <td class="p-2 border text-gray-600">
+          <div>
+            <p class="font-medium">{{ pago.cantidadLetra || '-' }}</p>
         
-        <input
-          type="date"
-          [(ngModel)]="fechaDesde"
-          class="border border-indigo-300 rounded px-3 py-2 w-full md:w-1/4 focus:ring-2 focus:ring-indigo-400"
-          placeholder="Fecha desde"
-        />
-        <input
-          type="date"
-          [(ngModel)]="fechaHasta"
-          class="border border-indigo-300 rounded px-3 py-2 w-full md:w-1/4 focus:ring-2 focus:ring-indigo-400"
-          placeholder="Fecha hasta"
-        />
-        <button
-          (click)="limpiarFiltros()"
-          class="bg-gray-600 text-white px-4 py-2 rounded hover:bg-gray-700 transition"
-        >
-          Limpiar filtros
-        </button>
+            <!-- Mostramos la operación si existe -->
+            <p *ngIf="pago['operacionTexto']" class="text-xs text-gray-500 mt-1">
+              {{ pago['operacionTexto'] }}
+              <button
+                class="ml-1 text-blue-600 text-xs hover:underline"
+                (click)="copiarTexto(pago['operacionTexto'])">
+                Copiar
+              </button>
+            </p>
+          </div>
+        </td>
+        
+
+
+          <td class="p-2 border">
+            <input type="date" [(ngModel)]="pago.fechaPago"
+              (change)="confirmarFecha(pago)"
+              class="border border-gray-300 rounded-md px-2 py-1 w-40 text-sm" />
+          </td>
+          <td class="p-2 border text-center">
+            <button (click)="abrirCalculadora(pago)"
+              class="bg-blue-600 hover:bg-blue-700 text-white px-3 py-1 rounded-md text-sm">Calcular</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- ====== MODAL CALCULADORA ====== -->
+<div *ngIf="mostrarModalCalculadora"
+  class="fixed inset-0 flex items-center justify-center z-50  bg-opacity-50">
+  <div class="bg-white shadow-xl rounded-lg p-6 w-[480px] border border-gray-300">
+
+    <div class="flex justify-between items-center mb-4">
+      <h2 class="text-lg font-bold">Calculadora de Kilometraje</h2>
+      <button (click)="cerrarCalculadora()" class="text-gray-500 hover:text-red-600 text-xl font-bold">✖</button>
+    </div>
+
+    <!-- ENTRADAS DE KILOMETRAJE -->
+    <div class="space-y-3">
+      <div class="flex items-center gap-2">
+        <label class="w-32 text-sm font-medium">Km inicial:</label>
+        <input type="number" [(ngModel)]="kmInicial" (input)="calcularAutomatico()"
+          class="border border-gray-300 rounded-lg px-2 py-1 w-full" placeholder="Ej. 12000">
       </div>
-  
-      <!-- Tabla -->
-      <div class="overflow-x-auto">
-        <table class="min-w-full bg-white rounded-lg shadow overflow-hidden">
-          <thead>
-            <tr class="bg-green-100 text-gray-800">
-              <th class="px-4 py-3">Fecha Creación</th>
-              <th class="px-4 py-3">Fecha Pago</th>
-              <th class="px-4 py-3">Folio</th>
-              <th class="px-4 py-3">Matrícula Operador</th>
-              <th class="px-4 py-3">Nombre Paciente</th>
-              <th class="px-4 py-3 text-center">Acciones</th>
-            </tr>
-          </thead>
-          <tbody class="text-gray-700">
-            <tr *ngFor="let item of historialFiltrado(); let i = index" class="border-t hover:bg-gray-100">
-              <td class="px-4 py-2">{{ item.fecha }}</td>
-              <td class="px-4 py-2">
-                {{ item.fechaPago || 'No pagado' }}
-              </td>
-              <td class="px-4 py-2">{{ item.folio }}</td>
-              <td class="px-4 py-2">{{ item.operador }}</td>
-              <td class="px-4 py-2">{{ item.paciente }}</td>
-              <td class="px-4 py-2 text-center space-x-2">
-  
-                <!-- Si no hay fecha de pago -->
-                <ng-container *ngIf="!item.fechaPago; else yaPagado">
-                  <ng-container *ngIf="editarPagoIndex === i; else botonPagar">
-                    <input
-                      type="date"
-                      [(ngModel)]="item.fechaPago"
-                      class="border px-2 py-1 rounded"
-                    />
-                    <button
-                      class="bg-green-600 text-white px-3 py-1 rounded hover:bg-green-700 ml-2"
-                      (click)="confirmarPago()"
-                    >
-                      Guardar
-                    </button>
-                  </ng-container>
-  
-                  <ng-template #botonPagar>
-                    <button
-                      class="bg-yellow-500 text-white px-3 py-1 rounded hover:bg-yellow-600 transition"
-                      (click)="editarPagoIndex = i"
-                    >
-                      Pagar
-                    </button>
-                  </ng-template>
-                </ng-container>
-  
-                <!-- Si ya fue pagado -->
-                <ng-template #yaPagado>
-                  <button
-                    disabled
-                    class="bg-green-400 text-white px-3 py-1 rounded"
-                  >
-                    Pagado
-                  </button>
-                </ng-template>
-  
-                <!-- Botón Eliminar -->
-                <button
-                  (click)="eliminarPliego(item)"
-                  class="bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600 transition ml-2"
-                >
-                  Eliminar
-                </button>
-              </td>
-            </tr>
-  
-            <tr *ngIf="historialFiltrado().length === 0">
-              <td colspan="6" class="px-4 py-6 text-center text-gray-500 italic">
-                No se encontraron resultados.
-              </td>
-            </tr>
-          </tbody>
-        </table>
+
+      <div class="flex items-center gap-2">
+        <label class="w-32 text-sm font-medium">Km final:</label>
+        <input type="number" [(ngModel)]="kmFinal" (input)="calcularAutomatico()"
+          class="border border-gray-300 rounded-lg px-2 py-1 w-full" placeholder="Ej. 13300">
+      </div>
+
+      <div class="flex items-center gap-2">
+        <label class="w-32 text-sm font-medium">Km recorrido:</label>
+        <input type="text" [value]="kmResultado ?? '-'" readonly
+          class="border border-gray-200 bg-gray-100 rounded-lg px-2 py-1 w-full">
+      </div>
+
+      <div class="flex items-center gap-2">
+        <label class="w-32 text-sm font-medium">Factor aplicado:</label>
+        <input type="text" [value]="factor ?? '-'" readonly
+          class="border border-gray-200 bg-gray-100 rounded-lg px-2 py-1 w-full">
       </div>
     </div>
+
+    <hr class="my-4">
+
+    <!-- RESULTADOS -->
+    <div class="space-y-2">
+      <p><span class="font-semibold">Operación:</span> {{ operacionTexto || '—' }}</p>
+      <p><span class="font-semibold">Resultado:</span> ${{ resultado.toFixed(2) }}</p>
+      <p><span class="font-semibold">En letra:</span>
+        <span class="italic">{{ resultadoLetra }}</span>
+        <button *ngIf="resultadoLetra"
+          (click)="copiarTexto(resultadoLetra)"
+          (click)="copiarTexto(operacionTexto)"
+          class="ml-2 text-xs text-blue-600 hover:underline">Copiar</button>
+      </p>
+    </div>
+
+    <div class="mt-4 flex justify-end gap-3">
+      <button (click)="cerrarCalculadora()"
+        class="bg-gray-200 hover:bg-gray-300 text-gray-700 px-3 py-2 rounded-md">Cancelar</button>
+      <button (click)="confirmarOperacion()"
+        class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md">Continuar</button>
+    </div>
   </div>
-  
+</div>
+
+
+
+
+
+<!-- ====== MODAL CONFIRMAR OPERACIÓN ====== -->
+<div *ngIf="mostrarModalConfirmarOperacion"
+  class="fixed inset-0 flex items-center justify-center z-50">
+  <div class="bg-white border border-gray-300 shadow-lg rounded-lg p-6 w-[380px] text-center">
+    <h2 class="text-lg font-semibold mb-2">Confirmar operación</h2>
+    <p class="text-gray-600 mb-4">¿La operación <b>{{ operacionTexto }}</b> y el resultado <b>${{ resultado.toFixed(2) }}</b> son correctos?</p>
+    <div class="flex justify-center gap-4">
+      <button (click)="cancelarConfirmacion()"
+        class="bg-gray-200 hover:bg-gray-300 px-4 py-2 rounded-md text-gray-700">No</button>
+      <button (click)="guardarOperacion()"
+        class="bg-green-600 hover:bg-green-700 px-4 py-2 rounded-md text-white">Sí</button>
+    </div>
+  </div>
+</div>
+
+<!-- ====== MODAL CONFIRMAR FECHA ====== -->
+<div *ngIf="mostrarModalConfirmarFecha"
+  class="fixed inset-0 flex items-center justify-center z-50">
+  <div class="bg-white border border-gray-300 shadow-lg rounded-lg p-6 w-[380px] text-center">
+    <h2 class="text-lg font-semibold mb-2">Confirmar fecha de pago</h2>
+    <p class="text-gray-600 mb-4">¿Está seguro que la fecha de pago es correcta?</p>
+    <div class="flex justify-center gap-4">
+      <button (click)="cancelarFecha()"
+        class="bg-gray-200 hover:bg-gray-300 px-4 py-2 rounded-md text-gray-700">No</button>
+      <button (click)="guardarFecha()"
+        class="bg-green-600 hover:bg-green-700 px-4 py-2 rounded-md text-white">Sí</button>
+    </div>
+  </div>
+</div>

@@ -1,6 +1,6 @@
 <!-- sidebar.component.html -->
-<div class="h-full min-h-[48rem]">
-  <aside class="relative flex h-full w-72 flex-col border-r border-gray-200 p-6">
+<div class="h-full min-h-[48rem] no-print">
+  <aside class="relative flex h-full w-72 flex-col border-r border-gray-200 p-6 ">
 
     <!-- Logo ---------------------------------------------------------------->
     <div class="flex items-center gap-3 px-3">
@@ -15,43 +15,74 @@
       <img [src]="user.avatar"
         alt="avatar"
         class="h-8 w-8 rounded-full ring-2 ring-gray-300 ring-offset-2 ring-offset-white" />
-        <div class="flex flex-col">
-          <p class="text-sm font-medium text-gray-700">{{ user.name }}</p>
-          <p class="text-xs text-gray-400">{{ user.role }}</p>
-        </div>
+      <div class="flex flex-col">
+        <p class="text-sm font-medium text-gray-700">{{ user.name }}</p>
+        <p class="text-xs text-gray-400">{{ user.role }}</p>
       </div>
+    </div>
 
-      <!-- Navegación --------------------------------------------------------->
-      <nav class="overflow-y-auto mt-6 -mr-6 pr-6 flex-1">
-        <ul class="flex flex-col gap-0.5">
-          @for (link of links; track link) {
-            <li>
+    <!-- Navegación --------------------------------------------------------->
+    <nav class="overflow-y-auto mt-6 -mr-6 pr-6 flex-1">
+      <ul class="flex flex-col gap-0.5">
+
+        @for (link of links; track link; let i = $index) {
+          <li>
+
+            <!-- Caso: Link simple -->
+            @if (!isParentLink(link)) {
               <a [routerLink]="link.route"
-                routerLinkActive="bg-gray-200 text-black"
-             class="flex items-center gap-2 px-3 py-1.5 rounded-2xl min-h-11
-                    text-sm text-gray-500 hover:bg-gray-200 hover:text-black transition">
+                 routerLinkActive="bg-gray-200 text-black"
+                 class="flex items-center gap-2 px-3 py-1.5 rounded-2xl min-h-11
+                        text-sm text-gray-500 hover:bg-gray-200 hover:text-black transition">
                 <lucide-icon [img]="icons[link.icon]" class="w-5 h-5"></lucide-icon>
                 <span class="flex-1 truncate">{{ link.label }}</span>
               </a>
-            </li>
-          }
-        </ul>
-      </nav>
+            }
 
-      <!-- Botones finales ---------------------------------------------------->
-      <div class="flex flex-col gap-2 mt-auto">
-        <!-- <button type="button"
-              class="flex items-center gap-2 h-10 w-full px-4 rounded-md text-sm
-                     text-gray-500 hover:bg-gray-200 hover:text-black transition">
-        <lucide-icon [img]="icons.HelpCircle" class="w-5 h-5"></lucide-icon>
-        Help &amp; Information
-      </button>-->
+            <!-- Caso: Parent con hijos -->
+            @if (isParentLink(link)) {
+              <button type="button"
+                      (click)="toggleSubmenu(i)"
+                      class="flex items-center gap-2 px-3 py-1.5 rounded-2xl min-h-11
+                             text-sm w-full text-gray-500 hover:bg-gray-200 hover:text-black transition">
+                <lucide-icon [img]="icons[link.icon]" class="w-5 h-5"></lucide-icon>
+                <span class="flex-1 truncate">{{ link.label }}</span>
+                <lucide-icon name="ChevronDown"
+                             class="w-4 h-4 transition-transform"
+                             [class.rotate-180]="isSubmenuOpen(i)">
+                </lucide-icon>
+              </button>
 
+              <!-- Submenú desplegable -->
+              @if (isSubmenuOpen(i)) {
+                <ul class="ml-8 mt-1 flex flex-col gap-0.5">
+                  @for (child of link.children; track child) {
+                    <li>
+                      <a [routerLink]="child.route"
+                         routerLinkActive="bg-gray-200 text-black"
+                         class="flex items-center gap-2 px-3 py-1.5 rounded-xl
+                                text-sm text-gray-500 hover:bg-gray-200 hover:text-black transition">
+                        <lucide-icon [img]="icons[child.icon]" class="w-4 h-4"></lucide-icon>
+                        <span class="flex-1 truncate">{{ child.label }}</span>
+                      </a>
+                    </li>
+                  }
+                </ul>
+              }
+            }
+
+          </li>
+        }
+      </ul>
+    </nav>
+
+    <!-- Botón final: Cerrar sesión ----------------------------------------->
+    <div class="flex flex-col gap-2 mt-auto">
       <button type="button"
         (click)="logout()"
-      class="flex items-center gap-2 h-10 w-full px-4 rounded-md text-sm
-             text-gray-500 hover:bg-gray-200 hover:text-black transition">
-        <lucide-icon [name]="icons.LogOut" class="w-5 h-5 rotate-180"></lucide-icon>
+        class="flex items-center gap-2 h-10 w-full px-4 rounded-md text-sm
+               text-gray-500 hover:bg-gray-200 hover:text-black transition">
+        <lucide-icon [img]="icons.LogOut" class="w-5 h-5 rotate-180"></lucide-icon>
         Cerrar sesión
       </button>
     </div>

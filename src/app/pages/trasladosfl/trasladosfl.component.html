@@ -1,4 +1,6 @@
-<!-- Botón para abrir modal -->
+<!--
+
+!-- Botón para abrir modal --
 <div class="mb-4 text-center">
     <button (click)="abrirModal()" 
             class="px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700">
@@ -6,12 +8,12 @@
     </button>
   </div>
   
-  <!--  mostra modal emergente-->
+  !--  mostra modal emergente--
   <div *ngIf="mostrarModal" 
        class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
   
     <div class="bg-white rounded-lg shadow-lg p-6 w-full max-w-md relative">
-      <!-- Botón cerrar -->
+      !-- Botón cerrar --
       <button (click)="cerrarModal()" 
               class="absolute top-2 right-2 text-gray-600 hover:text-red-600">
         ✕
@@ -19,7 +21,7 @@
   
       <h2 class="text-lg font-bold mb-4">Registrar Traslado</h2>
   
-      <!-- Tipo de traslado -->
+      !-- Tipo de traslado --
       <div class="mb-3">
         <label class="block font-medium">Tipo de Traslado</label>
         <select [(ngModel)]="trasladoNuevo.tipoTraslado" name="tipoTraslado"
@@ -29,35 +31,35 @@
         </select>
       </div>
   
-      <!-- Folio manual para Local -->
+      !-- Folio manual para Local --
       <div *ngIf="trasladoNuevo.tipoTraslado === 'Local'" class="mb-3">
         <label class="block font-medium">Número de Pliego / Folio</label>
         <input type="text" [(ngModel)]="trasladoNuevo.numeroPliego" name="numeroPliego"
                class="w-full border p-2 rounded text-sm" placeholder="Ej. L001/2025" required>
       </div>
   
-      <!-- Folio automático para Foráneo -->
+      !-- Folio automático para Foráneo --
       <div *ngIf="trasladoNuevo.tipoTraslado === 'Foráneo' && trasladoNuevo.numeroPliego" class="mb-3">
         <label class="block font-medium">Folio Foráneo Generado</label>
         <input type="text" [value]="trasladoNuevo.numeroPliego"
                class="w-full border p-2 rounded text-sm bg-gray-100" readonly>
       </div>
   
-      <!-- Paciente -->
+      !-- Paciente --
       <div class="mb-3">
         <label class="block font-medium">Paciente</label>
         <input type="text" [(ngModel)]="trasladoNuevo.paciente" name="paciente"
                class="w-full border p-2 rounded text-sm" required>
       </div>
   
-      <!-- Lugar -->
+      !-- Lugar --
       <div class="mb-3">
         <label class="block font-medium">Lugar</label>
         <input type="text" [(ngModel)]="trasladoNuevo.lugar" name="lugar"
                class="w-full border p-2 rounded text-sm" required>
       </div>
   
-      <!-- Operador (lista desplegable) -->
+      !-- Operador (lista desplegable) --
       <div class="mb-3">
         <label class="block font-medium">Operador</label>
         <select [(ngModel)]="trasladoNuevo.operador" name="operador"
@@ -66,7 +68,7 @@
         </select>
       </div>
   
-      <!-- Fecha y hora -->
+      !-- Fecha y hora --
       <div class="grid grid-cols-2 gap-2 mb-3">
         <div>
           <label class="block font-medium">Fecha</label>
@@ -80,7 +82,7 @@
         </div>
       </div>
   
-        <!-- Estado del traslado -->
+        !-- Estado del traslado --
         <div class="mb-4">
           <label class="block font-medium mb-1">Estado del Traslado</label>
           <div class="flex gap-2">
@@ -109,7 +111,7 @@
         </div>
     
   
-      <!-- Guardar -->
+      !-- Guardar --
       <div class="text-right">
         <button (click)="guardarTraslado()" 
                 class="px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700">
@@ -119,9 +121,9 @@
     </div>
   </div>
   
-  <!-- ================= TABLEROS ================= -->
+  !-- ================= TABLEROS ================= --
   <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">
-    <!-- Traslados de Hoy -->
+    !-- Traslados de Hoy --
     <div class="bg-white p-4 rounded shadow">
       <h2 class="text-lg font-bold mb-3">Traslados de Hoy</h2>
       <table class="w-full text-sm border">
@@ -146,7 +148,7 @@
       </table>
     </div>
   
-    <!-- Traslados Próximos -->
+    !-- Traslados Próximos --
     <div class="bg-white p-4 rounded shadow">
       <h2 class="text-lg font-bold mb-3">Traslados Próximos</h2>
       <table class="w-full text-sm border">
@@ -181,9 +183,340 @@
       <img src="assets/imsslogo.png" alt="Ambulancia" />
     </div>
   
-    <div class="ambulancia ambulancia2">
-      <img src="assets/imsslogo.png" alt="Ambulancia" />
-    </div>
+  </div>
   
-    </div>
+-->
+
+<div class="p-6 bg-gray-50 min-h-screen">
+  <h1 class="text-2xl font-bold mb-6">Gestión de Traslados</h1>
   
+  <div class="flex justify-end mb-4">
+      <button (click)="abrirModalCreacion()" 
+              class="px-4 py-2 bg-blue-600 text-white rounded shadow hover:bg-blue-700">
+          + Nuevo Traslado
+      </button>
+  </div>
+
+  <div class="bg-white p-4 rounded shadow mb-6">
+      <h2 class="text-xl font-semibold mb-3">Traslados de Hoy ({{ isOperador ? 'Mis Asignados' : 'Todos' }})</h2>
+      <div class="overflow-x-auto">
+          <table class="min-w-full text-sm border-collapse">
+              <thead>
+                  <tr class="bg-gray-200">
+                      <th class="p-2 border text-left">Pliego/Folio</th>
+                      <th class="p-2 border text-left">Hora</th>
+                      <th class="p-2 border text-left">Pacientes</th>
+                      <th class="p-2 border text-left">Destino(s)</th>
+                      <th class="p-2 border text-left" *ngIf="isAdminOrSubadmin">Operador</th>
+                      <th class="p-2 border text-left">Estado</th>
+                  </tr>
+              </thead>
+              <tbody>
+                  <tr *ngFor="let t of trasladosHoy" 
+                      (click)="abrirModalDetalle(t)" 
+                      class="hover:bg-yellow-50 cursor-pointer">
+                      <td class="p-2 border">{{ t.numeroPliego }}</td>
+                      <td class="p-2 border">{{ t.hora }}</td>
+                      
+                      <td class="p-2 border">{{ getNombresPacientes(t) }}</td>
+                      <td class="p-2 border">{{ getDestinosPacientes(t) }}</td>
+                      
+                      <td class="p-2 border" *ngIf="isAdminOrSubadmin">{{ t.operador }}</td>
+                      <td class="p-2 border">
+                          <span class="px-2 py-1 rounded text-xs font-medium"
+                                [ngClass]="{
+                                  'bg-gray-300 text-gray-800': t.estado === 'Programado',
+                                  'bg-green-100 text-green-700': t.estado === 'Iniciado',
+                                  'bg-blue-100 text-blue-700': t.estado === 'En Traslado',
+                                  'bg-gray-700 text-white': t.estado === 'Finalizado'
+                                }">
+                              {{ t.estado }}
+                          </span>
+                      </td>
+                  </tr>
+              </tbody>
+          </table>
+      </div>
+  </div>
+
+  <div class="bg-white p-4 rounded shadow">
+      <h2 class="text-xl font-semibold mb-3">Traslados Próximos</h2>
+      <div class="overflow-x-auto">
+          <table class="min-w-full text-sm border-collapse">
+              <thead>
+                  <tr class="bg-gray-200">
+                      <th class="p-2 border text-left">Pliego/Folio</th>
+                      <th class="p-2 border text-left">Hora</th>
+                      <th class="p-2 border text-left">Pacientes</th>
+                      <th class="p-2 border text-left">Destino(s)</th>
+                      <th class="p-2 border text-left" *ngIf="isAdminOrSubadmin">Operador</th>
+                      <th class="p-2 border text-left">Estado</th>
+                  </tr>
+              </thead>
+              <tbody>
+                  <tr *ngFor="let t of trasladosProximos" 
+                      (click)="abrirModalDetalle(t)" 
+                      class="hover:bg-yellow-50 cursor-pointer">
+                      <td class="p-2 border">{{ t.numeroPliego }}</td>
+                      <td class="p-2 border">{{ t.hora }}</td>
+                      
+                      <td class="p-2 border">{{ getNombresPacientes(t) }}</td>
+                      <td class="p-2 border">{{ getDestinosPacientes(t) }}</td>
+                      
+                      <td class="p-2 border" *ngIf="isAdminOrSubadmin">{{ t.operador }}</td>
+                      <td class="p-2 border">
+                          <span class="px-2 py-1 rounded text-xs font-medium"
+                                [ngClass]="{
+                                  'bg-gray-300 text-gray-800': t.estado === 'Programado',
+                                  'bg-green-100 text-green-700': t.estado === 'Iniciado',
+                                  'bg-blue-100 text-blue-700': t.estado === 'En Traslado',
+                                  'bg-gray-700 text-white': t.estado === 'Finalizado'
+                                }">
+                              {{ t.estado }}
+                          </span>
+                      </td>
+                  </tr>
+              </tbody>
+          </table>
+      </div>
+  </div>
+
+
+  <div *ngIf="mostrarModalCreacion" 
+       class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+
+      <div class="bg-white rounded-lg shadow-2xl p-6 w-full max-w-lg relative max-h-[90vh] overflow-y-auto">
+          
+          <button (click)="cerrarModalCreacion()" 
+                class="absolute top-3 right-3 text-gray-600 hover:text-red-600 text-xl">
+            ✕
+          </button>
+
+          <h2 class="text-2xl font-bold mb-4">
+              {{ trasladoNuevo.id ? 'Editar Traslado' : 'Nuevo Traslado' }}
+          </h2>
+          
+          <form (ngSubmit)="guardarTraslado()">
+
+              <div class="mb-3">
+                  <label class="block font-medium text-gray-700">Tipo de Traslado</label>
+                  <select [(ngModel)]="trasladoNuevo.tipoTraslado" name="tipoTraslado"
+                          (ngModelChange)="onTipoTrasladoChange(trasladoNuevo)"
+                          [disabled]="isOperador" 
+                          class="w-full border p-2 rounded text-sm bg-gray-50" required>
+                      <option value="Local" [disabled]="isOperador">Local</option>
+                      <option value="Foráneo">Foráneo</option>
+                  </select>
+                  <p *ngIf="isOperador" class="text-xs text-red-500 mt-1">
+                      El usuario Operador solo puede crear traslados Foráneos.
+                  </p>
+              </div>
+
+              <div class="mb-3">
+                  <label class="block font-medium text-gray-700">Número de Pliego / Folio</label>
+                  <input type="text" [(ngModel)]="trasladoNuevo.numeroPliego" name="numeroPliego"
+                         [readonly]="trasladoNuevo.tipoTraslado === 'Foráneo'"
+                         class="w-full border p-2 rounded text-sm" placeholder="Ej. L001/2025" required>
+                  <p *ngIf="trasladoNuevo.tipoTraslado === 'Foráneo'" class="text-xs text-gray-500 mt-1">
+                      Folio Foráneo generado automáticamente.
+                  </p>
+              </div>
+
+              <div class="mb-4 border p-3 rounded bg-blue-50">
+                  <h3 class="font-semibold text-blue-800 mb-2">Pacientes y Destinos (Múltiples Paradas en un Viaje)</h3>
+                  <div *ngFor="let paciente of trasladoNuevo.pacientes; let i = index" class="grid grid-cols-12 gap-2 mb-2 items-center">
+                      <div class="col-span-5">
+                          <input type="text" [(ngModel)]="paciente.nombre" name="paciente_{{i}}"
+                                 class="w-full border p-2 rounded text-sm" placeholder="Nombre Paciente" required>
+                      </div>
+                      <div class="col-span-6">
+                          <input type="text" [(ngModel)]="paciente.destino" name="destino_{{i}}"
+                                 class="w-full border p-2 rounded text-sm" placeholder="Lugar de Destino" required>
+                      </div>
+                      <div class="col-span-1" *ngIf="trasladoNuevo.pacientes.length > 1">
+                          <button type="button" (click)="eliminarPaciente(paciente.id)"
+                                  class="text-red-500 hover:text-red-700 text-xl leading-none">
+                              &times;
+                          </button>
+                      </div>
+                  </div>
+                  <button type="button" (click)="agregarPaciente()"
+                          class="mt-2 text-sm text-blue-600 font-medium hover:underline">
+                      + Agregar Otro Paciente/Destino
+                  </button>
+              </div>
+              
+              <div class="mb-3">
+                  <label class="block font-medium text-gray-700">Operador Asignado</label>
+                  <select [(ngModel)]="trasladoNuevo.operadorMatricula" name="operadorMatricula"
+                          (ngModelChange)="onOperadorChange(trasladoNuevo, $event)"
+                          [disabled]="isOperador && trasladoNuevo.tipoTraslado === 'Foráneo'"
+                          class="w-full border p-2 rounded text-sm" required>
+                      
+                      <option *ngIf="!trasladoNuevo.operadorMatricula" [value]="null">-- Seleccionar Operador --</option>
+                      
+                      <ng-container *ngIf="isAdminOrSubadmin">
+                          <option *ngFor="let op of operadores" [value]="op.matricula">{{ op.nombre }} ({{ op.matricula }})</option>
+                      </ng-container>
+                      
+                      <ng-container *ngIf="isOperador && trasladoNuevo.tipoTraslado === 'Foráneo'">
+                           <option [value]="currentUser?.matricula">{{ trasladoNuevo.operador }} (Auto-asignado)</option>
+                      </ng-container>
+                  </select>
+                  <p *ngIf="isOperador && trasladoNuevo.tipoTraslado === 'Foráneo'" class="text-xs text-gray-500 mt-1">
+                      El Operador Foráneo se auto-asigna.
+                  </p>
+              </div>
+
+              <div class="grid grid-cols-2 gap-4 mb-4">
+                  <div>
+                      <label class="block font-medium text-gray-700">Fecha</label>
+                      <input type="date" [(ngModel)]="trasladoNuevo.fecha" name="fecha" class="w-full border p-2 rounded text-sm" required>
+                  </div>
+                  <div>
+                      <label class="block font-medium text-gray-700">Hora</label>
+                      <input type="time" [(ngModel)]="trasladoNuevo.hora" name="hora" class="w-full border p-2 rounded text-sm" required>
+                  </div>
+              </div>
+
+              <div class="mb-4 p-3 border rounded" *ngIf="isAdminOrSubadmin">
+                  <label class="block font-semibold mb-2 text-gray-800">Control de Estado (ADMIN/SUBADMIN)</label>
+                  <div class="flex flex-wrap gap-2 items-center">
+                      <button type="button" (click)="cambiarEstado(trasladoNuevo, 'Programado')" 
+                              [class.bg-gray-500]="trasladoNuevo.estado === 'Programado'"
+                              class="px-3 py-1 rounded border text-sm text-white bg-gray-400 hover:bg-gray-500">Programado</button>
+                      <button type="button" (click)="cambiarEstado(trasladoNuevo, 'Iniciado')" 
+                              [class.bg-green-600]="trasladoNuevo.estado === 'Iniciado'"
+                              class="px-3 py-1 rounded border text-sm text-white bg-green-500 hover:bg-green-600">Iniciado</button>
+                      <button type="button" (click)="cambiarEstado(trasladoNuevo, 'En Traslado')" 
+                              [class.bg-blue-600]="trasladoNuevo.estado === 'En Traslado'"
+                              class="px-3 py-1 rounded border text-sm text-white bg-blue-500 hover:bg-blue-600">En Traslado</button>
+                      <button type="button" (click)="cambiarEstado(trasladoNuevo, 'Finalizado')" 
+                              [class.bg-gray-700]="trasladoNuevo.estado === 'Finalizado'"
+                              class="px-3 py-1 rounded border text-sm text-white bg-gray-600 hover:bg-gray-700">Finalizado</button>
+                      
+                      <button type="button" (click)="revertirEstado(trasladoNuevo)"
+                              class="px-3 py-1 rounded border text-sm bg-red-100 text-red-600 hover:bg-red-200 ml-4">
+                          REVERTIR ESTADO
+                      </button>
+                  </div>
+              </div>
+              
+              <div class="text-right mt-4">
+                  <button type="submit"
+                          class="px-5 py-2 bg-indigo-600 text-white font-semibold rounded hover:bg-indigo-700">
+                      Guardar Traslado
+                  </button>
+              </div>
+          </form>
+      </div>
+  </div>
+
+  <div *ngIf="mostrarModalOperador && trasladoSeleccionado" ...>
+    ```
+
+Por lo tanto, cuando usas `trasladoSeleccionado?.estado`, TypeScript te dice: "No necesitas el `?` porque ya sé que no es nulo debido al `*ngIf` exterior."
+
+### **Solución: Usar el Operador de Aserción No Nula (`!`)**
+
+La forma estándar de Angular para manejar esto cuando un `*ngIf` ya ha validado la nulidad es usar el operador de aserción no nula (`!`).
+
+| Antes (Error) | Después (Corregido con `!`) |
+| :--- | :--- |
+| `[(ngModel)]="trasladoSeleccionado?.acompanante"` | `[(ngModel)]="trasladoSeleccionado!.acompanante"` |
+| `[disabled]="trasladoSeleccionado?.estado === 'Finalizado'"` | `[disabled]="trasladoSeleccionado!.estado === 'Finalizado'"` |
+
+---
+
+## 2. 🚨 Error: Módulos Faltantes
+
+Aunque me has mostrado muchas imágenes, el error más fundamental (`Can't bind to 'ngClass'`, `Object is possibly 'null'` y `Can't bind to 'ngModel'`) siempre se debe a la **falta de importación de módulos**.
+
+* `Can't bind to 'ngClass'` / `*ngIf` / `*ngFor` **REQUIERE `CommonModule`**.
+* `Can't bind to 'ngModel'` **REQUIERE `FormsModule`**.
+
+Si estos errores persisten, **es 100% seguro que tu archivo de módulo no tiene estas importaciones.**
+
+---
+
+## 🎯 Código HTML Completo con Soluciones (`trasladosfl.component.html`)
+
+Aplica estos cambios a tu HTML. He utilizado `!` para eliminar todos los errores de TypeScript relacionados con la nulidad dentro del `*ngIf` del modal.
+
+```html
+<div *ngIf="mostrarModalOperador && trasladoSeleccionado" 
+     class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+
+    <div class="bg-white rounded-lg shadow-2xl p-6 w-full max-w-sm relative">
+        
+        <button (click)="cerrarModalOperador()" 
+              class="absolute top-3 right-3 text-gray-600 hover:text-red-600 text-xl">
+              ✕
+        </button>
+
+        <h2 class="text-xl font-bold mb-4">Registro de Operación</h2>
+        <p class="text-sm mb-3">
+            <span class="font-semibold">{{ trasladoSeleccionado!.numeroPliego }}</span> - 
+            {{ trasladoSeleccionado!.operador }}
+        </p>
+
+        <form (ngSubmit)="guardarDetalleOperador()">
+            
+            <div class="mb-3">
+                <label class="block font-medium text-gray-700">Acompañante (Operador/Usuario)</label>
+                <select [(ngModel)]="trasladoSeleccionado!.acompanante" name="acompanante"
+                        class="w-full border p-2 rounded text-sm"
+                        [disabled]="trasladoSeleccionado!.estado === 'Finalizado'">
+                    <option [value]="null">Sin acompañante</option>
+                    <option *ngFor="let op of operadores" [value]="op.nombre">{{ op.nombre }}</option>
+                </select>
+            </div>
+            
+            <div class="mb-3">
+                <label class="block font-medium text-gray-700">Kilometraje Inicial (Marca <span class="font-bold text-green-600">INICIADO</span>)</label>
+                <input type="number" [(ngModel)]="trasladoSeleccionado!.kmInicio" name="kmInicio"
+                       class="w-full border p-2 rounded text-sm" placeholder="KM al iniciar" 
+                       [disabled]="trasladoSeleccionado!.estado === 'Finalizado'" required>
+            </div>
+            
+            <div class="mb-4">
+                <label class="block font-medium text-gray-700">Kilometraje Final (Marca <span class="font-bold text-gray-700">FINALIZADO</span>)</label>
+                <input type="number" [(ngModel)]="trasladoSeleccionado!.kmFinal" name="kmFinal"
+                       class="w-full border p-2 rounded text-sm" placeholder="KM al finalizar" 
+                       [disabled]="trasladoSeleccionado!.estado === 'Finalizado'" required>
+            </div>
+
+            <div class="mb-4">
+                <p class="font-medium text-gray-700 mb-1">Estado Actual:</p>
+                <span class="px-3 py-1 rounded text-sm font-semibold"
+                      [ngClass]="{
+                        'bg-gray-300 text-gray-800': trasladoSeleccionado!.estado === 'Programado',
+                        'bg-green-600 text-white': trasladoSeleccionado!.estado === 'Iniciado',
+                        'bg-blue-600 text-white': trasladoSeleccionado!.estado === 'En Traslado',
+                        'bg-gray-700 text-white': trasladoSeleccionado!.estado === 'Finalizado'
+                      }">
+                    {{ trasladoSeleccionado!.estado }}
+                </span>
+            </div>
+
+            <div class="text-right">
+                <button type="submit"
+                        [disabled]="trasladoSeleccionado!.estado === 'Finalizado'"
+                        class="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 disabled:bg-gray-400">
+                    Guardar Detalle y Actualizar Estado
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
+
+
+
+
+
+
+
+</div>
+
+

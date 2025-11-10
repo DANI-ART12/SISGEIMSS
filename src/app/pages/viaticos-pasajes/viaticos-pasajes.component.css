@@ -1,0 +1,25 @@
+
+@media print {
+    body * {
+      visibility: hidden; /* Oculta TODO */
+    }
+  
+    #print-area, #print-area * {
+      visibility: visible; /* Solo muestra el pliego */
+    }
+  
+    #print-area {
+      position: absolute;
+      left: 0;
+      top: 0;
+      width: 100% !important;
+      margin: 0;
+      padding: 0;
+    }
+  
+    @page {
+      size: letter portrait; /* Tamaño carta */
+      margin: 12mm;
+    }
+  }
+  

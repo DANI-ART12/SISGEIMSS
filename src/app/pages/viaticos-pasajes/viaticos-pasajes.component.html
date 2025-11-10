@@ -1,1 +1,106 @@
-<p>viaticos-pasajes works!</p>
+<div id="print-area" class="relative w-[794px] h-[1123px] mx-auto p-12 bg-white shadow-xl border border-gray-300 font-sans flex flex-col">
+
+    <div class="flex items-start mb-4">
+        <div class="w-16 h-16 mr-4 flex-shrink-0">
+            <img src="assets/logoimss.png" alt="IMSS Logo" class="w-full h-full object-contain">
+        </div>
+        
+        <div class="pt-1">
+            <h1 class="text-base font-bold text-gray-800 leading-tight">INSTITUTO MEXICANO DEL SEGURO SOCIAL</h1>
+            <h2 class="text-sm font-normal text-gray-700 leading-tight">SEGURIDAD Y SOLIDARIDAD SOCIAL</h2>
+        </div>
+    </div>
+    
+    <div class="w-full h-px bg-black mt-1 mb-6"></div>
+
+    <div class="flex justify-between items-start mb-6">
+        <div class="pt-2 ml-24">
+            <h3 class="text-base font-normal leading-snug">REGISTRO DE FUNCIONARIOS</h3>
+            <h3 class="text-base font-normal leading-snug">PARA AUTORIZACION DE VIATICOS</h3>
+        </div>
+
+        <table class="border-collapse border border-black text-sm text-gray-700">
+            <thead>
+                <tr class="bg-white">
+                    <th class="p-1 border border-black font-bold w-10 text-center">DIA</th>
+                    <th class="p-1 border border-black font-bold w-10 text-center">MES</th>
+                    <th class="p-1 border border-black font-bold w-12 text-center">AÑO</th>
+                    <th class="p-1 border border-black font-bold w-16 text-center">HOJA</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td class="p-1 border border-black text-center">{{ funcionario.fecha.split('/')[0] }}</td>
+                    <td class="p-1 border border-black text-center">{{ funcionario.fecha.split('/')[1] }}</td>
+                    <td class="p-1 border border-black text-center">{{ funcionario.fecha.split('/')[2] }}</td>
+                    <td class="p-1 border border-black text-center font-bold">1 <span class="font-normal">DE</span> 1</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <section class="border border-black mb-6">
+        <div class="grid grid-cols-4">
+            <div class="col-span-1 p-2 border-b border-black flex items-center bg-white">
+                <span class="font-bold text-gray-800">DEPENDENCIA:</span>
+            </div>
+            <div class="col-span-3 p-2 border-b border-black">
+                <span class="text-gray-800 font-normal ml-2">{{ funcionario.dependencia }}</span>
+            </div>
+
+            <div class="col-span-1 p-2 border-b border-black flex items-center">
+                <span class="font-bold text-gray-800">MATRICULA:</span>
+            </div>
+            <div class="col-span-3 p-2 border-b border-black flex items-center">
+                <span class="text-gray-800 font-normal mr-6 ml-2">{{ funcionario.matricula }}</span>
+                <span class="font-bold text-gray-800">NOMBRE:</span>
+                <span class="text-gray-800 font-normal ml-2">{{ funcionario.nombre }}</span>
+            </div>
+
+            <div class="col-span-1 p-2 flex items-center bg-white">
+                <span class="font-bold text-gray-800">CARGO:</span>
+            </div>
+            <div class="col-span-3 p-2">
+                <span class="text-gray-800 font-normal ml-2">{{ funcionario.cargo }}</span>
+            </div>
+        </div>
+    </section>
+    
+    <section class="border border-black">
+        <div class="grid grid-cols-2">
+            <div class="col-span-2 text-center bg-gray-100 p-2 border-b border-black">
+                <span class="font-bold text-gray-700">SELLO (S) DE CLAVE(S) PRESUPUESTAL(ES)</span>
+            </div>
+            <ng-container *ngFor="let clave of funcionario.clavesPresupuestales">
+                <div class="p-2 border-gray-400 min-h-[100px] flex flex-col justify-start border-b border-r">
+                    <div class="font-mono text-sm text-gray-600">{{ clave.clave }}</div>
+                    <div class="text-xs text-gray-500 mt-1">{{ clave.descripcion }}</div>
+                </div>
+                <div class="p-2 border-b border-gray-400 min-h-[100px]"></div>
+            </ng-container>
+            </div>
+    </section>
+
+    <div class="flex-grow"></div> 
+    
+    <div class="flex justify-center mt-8 w-full">
+        <div class="text-center w-80">
+            <div class="border border-black p-4">
+                <div class="h-10"></div> <div class="border-b border-gray-500 w-full mx-auto"></div>
+                <p class="text-sm text-gray-600 mt-2">FIRMA AUTORIZADA</p>
+            </div>
+        </div>
+    </div>
+    
+    <div class="w-full h-px bg-gray-500 my-6"></div> 
+
+    <div class="flex justify-end pr-2 pb-4 text-xs text-gray-500">
+        1270-009-024
+    </div>
+
+</div>
+<div class="mt-6 text-center print:hidden">
+    <button (click)="imprimir()" class="bg-blue-600 text-white px-4 py-2 rounded shadow hover:bg-blue-700">
+        Imprimir Pliego
+    </button>
+  </div>

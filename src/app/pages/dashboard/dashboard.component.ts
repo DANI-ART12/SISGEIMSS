@@ -1,13 +1,26 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthService, User } from '../../core/auth/auth.service';
+import { FormsModule } from '@angular/forms';
+import{CommonModule} from '@angular/common';
+
+interface Traslado {
+  id: number;
+  folio: string;
+  origen: string;
+  destino: string;
+  fecha: string;
+  estado: string;
+}
 
 @Component({
   selector: 'app-dashboard',
+  imports:[CommonModule,FormsModule],
   templateUrl: './dashboard.component.html'
 })
 export class DashboardComponent implements OnInit {
   usuario: User | null = null;
   mensajeBienvenida: string = '';
+  trasladosAsignados: Traslado[] = [];
 
   constructor(private auth: AuthService) {}
 
@@ -30,7 +43,12 @@ export class DashboardComponent implements OnInit {
           mensajeRol = '¡Puedes gestionar algunos recursos del sistema!';
           break;
         case 'USER':
-          mensajeRol = '¡Bienvenido! Aquí puedes ver tu información.';
+          mensajeRol = '¡Bienvenido! Aquí puedes ver tus traslados asignados.';
+          // 🔹 Traslados simulados con folio
+          this.trasladosAsignados = [
+            { id: 1, folio: 'PL-2025-001', origen: 'CDMX', destino: 'Guadalajara', fecha: '2025-10-03', estado: 'Pendiente' },
+            { id: 2, folio: 'PL-2025-002', origen: 'Monterrey', destino: 'CDMX', fecha: '2025-10-05', estado: 'Confirmado' }
+          ];
           break;
       }
 
