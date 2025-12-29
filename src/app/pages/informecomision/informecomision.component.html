@@ -1,90 +1,166 @@
-<div
-  id="pdfContent"
-  #pdfContent
-  class="bg-white rounded shadow mx-auto font-serif text-gray-900"
-  style="width: 215.9mm; min-height: 279.4mm; padding: 20mm; box-sizing: border-box;"
->
-  <!-- Encabezado -->
-  <h1 class="text-2xl font-bold text-center mb-6 underline">INFORME DE COMISIÓN</h1>
-
-  <!-- Fecha -->
-  <div class="text-right mb-6 text-sm">Oaxaca, Oax., {{ fechaCreacion }}</div>
-
-  <!-- Datos -->
-  <p class="mb-6 leading-relaxed">
-    <strong>{{ doctoraNombre }}</strong><br />
-    {{ doctoraCargo }}<br />
-    Presente.
-  </p>
-
-  <!-- Cuerpo -->
-  <p class="mb-6 text-justify leading-relaxed indent-8">
-    Por medio del presente, le informo que fui comisionado con el Pliego Folio <strong>{{ folio }}</strong> al
-    <strong>{{ lugarDestino }}</strong> para <strong>{{ motivoComision }}</strong> Paciente NSS:
-    <strong>{{ pacienteNSS }}</strong>, Nombre: <strong>{{ pacienteNombre }}</strong>, saliendo del H.G.Z. No. 1 de Oaxaca
-    a las <strong>{{ horaSalida }}</strong> horas del día <strong>{{ fechaSalida }}</strong>, llegando al
-    <strong>{{ lugarDestino }}</strong> a las <strong>{{ horaLlegada }}</strong> horas del mismo día, a bordo de la ambulancia
-    ECCO <strong>{{ ambulanciaECCO }}</strong>.
-  </p>
-
-  <p class="mb-6 text-justify leading-relaxed indent-8">
-    El paciente fue entregado sin novedad. Posteriormente, se realizó el retorno partiendo del
-    <strong>{{ lugarDestino }}</strong> a las <strong>{{ horaRegreso }}</strong> horas, arribando nuevamente al H.G.Z. No. 1
-    de Oaxaca a las <strong>{{ horaLlegadaFinal }}</strong> horas del día <strong>{{ fechaRegreso }}</strong>.
-  </p>
-
-  <p class="mb-6 text-justify leading-relaxed indent-8">
-    Durante este traslado se registró un kilometraje inicial de <strong>{{ kmInicial }}</strong> km y final de
-    <strong>{{ kmFinal }}</strong> km, resultando en un recorrido total de <strong>{{ totalKm }}</strong> km.
-  </p>
-
-  <p class="mb-12 text-justify leading-relaxed indent-8">
-    Sin más que informar, quedo a sus órdenes para cualquier aclaración.
-  </p>
-
-  <!-- Firma -->
-  <div class="text-center mt-16">
-    <p><strong>{{ operadorNombre }}</strong></p>
-    <p>{{ operadorCategoria }} – Matrícula: {{ operadorMatricula }}</p>
+<div class="form-group search-container no-print">
+  <label>Buscar Número de Pliego</label>
+  <div class="search-input-wrapper">
+    <input 
+      type="text" 
+      [(ngModel)]="pliegoBusqueda" 
+      (input)="buscarPliego()" 
+      placeholder="Escribe el número de pliego..."
+      class="input-busqueda">
+    <span class="search-icon">🔍</span>
   </div>
 
-  <!-- Botones -->
-  <div class="mt-8 flex justify-end gap-4 print:hidden">
-    <button
-      (click)="editarInforme()"
-      class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition"
-    >
-      Editar
-    </button>
-    <button
-      (click)="imprimirInforme()"
-      class="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700 transition"
-    >
-      Imprimir Informe
-    </button>
-  </div>
+  @if (sugerencias.length > 0) {
+    <ul class="lista-sugerencias">
+      @for (pliego of sugerencias; track pliego.numero) {
+        <li (click)="seleccionarPliego(pliego)">
+          <strong>{{ pliego.numero }}</strong> - {{ pliego.objeto }}
+        </li>
+      }
+    </ul>
+  }
+</div>
 
-  <!-- Editor -->
-  <div *ngIf="enEdicion" class="mt-6 p-4 border rounded bg-yellow-50 print:hidden">
-    <h3 class="font-semibold mb-3 text-lg">Editar Informe</h3>
-    <textarea
-      [(ngModel)]="informeTexto"
-      rows="15"
-      class="w-full border rounded p-3 text-sm leading-relaxed font-mono"
-    ></textarea>
-    <div class="mt-4 flex gap-2">
-      <button
-        (click)="guardarCambios()"
-        class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition"
-      >
-        Guardar
-      </button>
-      <button
-        (click)="cancelarEdicion()"
-        class="bg-gray-400 px-4 py-2 rounded hover:bg-gray-500 transition"
-      >
-        Cancelar
-      </button>
+
+<div class="no-print action-bar">
+  <button (click)="imprimir()" class="btn-print">Imprimir Informe</button>
+</div>
+
+<div class="informe-container">
+  <header class="header">
+    <div class="logo-imss">
+      <img src="assets/logoimss.png" alt="IMSS">
+    </div>
+    <div class="main-title">
+      INFORME DE COMISIÓN
+    </div>
+  </header>
+
+  <div class="top-fields">
+    <div class="folio-section">
+      <label>FOLIO</label>
+      <div class=" hide-on-print"></div>
+    </div>
+    
+    <div class="pliego-box">
+      <div class="pliego-header">NÚMERO DE PLIEGO</div>
+      <div class="pliego-value"></div>
     </div>
   </div>
+
+  <section class="identity-section">
+    <div class="field-row">
+      <label>Titular de la unidad administrativa</label>
+      <div class="field-line hide-on-print"></div>
+    </div>
+    <div class="field-row">
+      <label>Unidad administrativa</label>
+      <div class="field-line hide-on-print"></div>
+    </div>
+    <div class="adscripcion-box">
+      <label>ADSCRIPCIÓN</label>
+      <div class="field-content"></div>
+    </div>
+  </section>
+
+  <div class="dates-container">
+    <div class="date-header-row">
+      <div class="col-lugar">LUGAR DE LA COMISIÓN</div>
+      <div class="col-del">DEL</div>
+      <div class="col-al">AL</div>
+    </div>
+    <div class="date-value-row"></div>
+  </div>
+
+  <div class="object-box">
+    <div class="object-header">OBJETO DE LA COMISIÓN</div>
+    <div class="object-body"></div>
+  </div>
+
+  @for (n of [1,2,3,4]; track n) {
+    <div class="content-block">
+      <div class="block-header">
+        @switch (n) {
+          @case (1) { 1. PROPÓSITO DE LA COMISIÓN }
+          @case (2) { 2. ACTIVIDADES REALIZADAS }
+          @case (3) { 3. RESULTADOS OBTENIDOS }
+          @case (4) { 4. CONTRIBUCIONES PARA LA DEPENDENCIA }
+        }
+      </div>
+      <div class="block-body"></div>
+    </div>
+  }
+
+  <div class="bloque-final">
+  <div class="legal-disclaimer">
+    "Declaro bajo protesta de decir verdad, que los datos contenidos en este informe son verídicos, y manifiesto tener conocimiento de las sanciones que se aplicarán en caso contrario"
+  </div>
+
+  <footer class="final-footer-row">
+    <div class="signature-container">
+      <div class="signature-line-main"></div>
+      <span class="label-name">juan perez</span>
+      <span class="label-name">Nombre y firma del comisionado</span>
+    </div>
+    
+    <div class="clave-container">
+      Clave: 1000-009-013
+    </div>
+  </footer>
 </div>
+</div>
+
+<div class="no-print action-bar">
+  @if (esAdminOSub) {
+    <button (click)="abrirAdministrativo()" class="btn-admin">➕ Nuevo Administrativo</button>
+  }
+  <button (click)="abrirTraslado()" class="btn-traslado">🚗 Nuevo Traslado</button>
+  <button (click)="imprimir()" class="btn-print">🖨️ Imprimir</button>
+</div>
+
+@if (mostrarModalAdministrativo) {
+  <div class="modal-overlay">
+    <div class="modal-content animate-fade-in">
+      <div class="modal-header">
+        <h2 class="modal-title">Nuevo Registro Administrativo</h2>
+        <button class="btn-close" (click)="cerrarModales()">&times;</button>
+      </div>
+      
+      <div class="modal-body">
+        <div class="form-grid">
+           <p class="placeholder-text">Campos para gestión administrativa (oficios, personal, etc.)</p>
+        </div>
+      </div>
+
+      <div class="modal-footer">
+        <button (click)="cerrarModales()" class="btn-cancel">Cancelar</button>
+        <button (click)="guardarAdministrativo()" class="btn-save">Guardar Registro</button>
+      </div>
+    </div>
+  </div>
+}
+
+@if (mostrarModalTraslado) {
+  <div class="modal-overlay">
+    <div class="modal-content animate-fade-in">
+      <div class="modal-header">
+        <h2 class="modal-title">Nuevo Registro de Traslado</h2>
+        <button class="btn-close" (click)="cerrarModales()">&times;</button>
+      </div>
+
+      <div class="modal-body">
+        <div class="form-grid">
+           <p class="placeholder-text">Campos para logística (vehículo, ruta, kilometraje, etc.)</p>
+        </div>
+      </div>
+
+      <div class="modal-footer">
+        <button (click)="cerrarModales()" class="btn-cancel">Cancelar</button>
+        <button (click)="guardarTraslado()" class="btn-save">Confirmar Traslado</button>
+      </div>
+    </div>
+  </div>
+}
+
+<div class="informe-container">
+  </div>

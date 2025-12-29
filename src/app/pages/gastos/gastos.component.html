@@ -1,346 +1,7 @@
 
 
-<!--<div id="printArea" class="max-w-[816px] mx-auto text-[8.5pt] leading-tight font-[Arial] p-8 shadow-lg bg-white">
-  
-  <div class="flex items-start mb-2">
-      <div class="logo-imss mr-4">
-          <img 
-            src="./assets/logoimss.png" 
-            alt="Logotipo del IMSS" 
-            class="w-20 h-auto"
-          /> 
-        </div>
-    
-    <div class="titles-text text-center flex-grow">
-      <p class="font-bold text-base">INSTITUTO MEXICANO DEL SEGURO SOCIAL</p>
-      <p>ÓRGANO DE OPERACIÓN ADMINISTRATIVA DESCONCENTRADA ESTATAL OAXACA</p>
-      <p>JEFATURA DE SERVICIOS ADMINISTRATIVOS</p>
-      <p>JEFATURA DE CONSERVACION Y SERVICIOS GENERALES</p>
-    </div>
-  </div>
 
-  <div class="text-center mt-0 mb-0">
-    <p class="font-bold">PLIEGO DE COMISIÓN {{ datosComision.folio }}</p>
-    <p class="font-bold">DESGLOSE PORMENORIZADO DE GASTOS</p>
-    <p class="text-xs mt-1">OAXACA DE JUÁREZ, OAX. {{ datosComision.fechaEmision }}</p>
-  </div>
-
-  <hr class="border-t border-gray-900 mb-2">
-
-  <div class=" rounded-xl border border-gray-900 p-0">
-    <h4 class="font-bold mb-2">DATOS GENERALES:</h4>
-    
-    <div class="flex justify-between mb-1">
-      <div class="w-1/2"><span class="font-bold">SERVIDOR PUBLICO:</span> {{ datosComision.servidorPublico }}</div>
-      <div class="w-1/4"><span class="font-bold">MAT:</span> {{ datosComision.matricula }}</div>
-      <div class="w-1/4"><span class="font-bold">TC:</span> {{ datosComision.tc }}</div>
-    </div>
-
-    <div class="flex justify-between mb-0">
-      <div class="w-1/2"><span class="font-bold">DESTINO DE LA COMISIÓN:</span> {{ datosComision.destino }}</div>
-      <div class="w-1/2">
-        <span class="font-bold">DEL:</span> {{ datosComision.fechaInicio }} AL {{ datosComision.fechaFin }} DE {{ datosComision.mes | uppercase }} {{ datosComision.anio }}
-      </div>
-    </div>
-
-    <div class="flex justify-between">
-      <div class="w-1/2"><span class="font-bold">TOTAL DÍAS:</span> {{ datosComision.totalDias }}</div>
-      <div class="w-1/2"><span class="font-bold">MEDIO DE TRANSPORTE:</span> {{ datosComision.transporte }}</div>
-    </div>
-  </div>
-
-  <div class="mt-2">
-    
-    <ng-container *ngTemplateOutlet="detalleTabla; context: {concepto: 'HOSPEDAJE', datos: desgloseGastos.hospedaje, categoria: 'hospedaje', tipo: 'comprobado'}"></ng-container>
-    <ng-container *ngTemplateOutlet="detalleTabla; context: {concepto: 'ALIMENTACION', datos: desgloseGastos.alimentacion, categoria: 'alimentacion', tipo: 'comprobado'}"></ng-container>
-    <ng-container *ngTemplateOutlet="detalleTabla; context: {concepto: 'TRANSPORTE', datos: desgloseGastos.transporte, categoria: 'transporte', tipo: 'comprobado'}"></ng-container>
-    <ng-container *ngTemplateOutlet="detalleTabla; context: {concepto: 'OTROS', datos: desgloseGastos.otros, categoria: 'otros', tipo: 'comprobado'}"></ng-container>
-
-  </div>
-
-  <ng-template #detalleTabla let-concepto="concepto" let-datos="datos" let-categoria="categoria" let-tipo="tipo">
-    <table class="w-full border-collapse border border-gray-900 mt-0">
-      <thead>
-        <tr class="bg-gray-200">
-          <th colspan="5" class="border border-gray-900 p-1 font-bold text-center flex justify-between items-center">
-            <span>{{ concepto }}</span> 
-            <button 
-              (click)="openModalToAdd(categoria, tipo)" 
-              class="bg-blue-500 text-white text-[7pt] px-2 py-0.5 rounded hover:bg-blue-700 transition"
-              title="Agregar Gasto"
-            >
-              + Agregar
-            </button>
-          </th>
-        </tr>
-        <tr>
-          <th class="border border-gray-900 p-1 w-1/5">No de Factura</th>
-          <th class="border border-gray-900 p-1 w-1/3">Proveedor</th>
-          <th class="border border-gray-900 p-1 w-1/6">Fecha</th>
-          <th class="border border-gray-900 p-1 w-1/6">Importe</th>
-          <th class="border border-gray-900 p-1 w-1/6">Subtotal</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr *ngFor="let item of datos.items">
-            <td class="border border-gray-900 p-1">{{ item.noFactura }}</td>
-            <td class="border border-gray-900 p-1">{{ item.proveedor }}</td>
-            <td class="border border-gray-900 p-1">{{ item.fecha }}</td>
-            <td class="border border-gray-900 p-1 text-right">{{ item.importe | currency: 'MXN':'symbol':'1.2-2' }}</td>
-            <td class="border border-gray-900 p-1"></td>
-        </tr>
-        <tr *ngFor="let i of generarArray(datos.filasVacias || 0)">
-            <td class="border border-gray-900 p-1 h-6"></td><td class="border border-gray-900 p-1"></td><td class="border border-gray-900 p-1"></td><td class="border border-gray-900 p-1"></td><td class="border border-gray-900 p-1"></td>
-        </tr>
-
-        <tr>
-          <td colspan="4" class="border border-gray-900 p-1 text-right font-bold"></td>
-          <td class="border border-gray-900 p-1 text-right font-bold bg-gray-100">
-            {{ datos.subtotal | currency: 'MXN':'symbol':'1.2-2' }}
-          </td>
-        </tr>
-      </tbody>
-    </table>
-  </ng-template>
-  <div class="text-right text-xs mt-2">
-      1270-009-031
-    </div>
-
-
-  <div class="flex mt-4">
-    <table class="w-1/2 border-collapse border border-gray-900 mr-0">
-      <thead>
-        <tr>
-          <th colspan="3" class="border border-gray-900 p-1 font-bold text-center flex justify-between items-center">
-            <span>PEAJE</span>
-            <button 
-              (click)="openModalToAdd('peaje', 'vehiculo')" 
-              class="bg-blue-500 text-white text-[7pt] px-2 py-0.5 rounded hover:bg-blue-700 transition"
-              title="Agregar Peaje"
-            >
-              + Agregar
-            </button>
-          </th>
-        </tr>
-        <tr><th class="border border-gray-900 p-1 w-1/3">Factura/Concepto</th><th class="border border-gray-900 p-1 w-1/3">Fecha</th><th class="border border-gray-900 p-1 w-1/3">Importe</th></tr>
-      </thead>
-      <tbody>
-        <tr *ngFor="let item of gastosVehiculo.peaje.items">
-          <td class="border border-gray-900 p-1">{{ item.noFactura }}</td>
-          <td class="border border-gray-900 p-1">{{ item.fecha }}</td>
-          <td class="border border-gray-900 p-1 text-right">{{ item.importe | currency: 'MXN':'symbol':'1.2-2' }}</td>
-        </tr>
-        <tr *ngFor="let i of generarArray(2)">
-          <td class="border border-gray-900 p-1 h-6"></td><td class="border border-gray-900 p-1"></td><td class="border border-gray-900 p-1"></td>
-        </tr>
-        <tr>
-          <td colspan="2" class="border border-gray-900 p-1 text-right font-bold">SUBTOTAL:</td>
-          <td class="border border-gray-900 p-1 text-right font-bold bg-gray-100">
-            {{ gastosVehiculo.peaje.subtotal | currency: 'MXN':'symbol':'1.2-2' }}
-          </td>
-        </tr>
-      </tbody>
-    </table>
-    <table class="w-1/2 border-collapse border border-gray-900">
-      <thead>
-        <tr>
-          <th colspan="3" class="border border-gray-900 p-1 font-bold text-center flex justify-between items-center">
-            <span>GASOLINA</span>
-            <button 
-              (click)="openModalToAdd('gasolina', 'vehiculo')" 
-              class="bg-blue-500 text-white text-[7pt] px-2 py-0.5 rounded hover:bg-blue-700 transition"
-              title="Agregar Gasolina"
-            >
-              + Agregar
-            </button>
-          </th>
-        </tr>
-        <tr><th class="border border-gray-900 p-1 w-1/3">Factura/Concepto</th><th class="border border-gray-900 p-1 w-1/3">Fecha</th><th class="border border-gray-900 p-1 w-1/3">Importe</th></tr>
-      </thead>
-      <tbody>
-        <tr *ngFor="let item of gastosVehiculo.gasolina.items">
-          <td class="border border-gray-900 p-1">{{ item.noFactura }}</td>
-          <td class="border border-gray-900 p-1">{{ item.fecha }}</td>
-          <td class="border border-gray-900 p-1 text-right">{{ item.importe | currency: 'MXN':'symbol':'1.2-2' }}</td>
-        </tr>
-        <tr *ngFor="let i of generarArray(2)">
-          <td class="border border-gray-900 p-1 h-6"></td><td class="border border-gray-900 p-1"></td><td class="border border-gray-900 p-1"></td>
-        </tr>
-        <tr>
-          <td colspan="2" class="border border-gray-900 p-1 text-right font-bold">SUBTOTAL:</td>
-          <td class="border border-gray-900 p-1 text-right font-bold bg-gray-100">
-            {{ gastosVehiculo.gasolina.subtotal | currency: 'MXN':'symbol':'1.2-2' }}
-          </td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
-  <table class="w-full border-collapse border border-gray-900 mt-4">
-    <thead>
-      <tr class="bg-gray-200">
-        <th colspan="5" class="border border-gray-900 p-1 font-bold text-center flex justify-between items-center">
-          <span>GASTOS SIN COMPROBANTE</span>
-          <button 
-            (click)="openModalToAddSinComprobante()" 
-            class="bg-blue-500 text-white text-[7pt] px-2 py-0.5 rounded hover:bg-blue-700 transition"
-            title="Agregar Gasto sin Comprobante"
-          >
-            + Agregar
-          </button>
-        </th>
-      </tr>
-      <tr>
-        <th class="border border-gray-900 p-1 w-1/5">CONCEPTO</th>
-        <th class="border border-gray-900 p-1 w-1/12">Fecha</th>
-        <th class="border border-gray-900 p-1 w-1/12">Importe</th>
-        <th class="border border-gray-900 p-1 w-1/2">JUSTIFICACIÓN</th>
-        <th class="border border-gray-900 p-1 w-1/6">Subtotal</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr *ngFor="let item of gastosSinComprobante.items">
-        <td class="border border-gray-900 p-1 text-xs">{{ item.concepto }}</td>
-        <td class="border border-gray-900 p-1">{{ item.fecha }}</td>
-        <td class="border border-gray-900 p-1 text-right">{{ item.importe | currency: 'MXN':'symbol':'1.2-2' }}</td>
-        <td class="border border-gray-900 p-1 text-xs">{{ item.justificacion }}</td>
-        <td class="border border-gray-900 p-1"></td>
-      </tr>
-      <tr *ngFor="let i of generarArray(gastosSinComprobante.filasVacias)">
-        <td class="border border-gray-900 p-1 h-6"></td><td class="border border-gray-900 p-1"></td><td class="border border-gray-900 p-1"></td><td class="border border-gray-900 p-1"></td><td class="border border-gray-900 p-1"></td>
-      </tr>
-      
-      <tr>
-        <td colspan="4" class="border border-gray-900 p-1 text-right font-bold">TOTAL DEL GASTO SIN COMPROBANTE</td>
-        <td class="border border-gray-900 p-1 text-right font-bold bg-gray-100">
-          {{ gastosSinComprobante.total | currency: 'MXN':'symbol':'1.2-2' }}
-        </td>
-      </tr>
-    </tbody>
-  </table>
-  <div class="flex justify-end items-end mt-2">
-    <div class="w-full flex">
-      <div class="w-1/2 flex justify-end">
-        <div class="font-bold text-right mr-4">TOTAL GASTO COMPROBADO:</div> </div>
-      <div class="w-1/4 font-bold text-right bg-gray-100 border border-gray-900 p-1">
-        {{ totalGastoComprobado | currency: 'MXN':'symbol':'1.2-2' }}
-      </div>
-    </div>
-  </div>
-  
-  <div class="flex justify-end items-end mt-0">
-    <div class="w-full flex">
-      <div class="w-1/2 flex justify-end">
-        <div class="font-bold text-right mr-4">TOTAL GENERAL COMPROBADO:</div> </div>
-      <div class="w-1/4 font-bold text-right bg-gray-100 border border-gray-900 p-1">
-        {{ totalGeneral | currency: 'MXN':'symbol':'1.2-2' }}
-      </div>
-    </div>
-  </div>
-  
-  <div class=" p-2 border border-gray-900 flex justify-around pt-10 mt-4">
-    <div class="signature-box text-center w-1/2 mx-4">
-      <p class="border-t border-gray-900 pt-1 font-bold">ENF. IVONNE ADELA MARTINEZ MENDOZA</p>
-      <p>SUBJEFA DE EDUCACIÓN DE ENF Y TECNICO B</p>
-      <p>MAT 11871156</p>
-      <p class="text-xs">(Nombre y firma del Comisionado)</p>
-    </div>
-    
-    <div class=" p-2 border border-gray-900 signature-box text-center w-1/2 mx-2">
-      <p class="border-t border-gray-900 pt-1 font-bold">DRA. TANIA GONZÁLEZ GUZMÁN</p>
-      <p>DIRECTORA DEL HGZ-U/MAA No. 1, OAXACA</p>
-      <p class="text-xs">(Nombre y firma del funcionario solicitante)</p>
-    </div>
-  </div>
-
-  <hr class="border-t border-gray-900 mt-6 mb-2">
-
-  <div class="p-2 border border-gray-900">
-    <p class="text-xs">Declaro bajo protesta de decir verdad que los importes registrados en el presente documento fueron efectivamente erogados durante el período de comisión y manifiesto tener conocimiento de las sanciones previstas en las leyes correspondientes que se aplica.</p>
-  </div>
-
-</div>
-
-<div *ngIf="isModalOpen" class="fixed inset-0 z-50 flex items-center justify-center bg-opacity-30">
-  <div class="bg-white p-6 rounded-lg shadow-xl w-full max-w-md">
-      
-      <h2 class="text-lg font-bold mb-4">
-          {{ isEditing ? 'Editar' : 'Agregar' }} Gasto 
-          <span *ngIf="currentType === 'comprobado' || currentType === 'vehiculo'">({{ currentCategory | uppercase }})</span>
-          <span *ngIf="currentType === 'sinComprobante'">(SIN COMPROBANTE)</span>
-      </h2>
-      
-      <form (ngSubmit)="saveGasto()">
-          
-          <ng-container *ngIf="currentType === 'comprobado' || currentType === 'vehiculo'">
-              
-              <div class="mb-3" *ngIf="currentCategory !== 'peaje'">
-                  <label for="noFactura" class="block text-gray-700 text-sm font-bold mb-1">No de Factura</label>
-                  <input id="noFactura" name="noFacturaComprobado" type="text" 
-                      [(ngModel)]="currentGastoComprobado.noFactura" 
-                      class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight text-xs">
-              </div>
-              
-              <div class="mb-3" *ngIf="currentCategory !== 'peaje'">
-                  <label for="proveedor" class="block text-gray-700 text-sm font-bold mb-1">Proveedor</label>
-                  <input id="proveedor" name="proveedorComprobado" type="text" 
-                      [(ngModel)]="currentGastoComprobado.proveedor" 
-                      class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight text-xs" required>
-              </div>
-
-              <div class="mb-3" *ngIf="currentCategory === 'peaje'">
-                  <label for="conceptoPeaje" class="block text-gray-700 text-sm font-bold mb-1">Concepto / Ticket</label>
-                  <input id="conceptoPeaje" name="conceptoPeajeInput" type="text" 
-                          [(ngModel)]="currentGastoComprobado.noFactura" 
-                          class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight text-xs">
-              </div>
-          </ng-container>
-
-          <ng-container *ngIf="currentType === 'sinComprobante'">
-              <div class="mb-3">
-                  <label for="concepto" class="block text-gray-700 text-sm font-bold mb-1">Concepto</label>
-                  <input id="concepto" name="conceptoSC" type="text" required
-                      [(ngModel)]="currentGastoSinComprobante.concepto" 
-                      class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight text-xs">
-              </div>
-              <div class="mb-3">
-                  <label for="justificacion" class="block text-gray-700 text-sm font-bold mb-1">Justificación</label>
-                  <textarea id="justificacion" name="justificacionSC" required
-                      [(ngModel)]="currentGastoSinComprobante.justificacion" 
-                      class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight text-xs"></textarea>
-              </div>
-          </ng-container>
-          
-          <div class="mb-3">
-              <label for="fecha" class="block text-gray-700 text-sm font-bold mb-1">Fecha</label>
-              <input id="fecha" name="fechaComun" type="date" required 
-                  [(ngModel)]="currentGasto.fecha" 
-                  class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight text-xs">
-          </div>
-          
-          <div class="mb-4">
-              <label for="importe" class="block text-gray-700 text-sm font-bold mb-1">Importe ($)</label>
-              <input id="importe" name="importeComun" type="number" step="0.01" required 
-                  [(ngModel)]="currentGasto.importe" 
-                  class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight text-xs">
-          </div>
-
-          <div class="flex justify-end space-x-2">
-              <button type="button" (click)="closeModal()" 
-                      class="bg-gray-500 text-white font-bold py-2 px-4 rounded hover:bg-gray-700 text-sm">
-                  Cancelar
-              </button>
-              <button type="submit" 
-                      class="bg-green-600 text-white font-bold py-2 px-4 rounded hover:bg-green-700 text-sm">
-                  Guardar Gasto
-              </button>
-          </div>
-          
-      </form>
-  </div>
-</div>-->
-
-
-<div class="max-w-[816px] mx-auto text-[8.5pt] leading-tight font-[Arial] p-8 shadow-lg bg-white">
+<!--<div class="max-w-[816px] mx-auto text-[8.5pt] leading-tight font-[Arial] p-8 shadow-lg bg-white">
 
   <div class="flex justify-end mb-4 print:hidden">
       <button 
@@ -364,15 +25,12 @@
           
           <div class="titles-text text-center flex-grow">
               <p class="font-bold text-base">INSTITUTO MEXICANO DEL SEGURO SOCIAL</p>
-              <p>ÓRGANO DE OPERACIÓN ADMINISTRATIVA DESCONCENTRADA ESTATAL OAXACA</p>
-              <p>JEFATURA DE SERVICIOS ADMINISTRATIVOS</p>
-              <p>JEFATURA DE CONSERVACION Y SERVICIOS GENERALES</p>
           </div>
       </div>
 
       <div class="text-center mt-0 mb-0">
+         <p class="font-bold">DESGLOSE PORMENORIZADO DE GASTOS</p>
           <p class="font-bold">PLIEGO DE COMISIÓN {{ datosComision.folio }}</p>
-          <p class="font-bold">DESGLOSE PORMENORIZADO DE GASTOS</p>
           <p class="text-xs mt-1">OAXACA DE JUÁREZ, OAX. {{ datosComision.fechaEmision }}</p>
       </div>
 
@@ -688,5 +346,116 @@
           </div>
           
       </form>
+  </div>
+</div>-->
+
+<div class="printable-container mx-auto font-['Arial'] text-[9pt] leading-tight bg-white">
+
+  <div class="flex justify-end p-4 no-print bg-gray-100 border-b">
+    <button (click)="imprimir()" class="bg-blue-800 text-white px-8 py-2 rounded font-bold shadow-md hover:bg-blue-900">
+      IMPRIMIR PLIEGO (FRENTE Y VUELTA)
+    </button>
+  </div>
+
+  <div class="page-break p-4">
+    <header class="flex items-start mb-2">
+      <img src="assets/logoimss.png" class="w-20 h-auto" alt="IMSS">
+      <div class="flex-grow text-center pr-10">
+        <h1 class="font-bold text-[12pt]">INSTITUTO MEXICANO DEL SEGURO SOCIAL</h1>
+        <h2 class="font-bold mt-2 text-[10pt]">DESGLOSE PORMENORIZADO DE GASTOS</h2>
+        <p class="font-bold">PLIEGO DE COMISIÓN No.: {{ datosComision.folio }}</p>
+      </div>
+    </header>
+
+    <div class="text-right px-4 mb-1">
+      <span class="font-bold text-[8pt] uppercase">Lugar y Fecha:</span> 
+      <span class="ml-1">OAXACA, {{ datosComision.fechaEmision }}</span>
+    </div>
+
+    <div class="border-2 border-black rounded-[1.5rem] p-3 mb-6 mx-1">
+      <div class="text-center font-bold text-[9.5pt] border-b border-black mb-2 pb-1">
+        DATOS GENERALES
+      </div>
+      <div class="grid grid-cols-12 gap-y-2 text-[8.5pt]">
+        <div class="col-span-12"><span class="font-bold uppercase">Comisionado:</span> {{ datosComision.servidorPublico }}</div>
+        <div class="col-span-5"><span class="font-bold uppercase">Destino de Comisión:</span> {{ datosComision.destino }}</div>
+        <div class="col-span-4 text-center"><span class="font-bold uppercase">Matrícula:</span> {{ datosComision.matricula }}</div>
+        <div class="col-span-3 text-right"><span class="font-bold uppercase">T.C.:</span> {{ datosComision.tc }}</div>
+        <div class="col-span-7"><span class="font-bold uppercase">Medio de Transporte:</span> {{ datosComision.transporte }}</div>
+        <div class="col-span-5 text-right font-bold italic">
+          DEL {{ datosComision.fechaInicio }} AL {{ datosComision.fechaFin }} 
+          <span class="ml-4 uppercase">Días: {{ datosComision.totalDias }}</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="flex-grow space-y-4">
+      <ng-container *ngFor="let cat of ['HOSPEDAJE', 'ALIMENTACIÓN', 'TRASLADOS', 'OTROS VIÁTICOS']">
+        <div>
+          <div class="bg-gray-100 border-2 border-black font-bold px-4 py-0.5 text-[8.5pt] border-b-0">{{ cat }}</div>
+          <table class="w-full border-collapse border-2 border-black">
+            <thead>
+              <tr class="text-center font-bold text-[8pt] bg-white">
+                <td class="border border-black w-[20%] py-1">No. Factura</td>
+                <td class="border border-black w-[45%]">Proveedor</td>
+                <td class="border border-black w-[15%]">Fecha</td>
+                <td class="border border-black w-[20%]">Importe</td>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let i of generarArray(3)" class="h-7"><td class="border border-black"></td><td class="border border-black"></td><td class="border border-black"></td><td class="border border-black"></td></tr>
+              <tr class="font-bold border-t border-black">
+                <td colspan="3" class="text-right pr-4 uppercase text-[7.5pt]">Subtotal</td>
+                <td class="border-l-2 border-black text-right px-2">$0.00</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </ng-container>
+    </div>
+    <div class="text-right font-bold text-[8.5pt] mt-4">Clave: 1000-009-010</div>
+  </div>
+
+  <div class="page-break p-4">
+    <div class="flex-grow space-y-4">
+      <ng-container *ngFor="let cat of ['AUTOBÚS', 'PEAJE', 'GASOLINA', 'OTROS GASTOS']">
+        <div>
+          <div class="bg-gray-100 border-2 border-black font-bold px-4 py-0.5 text-[8.5pt] border-b-0 uppercase">{{ cat }}</div>
+          <table class="w-full border-collapse border-2 border-black">
+            <tr class="text-center font-bold text-[8pt]"><td class="border border-black w-[20%] py-1">No. Factura</td><td class="border border-black w-[45%]">Proveedor</td><td class="border border-black w-[15%]">Fecha</td><td class="border border-black w-[20%]">Importe</td></tr>
+            <tr *ngFor="let i of generarArray(2)" class="h-7"><td class="border border-black"></td><td class="border border-black"></td><td class="border border-black"></td><td class="border border-black"></td></tr>
+            <tr class="font-bold border-t border-black"><td colspan="3" class="text-right pr-4 uppercase text-[7.5pt]">Subtotal</td><td class="border-l-2 border-black text-right px-2">$0.00</td></tr>
+          </table>
+        </div>
+      </ng-container>
+
+      <div class="mb-4">
+        <div class="bg-gray-100 border-2 border-black font-bold px-4 py-0.5 text-[8.5pt] border-b-0 uppercase">Gastos sin Comprobante</div>
+        <table class="w-full border-collapse border-2 border-black">
+          <tr class="text-center font-bold text-[8pt]"><td class="border border-black w-[20%]">Concepto</td><td class="border border-black w-[45%]">Justificación</td><td class="border border-black w-[15%] text-center">Fecha</td><td class="border border-black w-[20%] text-center">Importe</td></tr>
+          <tr class="h-9"><td class="border border-black"></td><td class="border border-black"></td><td class="border border-black"></td><td class="border border-black"></td></tr>
+          <tr><td colspan="3" class="text-right pr-4 font-bold bg-gray-50 uppercase text-[7.5pt]">Subtotal</td><td class="border-l-2 border-black text-right px-2 font-bold">$0.00</td></tr>
+        </table>
+      </div>
+
+      <div class="flex justify-center mt-6">
+        <div class="w-[60%] border-2 border-black">
+          <div class="text-center font-bold text-[8.5pt] border-b-2 border-black py-0.5 uppercase bg-white">Total del Gasto a Comprobar</div>
+          <div class="bg-gray-200 h-10 flex items-center justify-center text-[11pt] font-bold italic">{{ totalGeneral | currency }}</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="mt-auto pt-6">
+      <div class="flex flex-col items-start ml-4 mb-4">
+        <div class="signature-box"></div> <p class="font-bold text-[8.5pt] uppercase w-[320px] text-center italic mt-1">Nombre y Firma del Comisionado</p>
+      </div>
+      
+      <div class="text-[9.5pt] leading-tight text-justify px-2 mb-6 italic">
+        "Declaro bajo protesta de decir verdad que los importes registrados en el presente documento fueron efectivamente erogados durante el periodo de comisión y manifiesto tener conocimiento de las sanciones previstas en las leyes correspondientes que se aplica"
+      </div>
+      
+      <div class="text-right font-bold text-[8.5pt]">Clave: 1000-009-010</div>
+    </div>
   </div>
 </div>

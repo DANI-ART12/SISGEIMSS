@@ -1,0 +1,37 @@
+/* Configuración de Impresión */
+@media print {
+  @page {
+    size: letter;
+    margin: 0.5cm; /* Maximiza el uso del papel */
+  }
+
+  .no-print {
+    display: none !important;
+  }
+
+  .printable-container {
+    width: 100% !important;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+
+  .page-break {
+    page-break-after: always; /* Fuerza el cambio de cara de la hoja */
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+  }
+
+  * {
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+}
+
+/* Recuadro de firma oficial */
+.signature-box {
+  width: 320px;
+  height: 90px;
+  border: 2px solid black;
+  margin-bottom: 4px;
+}

@@ -48,12 +48,12 @@ const LINKS: Record<UserRole, SidebarMenuItem[]> = {
                 { label: 'Pliego Comisión', icon: 'ScrollText', route: '/pliego-comision' },
                 { label: 'Informe Comisión', icon: 'FileSearch', route: '/informecomision' },
                 { label: 'Pliego Confianza', icon: 'BookOpenText', route: '/pliegoactual' },
-                { label: 'Comprobación', icon: 'FileText', route: '/comprobacion' },
-                { label: 'Viáticos y Pasajes', icon: 'BadgeDollarSign', route: '/viaticos-pasajes' },
+                //{ label: 'Comprobación', icon: 'FileText', route: '/comprobacion' },
+               // { label: 'Viáticos y Pasajes', icon: 'BadgeDollarSign', route: '/viaticos-pasajes' },
                 {label: 'Desglose de Gastos', icon: 'FileText', route:'/gastos'},
-                {label: ' Solictid de Viaticos y Pasajes', icon: 'FileText', route:'/solicitudvyp'},
-                {label: ' Informe comision nuevo', icon: 'FileText', route:'/nuevoinforme'},
-                {label: 'pliego comision', icon:'FileText', route:'/pliego'},
+               // {label: ' Solictid de Viaticos y Pasajes', icon: 'FileText', route:'/solicitudvyp'},
+               // {label: ' Informe comision nuevo', icon: 'FileText', route:'/nuevoinforme'},
+                {label: 'Oficio', icon:'FileText', route:'/pliego'},
 
 
             ]
@@ -81,11 +81,12 @@ const LINKS: Record<UserRole, SidebarMenuItem[]> = {
                 { label: 'Pliego Comisión', icon: 'ScrollText', route: '/pliego-comision' },
                 { label: 'Informe Comisión', icon: 'FileSearch', route: '/informecomision' },
                 { label: 'Pliego Confianza', icon: 'BookOpenText', route: '/pliegoactual' },
-                { label: 'Comprobación', icon: 'FileText', route: '/comprobacion' },
-                { label: 'Viáticos y Pasajes', icon: 'BadgeDollarSign', route: '/viaticos-pasajes' },
+               // { label: 'Comprobación', icon: 'FileText', route: '/comprobacion' },
+               // { label: 'Viáticos y Pasajes', icon: 'BadgeDollarSign', route: '/viaticos-pasajes' },
                 {label: 'Desglose de Gastos', icon: 'FileText', route:'/gastos'},
-                {label: ' Solictid de Viaticos y Pasajes', icon: 'FileText', route:'/solicitudvyp'},
-                {label: ' Informe comision nuevo', icon: 'FileText', route:'/nuevoinforme'},
+               // {label: ' Solictid de Viaticos y Pasajes', icon: 'FileText', route:'/solicitudvyp'},
+               //{label: ' Informe comision nuevo', icon: 'FileText', route:'/nuevoinforme'},
+               {label: 'Oficio', icon:'FileText', route:'/pliego'},
                 
             ]
         },
@@ -103,9 +104,10 @@ const LINKS: Record<UserRole, SidebarMenuItem[]> = {
 
     USER: [
         // ELEMENTOS SIMPLES (SIN submenú)
-        { label: 'Pliego Comisión', icon: 'ScrollText', route: '/pliego-comision' },
-        { label: 'Pliego Confianza', icon: 'BookOpenText', route: '/pliegoactual' },
-        { label: 'Informe Comisión', icon: 'FileSearch', route: '/informecomision' },
+         { label: 'Pliego Comisión', icon: 'ScrollText', route: '/pliego-comision' },
+         { label: 'Informe Comisión', icon: 'FileSearch', route: '/informecomision' },
+         { label: 'Pliego Confianza', icon: 'BookOpenText', route: '/pliegoactual' },
+        {label: 'Desglose de Gastos', icon: 'FileText', route:'/gastos'},
         { label: 'Registro KM', icon: 'Car', route: '/registro-km' },
         { label: 'Historial', icon: 'History', route: '/historial' }
     ]

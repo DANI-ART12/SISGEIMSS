@@ -1,11 +1,22 @@
+<!-- comprobacion.component.html -->
 <div class="bg-white text-xs text-black  font-sans  shadow-xl border border-gray-400 p-8 w-[210mm] min-h-[297mm] mx-auto" id="pliego">
 
-  <div class="mb-4 print:hidden">
-      <button (click)="openModal()" class="bg-green-600 text-white px-4 py-2 rounded shadow hover:bg-green-700">
-          Agregar Datos
-      </button>
+  <!-- BOTONES: Nueva Comprobación (todos) + Nueva Administración (solo ADMIN/SUBADMIN) -->
+  <div class="mb-4 print:hidden flex gap-3">
+    <!-- Nueva Comprobación: visible para todos los roles logueados -->
+    <button *ngIf="isLoggedIn" (click)="openComprobacionModal()"
+            class="bg-blue-600 text-white px-4 py-2 rounded shadow hover:bg-blue-700">
+      Nueva Comprobación
+    </button>
+
+    <!-- Nueva Administración: solo ADMIN o SUBADMIN -->
+    <button *ngIf="isAdminOrSubadmin" (click)="openAdministracionModal()"
+            class="bg-green-600 text-white px-4 py-2 rounded shadow hover:bg-green-700">
+      Nueva Administración
+    </button>
   </div>
 
+  <!-- ======= TU PLIEGO (DISEÑO ORIGINAL, SIN CAMBIOS) ======= -->
   <div class="flex items-start mb-2">
       <div class="flex-shrink-0 text-center mr-4">
           <img src="assets/logoimss.png" alt="IMSS" class="w-16 h-16 mx-auto mb-1"/>
@@ -13,8 +24,9 @@
       </div>
       <div class="flex-grow text-center">
           <p class="font-bold text-sm">INSTITUTO MEXICANO DEL SEGURO SOCIAL</p>
-          <p class="mt-1">RFC OEGP811027BQ5 &nbsp;&nbsp; CURP OEGP811027MOCRRL08</p>
-          <p class="font-bold underline mt-2">COMPROBACIÓN DEL PLIEGO DE COMISIÓN Nº 493/2024</p>
+          <!-- RFC y CURP ya mostrados desde datos -->
+          <p class="mt-1">RFC {{ datos.rfc }} &nbsp;&nbsp; CURP {{ datos.curp }}</p>
+          <p class="font-bold underline mt-2">COMPROBACIÓN DEL PLIEGO DE COMISIÓN Nº {{ datos.numero_pliego }}</p>
       </div>
   </div>
   
@@ -32,11 +44,9 @@
       </div>
       
       <div class="text-right">
-          <p>OAXACA DE JUÁREZ, OAX. 08/11/2024</p>
+          <p>OAXACA DE JUÁREZ, OAX. {{ fechaHoy }}</p>
       </div>
   </div>
-
-
 
   <div class="border border-black p-2 mb-4 no-break text-[12px]">
     
@@ -92,7 +102,6 @@
     </div>
 </div>
 
-
   <table class="w-full border-collapse text-[11px] mb-6 border-2 border-black">
       <thead>
           <tr>
@@ -107,15 +116,15 @@
           </tr>
       </thead>
       <tbody>
-          <tr><td class="border border-black px-2 py-1">COMPROBANTE(S) DE HOSPEDAJE</td><td class="border border-black px-2 py-1 text-right">$ -</td><td class="border border-black px-2 py-1 text-right">$ -</td></tr>
-          <tr><td class="border border-black px-2 py-1">COMPROBANTES DE ALIMENTACIÓN</td><td class="border border-black px-2 py-1 text-right">$ -</td><td class="border border-black px-2 py-1 text-right">$ -</td></tr>
-          <tr><td class="border border-black px-2 py-1">COMPROBANTES DE PEAJE O TRANSPORTE</td><td class="border border-black px-2 py-1 text-right">$ -</td><td class="border border-black px-2 py-1 text-right">$ -</td></tr>
-          <tr><td class="border border-black px-2 py-1">COMPROBANTES DE COMBUSTIBLE</td><td class="border border-black px-2 py-1 text-right">$ -</td><td class="border border-black px-2 py-1 text-right">$ -</td></tr>
-          <tr class="border-b-2 border-black"><td class="border border-black px-2 py-1">OTROS GASTOS</td><td class="border border-black px-2 py-1 text-right">$ -</td><td class="border border-black px-2 py-1 text-right">$ -</td></tr>
-          <tr class="font-bold"><td class="border border-black px-2 py-1">SUMAS</td><td class="border border-black px-2 py-1 text-right">$ -</td><td class="border border-black px-2 py-1 text-right">$ -</td></tr>
-          <tr class="font-bold border-b-2 border-black"><td class="border border-black px-2 py-1">SALDO</td><td class="border border-black px-2 py-1 text-right">$ -</td><td class="border border-black px-2 py-1 text-right">$ -</td></tr>
-          <tr><td class="border border-black px-2 py-1">BOLETO DE AVION</td><td class="border border-black px-2 py-1 text-right">$ -</td><td class="border border-black px-2 py-1 text-right">$ -</td></tr>
-          <tr class="font-bold"><td class="border border-black px-2 py-1">SUMA FINAL</td><td class="border border-black px-2 py-1 text-right">$ -</td><td class="border border-black px-2 py-1 text-right">$ -</td></tr>
+          <tr><td class="border border-black px-2 py-1">COMPROBANTE(S) DE HOSPEDAJE</td><td class="border border-black px-2 py-1 text-right">$ {{ totales.sumas | number:'1.2-2' }}</td><td class="border border-black px-2 py-1 text-right">$ {{ totales.totalAbonos | number:'1.2-2' }}</td></tr>
+          <tr><td class="border border-black px-2 py-1">COMPROBANTES DE ALIMENTACIÓN</td><td class="border border-black px-2 py-1 text-right">$ {{ liquidacion[1]?.cargo | number:'1.2-2' }}</td><td class="border border-black px-2 py-1 text-right">$ {{ liquidacion[1]?.abono | number:'1.2-2' }}</td></tr>
+          <tr><td class="border border-black px-2 py-1">COMPROBANTES DE PEAJE O TRANSPORTE</td><td class="border border-black px-2 py-1 text-right">$ {{ liquidacion[2]?.cargo | number:'1.2-2' }}</td><td class="border border-black px-2 py-1 text-right">$ {{ liquidacion[2]?.abono | number:'1.2-2' }}</td></tr>
+          <tr><td class="border border-black px-2 py-1">COMPROBANTES DE COMBUSTIBLE</td><td class="border border-black px-2 py-1 text-right">$ {{ liquidacion[3]?.cargo | number:'1.2-2' }}</td><td class="border border-black px-2 py-1 text-right">$ {{ liquidacion[3]?.abono | number:'1.2-2' }}</td></tr>
+          <tr class="border-b-2 border-black"><td class="border border-black px-2 py-1">OTROS GASTOS</td><td class="border border-black px-2 py-1 text-right">$ {{ liquidacion[4]?.cargo | number:'1.2-2' }}</td><td class="border border-black px-2 py-1 text-right">$ {{ liquidacion[4]?.abono | number:'1.2-2' }}</td></tr>
+          <tr class="font-bold"><td class="border border-black px-2 py-1">SUMAS</td><td class="border border-black px-2 py-1 text-right">$ {{ totales.sumas | number:'1.2-2' }}</td><td class="border border-black px-2 py-1 text-right">$ {{ totales.totalAbonos | number:'1.2-2' }}</td></tr>
+          <tr class="font-bold border-b-2 border-black"><td class="border border-black px-2 py-1">SALDO</td><td class="border border-black px-2 py-1 text-right">$ {{ totales.saldo | number:'1.2-2' }}</td><td class="border border-black px-2 py-1 text-right">$ -</td></tr>
+          <tr><td class="border border-black px-2 py-1">BOLETO DE AVION</td><td class="border border-black px-2 py-1 text-right">$ {{ liquidacion[5]?.cargo | number:'1.2-2' }}</td><td class="border border-black px-2 py-1 text-right">$ -</td></tr>
+          <tr class="font-bold"><td class="border border-black px-2 py-1">SUMA FINAL</td><td class="border border-black px-2 py-1 text-right">$ {{ totales.sumaFinal | number:'1.2-2' }}</td><td class="border border-black px-2 py-1 text-right">$ -</td></tr>
       </tbody>
   </table>
 
@@ -159,8 +168,8 @@
               <p class="font-bold">AUTORIZA EL PAGO DEL SALDO</p>
           </div>
           <div class="text-center py-4">
-              <p class="font-bold">ENF. IVONNE ADELA MARTINEZ MENDOZA</p>
-              <p>11871156</p>
+              <p class="font-bold">{{ datos.empleado_comisionado }}</p>
+              <p>{{ datos.matricula_comisionado }}</p>
               <p class="border-t border-black inline-block px-8 mt-2">FIRMA DEL EMPLEADO COMISIONADO</p>
           </div>
       </div>
@@ -177,24 +186,142 @@
   </div>
 </div>
 
-<div *ngIf="mostrarModal" class="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center">
-  <div class="bg-white p-6 rounded-xl w-96">
-      <h3 class="text-lg font-bold mb-4">Datos del Pliego</h3>
-      <form>
-          <label class="block mb-2 font-semibold">Cuenta</label>
-          <input type="text" [(ngModel)]="tempDatos.cuenta" name="cuenta" class="w-full border rounded p-2 mb-3"/>
+<!-- ========================== -->
+<!-- MODAL: NUEVA COMPROBACION -->
+<!-- ========================== -->
+<div *ngIf="mostrarComprobacionModal" class="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center print:hidden">
+  <div class="bg-white p-6 rounded-xl w-[620px] max-h-[85vh] overflow-y-auto">
 
-          <label class="block mb-2 font-semibold">Funcionario solicitante</label>
-          <input type="text" [(ngModel)]="tempDatos.funcionario_solicitante" name="funcionario_solicitante" class="w-full border rounded p-2 mb-3"/>
+      <h3 class="text-lg font-bold mb-4">Nueva Comprobación</h3>
 
-          <label class="block mb-2 font-semibold">Cargo / Dependencia</label>
-          <input type="text" [(ngModel)]="tempDatos.cargo_solicitante" name="cargo_solicitante" class="w-full border rounded p-2 mb-3"/>
-          
-          </form>
+      <div class="grid grid-cols-2 gap-4">
+        <div>
+          <label class="block font-semibold">N° de Pliego</label>
+          <input [(ngModel)]="tempComprobacion.numero_pliego" name="num_pliego" class="w-full border rounded p-2 mb-2"/>
+        </div>
+        <div>
+          <label class="block font-semibold">Fecha</label>
+          <input type="date" [(ngModel)]="tempComprobacion.fecha" name="fecha" class="w-full border rounded p-2 mb-2"/>
+        </div>
 
-      <div class="flex justify-end space-x-2 mt-4">
-          <button (click)="closeModal()" class="px-3 py-2 bg-gray-400 rounded-lg text-white">Cancelar</button>
-          <button (click)="confirmarDatos()" class="px-3 py-2 bg-green-600 rounded-lg text-white">Guardar</button>
+        <div class="col-span-2">
+          <label class="block font-semibold">Motivo</label>
+          <textarea [(ngModel)]="tempComprobacion.motivo" name="motivo" class="w-full border rounded p-2 mb-2"></textarea>
+        </div>
+
+        <div>
+          <label class="block font-semibold">Periodo solicitado</label>
+          <input [(ngModel)]="tempComprobacion.periodo_solicitado" name="periodo_solicitado" class="w-full border rounded p-2 mb-2"/>
+        </div>
+
+        <div>
+          <label class="block font-semibold">Periodo comprobado</label>
+          <input [(ngModel)]="tempComprobacion.periodo_comprobado" name="periodo_comprobado" class="w-full border rounded p-2 mb-2"/>
+        </div>
+
+        <div class="col-span-2">
+          <label class="block font-semibold">Lugar(es)</label>
+          <input [(ngModel)]="tempComprobacion.lugar_comision" name="lugar_comision" class="w-full border rounded p-2 mb-2"/>
+        </div>
+
+        <div>
+          <label class="block font-semibold">Medio de transporte</label>
+          <select [(ngModel)]="tempComprobacion.transporte" name="transporte" class="w-full border rounded p-2 mb-2">
+            <option>TRASLADO TERRESTRE</option>
+            <option>AVIÓN</option>
+            <option>OTRO</option>
+          </select>
+        </div>
+
+        <!-- LIQUIDACIÓN: conceptos fijos, usuario ingresa cargos/abonos -->
+        <div class="col-span-2">
+          <label class="block font-semibold mb-2">Liquidación</label>
+          <table class="w-full text-sm border">
+            <tr *ngFor="let li of tempLiquidacion; let i = index" class="border-b">
+              <td class="p-1">{{ li.concepto }}</td>
+              <td class="p-1"><input type="number" [(ngModel)]="tempLiquidacion[i].cargo" name="c_{{i}}" class="w-28 border p-1 rounded"/></td>
+              <td class="p-1"><input type="number" [(ngModel)]="tempLiquidacion[i].abono" name="a_{{i}}" class="w-28 border p-1 rounded"/></td>
+            </tr>
+          </table>
+        </div>
+      </div>
+
+      <div class="flex justify-end gap-2 mt-4">
+        <button (click)="closeComprobacionModal()" class="px-3 py-2 bg-gray-400 text-white rounded">Cancelar</button>
+        <button (click)="guardarComprobacion()" class="px-3 py-2 bg-blue-600 text-white rounded">Guardar</button>
+      </div>
+  </div>
+</div>
+
+<!-- ============================== -->
+<!-- MODAL: NUEVA ADMINISTRACIÓN -->
+<!-- ============================== -->
+<div *ngIf="mostrarAdministracionModal" class="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center print:hidden">
+  <div class="bg-white p-6 rounded-xl w-[520px] max-h-[85vh] overflow-y-auto">
+
+      <h3 class="text-lg font-bold mb-4">Nueva Administración</h3>
+
+      <div>
+        <label class="block font-semibold">Funcionario solicitante</label>
+        <input [(ngModel)]="tempAdmin.funcionario_solicitante" name="admin_func" class="w-full border rounded p-2 mb-2"/>
+      </div>
+
+      <div>
+        <label class="block font-semibold">Cargo</label>
+        <input [(ngModel)]="tempAdmin.cargo_solicitante" name="admin_cargo" class="w-full border rounded p-2 mb-2"/>
+      </div>
+
+      <div>
+        <label class="block font-semibold">Dependencia</label>
+        <input [(ngModel)]="tempAdmin.dependencia" name="admin_dep" class="w-full border rounded p-2 mb-2"/>
+      </div>
+
+      <div>
+        <label class="block font-semibold">Matrícula solicitante</label>
+        <input [(ngModel)]="tempAdmin.matricula_solicitante" name="admin_matri" class="w-full border rounded p-2 mb-2"/>
+      </div>
+
+      <div>
+        <label class="block font-semibold">Teléfono oficina</label>
+        <input [(ngModel)]="tempAdmin.telefono" name="admin_tel" class="w-full border rounded p-2 mb-2"/>
+      </div>
+
+      <div>
+        <label class="block font-semibold">Cuenta</label>
+        <input [(ngModel)]="tempAdmin.cuenta" name="admin_cuenta" class="w-full border rounded p-2 mb-2"/>
+      </div>
+
+      <hr class="my-3" />
+
+      <!-- DATOS AUTOMÁTICOS (solo lectura dentro del modal, grises) -->
+      <div>
+        <label class="block font-semibold">RFC (automático)</label>
+        <input [value]="tempAdmin.rfc" disabled class="w-full border rounded p-2 mb-2 readonly-gray"/>
+      </div>
+
+      <div>
+        <label class="block font-semibold">CURP (automático)</label>
+        <input [value]="tempAdmin.curp" disabled class="w-full border rounded p-2 mb-2 readonly-gray"/>
+      </div>
+
+      <div>
+        <label class="block font-semibold">Empleado comisionado (automático)</label>
+        <input [value]="tempAdmin.empleado_comisionado" disabled class="w-full border rounded p-2 mb-2 readonly-gray"/>
+      </div>
+
+      <div>
+        <label class="block font-semibold">Tipo contratación (automático)</label>
+        <input [value]="tempAdmin.tipo_contratacion" disabled class="w-full border rounded p-2 mb-2 readonly-gray"/>
+      </div>
+
+      <div>
+        <label class="block font-semibold">Grupo jerárquico (automático)</label>
+        <input [value]="tempAdmin.grupo_jerarquico" disabled class="w-full border rounded p-2 mb-2 readonly-gray"/>
+      </div>
+
+      <div class="flex justify-end gap-2 mt-4">
+        <button (click)="closeAdministracionModal()" class="px-3 py-2 bg-gray-400 text-white rounded">Cancelar</button>
+        <button (click)="guardarAdministracion()" class="px-3 py-2 bg-green-600 text-white rounded">Guardar</button>
       </div>
   </div>
 </div>

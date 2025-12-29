@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+/*import { Component } from '@angular/core';
 import { CommonModule, CurrencyPipe, DatePipe } from '@angular/common';
 import { FormsModule } from '@angular/forms'; // Módulo necesario para ngModel
 
@@ -106,7 +106,7 @@ export class GastosComponent {
  
    /**
     * Abre el modal para agregar un NUEVO gasto comprobado (Hospedaje, Peaje, Gasolina, etc.).
-    */
+    
    openModalToAdd(category: string, type: 'comprobado' | 'vehiculo'): void {
      this.currentType = type;
      this.currentCategory = category;
@@ -134,7 +134,7 @@ export class GastosComponent {
  
    /**
     * Abre el modal para Gastos SIN Comprobante.
-    */
+    
    openModalToAddSinComprobante(): void {
      this.currentType = 'sinComprobante';
      // Inicializamos el objeto completo GastoSinComprobanteItem y lo asignamos
@@ -253,5 +253,45 @@ saveGasto(): void {
   // Helper para generar arrays de números
   generarArray(n: number): number[] {
     return Array(n).fill(0).map((x, i) => i);
+  }
+}*/
+
+
+
+
+import { Component } from '@angular/core';
+import { CommonModule, CurrencyPipe } from '@angular/common';
+
+@Component({
+  selector: 'app-gastos',
+  standalone: true,
+  imports: [CommonModule, CurrencyPipe],
+  templateUrl: './gastos.component.html',
+  styleUrls: ['./gastos.component.css']
+})
+export class GastosComponent {
+  // Datos simulados (Se pueden recibir de una API)
+  datosComision = {
+    folio: '0254/2025',
+    servidorPublico: 'JUAN PEREZ CANSECO',
+    matricula: '99283746',
+    tc: '8',
+    destino: 'TLAXIACO, OAXACA',
+    fechaInicio: '20/12/2025', 
+    fechaFin: '22/12/2025', 
+    totalDias: '3',
+    transporte: 'VEHICULO OFICIAL',
+    fechaEmision: '22 DE DICIEMBRE DE 2025'
+  };
+
+  totalGeneral: number = 0;
+
+  // Genera filas vacías para mantener el formato estético de la hoja
+  generarArray(n: number): number[] {
+    return Array(n).fill(0);
+  }
+
+  imprimir(): void {
+    window.print();
   }
 }

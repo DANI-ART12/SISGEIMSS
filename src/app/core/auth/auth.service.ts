@@ -8,7 +8,7 @@ export interface User {
   password: string;
   role: UserRole;
 }
-
+// usuarios 
 const SEED_USERS: User[] = [
   { matricula: 'A001', password: 'admin123', role: 'ADMIN' },
   { matricula: 'S001', password: 'sub123', role: 'SUBADMIN' },

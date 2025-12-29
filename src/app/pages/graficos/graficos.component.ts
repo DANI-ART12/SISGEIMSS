@@ -1,9 +1,15 @@
-import { Component, ViewChildren, QueryList } from '@angular/core';
+import { Component, ViewChildren, QueryList, ChangeDetectorRef } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { NgChartsModule, BaseChartDirective } from 'ng2-charts';
 import { ChartType, ChartOptions, ChartData } from 'chart.js';
-import html2pdf from 'html2pdf.js';
 import { CommonModule } from '@angular/common';
+
+// 🌟 CORRECCIÓN CLAVE 🌟: Importamos la clase jsPDF directamente.
+// Esto ayuda a que 'jspdf-autotable' se adjunte correctamente.
+ import { jsPDF } from 'jspdf';
+ // Se importa el plugin para extender jsPDF
+ // 2. Importación del plugin jspdf-autotable para que se registre globalmente
+import 'jspdf-autotable';
 
 interface Grafica {
   id: string;
@@ -26,10 +32,11 @@ export class GraficosComponent {
   fechaInicio: string = '';
   fechaFin: string = '';
   meses = ['Ene','Feb','Mar','Abr','May','Jun','Jul','Ago','Sep','Oct','Nov','Dic'];
-
+  
+  isLoading: boolean = false; 
   graficas: Grafica[] = [];
 
-  constructor() {
+  constructor(private cdr: ChangeDetectorRef) {
     this.graficas = [
       {
         id:'grafica-local-vs-foraneo',
@@ -98,16 +105,17 @@ export class GraficosComponent {
   }
 
   buscarPorFechas() {
-    // Implementar filtrado si quieres
     console.log('Filtrando de', this.fechaInicio, 'a', this.fechaFin);
+    // Aquí iría la llamada al Backend para obtener nuevos datos basados en las fechas
   }
 
+  // Se mantiene la función PNG original
   descargarGraficaPNG(index: number, chartTitle: string) {
     const chart = this.charts.toArray()[index];
-    if (!chart) { alert('Gráfico no encontrado'); return; }
+    if (!chart) { console.error('Gráfico no encontrado'); return; }
 
     const canvas = chart.chart?.canvas;
-    if (!canvas) { alert('Canvas no disponible'); return; }
+    if (!canvas) { console.error('Canvas no disponible'); return; }
 
     const link = document.createElement('a');
     link.href = canvas.toDataURL('image/png');
@@ -115,18 +123,75 @@ export class GraficosComponent {
     link.click();
   }
 
-  descargarInformePDF(containerId: string, chartTitle: string) {
-    const element = document.getElementById(containerId);
-    if (!element) { alert('Elemento no encontrado'); return; }
+  // FUNCIÓN AUXILIAR: Transforma los datos de la gráfica a un formato de tabla
+  private formatDataToTable(grafica: Grafica): { head: string[], body: any[][] } {
+    const head: string[] = ['Etiqueta', 'Dato']; 
+    const body: any[][] = [];
 
-    const options = {
-      margin: 10,
-      filename: `${chartTitle.toLowerCase().replace(/\s/g,'-')}-informe.pdf`,
-      image: { type:'jpeg', quality:0.98 },
-      html2canvas: { scale: 2 },
-      jsPDF: { unit:'mm', format:'a4', orientation:'portrait' }
-    };
-    html2pdf(element, options);
+    // Múltiples datasets (Barra, Línea)
+    if (grafica.data.datasets.length > 1) {
+      head.pop(); 
+      head.push(...grafica.data.datasets.map(ds => ds.label || 'Dato'));
+      
+      grafica.data.labels?.forEach((label, index) => {
+        const row = [label];
+        grafica.data.datasets.forEach(ds => {
+          row.push(ds.data[index]);
+        });
+        body.push(row);
+      });
+
+    // Un solo dataset (Pie, Doughnut)
+    } else if (grafica.data.labels) {
+      grafica.data.labels.forEach((label, index) => {
+        body.push([label, grafica.data.datasets[0].data[index]]);
+      });
+    }
+
+    return { head, body };
+  }
+  
+  // FUNCIÓN: Descarga rápida individual (una gráfica = un PDF)
+  descargarGraficaPDFRapido(grafica: Grafica) {
+    this.isLoading = true;
+    
+    // Forzar la actualización de la UI
+    this.cdr.detectChanges(); 
+    
+    // Aislar el proceso pesado para evitar el bloqueo del hilo de la UI
+    setTimeout(() => {
+        try {
+            // 🌟 CLAVE: Instancia correcta de jsPDF
+            const doc = new jsPDF();
+            let yOffset = 15; 
+            const tableData = this.formatDataToTable(grafica);
+
+            // Encabezado
+            doc.setFontSize(18);
+            doc.text(`Informe Individual: ${grafica.title}`, 10, yOffset);
+            yOffset += 10;
+
+            // Filtros
+            doc.setFontSize(10);
+            doc.text(`Filtro: ${this.fechaInicio || 'N/A'} a ${this.fechaFin || 'N/A'}`, 10, yOffset);
+            yOffset += 10; 
+
+            // Generar la tabla con autoTable (ahora debería funcionar)
+            (doc as any).autoTable({
+                head: [tableData.head],
+                body: tableData.body,
+                startY: yOffset,
+                margin: { left: 10, right: 10 },
+            });
+
+            // Guardar el PDF
+            doc.save(`${grafica.title.toLowerCase().replace(/\s/g, '-')}-informe-rapido.pdf`);
+            
+        } catch (error) {
+            console.error('Error al generar el PDF de tablas:', error);
+        } finally {
+            this.isLoading = false;
+        }
+    }, 10); 
   }
 }
-

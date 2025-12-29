@@ -1,173 +1,280 @@
-import { Component } from '@angular/core';
+// comprobacion.component.ts
+import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
-
-// Define una interfaz para asegurar la estructura de los datos del pliego
-interface PliegoDatos {
-  // Encabezado
-  cuenta: string;
-  cuenta_secundaria: string;
-
-  // Datos del Solicitante/Comisionado
-  funcionario_solicitante: string;
-  cargo_solicitante: string;
-  matricula_solicitante: string;
-  dependencia: string;
-  empleado_comisionado: string;
-  tipo_contratacion: string;
-  matricula_comisionado: string;
-  grupo_jerarquico: string;
-  telefono: string;
-
-  // Datos de la Comisión
-  motivo: string;
-  periodo_solicitado: string;
-  periodo_comprobado: string;
-  lugar_comision: string;
-  transporte: string;
-
-  // Puedes añadir aquí las propiedades para la Tabla de Liquidación si son dinámicas
-  // liquidacion: any[]; 
-}
+import { AuthService, User } from '../../core/auth/auth.service';
 
 @Component({
   selector: 'app-comprobacion',
-  // Es importante que estos módulos estén en el 'imports' del @Component
-  // para que Angular pueda reconocer directivas como [(ngModel)] y *ngIf
-  imports: [FormsModule, CommonModule], 
+  // Si usas standalone components en tu app, descomenta 'standalone: true'.
+  //standalone: true,
+  imports: [FormsModule, CommonModule],
   templateUrl: './comprobacion.component.html',
-  // Necesitas definir 'standalone: true' si lo estás usando como componente único,
-  // si no lo usas, ignora la línea de abajo.
-  // standalone: true, 
+  styleUrls: ['./comprobacion.component.css']
 })
-export class ComprobacionComponent {
-  mostrarModal = false;
+export class ComprobacionComponent implements OnInit {
 
-  // Inicialización de 'datos' con todos los campos necesarios
-  datos: PliegoDatos = {
-    // Valores de ejemplo para que la plantilla no se vea vacía al iniciar
-    cuenta: '4578', 
+  // estado de modales
+  mostrarComprobacionModal = false;
+  mostrarAdministracionModal = false;
+
+  // rol y usuario actual (tomados desde AuthService)
+  currentUser: User | null = null;
+  role: string | null = null;
+  isLoggedIn = false;
+  isAdminOrSubadmin = false;
+
+  // fecha de hoy para el pliego (formato local)
+  fechaHoy = new Date().toLocaleDateString('es-MX');
+
+  // DATOS del pliego que se muestran en el HTML (persisten mientras la app está abierta)
+  datos: any = {
+    numero_pliego: '493/2024',
+
+    // datos automáticos (ficticios iniciales)
+    rfc: 'OEGP811027BQ5',
+    curp: 'OEGP811027MOCRRL08',
+
+    cuenta: '21900176011',
     cuenta_secundaria: '219001 760110 4206 1623',
-    
+
     funcionario_solicitante: 'DRA. TANIA GONZALEZ GUZMAN',
     cargo_solicitante: 'JEFA DE SERVICIOS DE DESARROLLO DE PERSONAL',
     matricula_solicitante: '98210795',
     dependencia: 'ÓRGANO DE OPERACIÓN ADMINISTRATIVA DESCONCENTRADA',
+
     empleado_comisionado: 'ENF. IVONNE ADELA MARTINEZ MENDOZA',
     tipo_contratacion: 'CONFIANZA B',
     matricula_comisionado: '11871156',
     grupo_jerarquico: 'COORD. EDUC E INV EN SALUD',
     telefono: '9515152033',
 
-    motivo: 'ASISTE A CAPACITACIÓN "SEGUNDO TALLER PARA LA IMPARTICION DEL PROGRAMA DE DESARROLLO GERENCIAL"',
-    periodo_solicitado: 'DEL 3 AL 5 DE NOVIEMBRE DEL 2024',
-    periodo_comprobado: 'DEL 3 AL 5 DE NOVIEMBRE DEL 2024',
-    lugar_comision: 'CIUDAD DE MEXICO',
-    transporte: 'TRASLADO TERRESTRE',
+    motivo: '',
+    periodo_solicitado: '',
+    periodo_comprobado: '',
+    lugar_comision: '',
+    transporte: ''
   };
 
-  // El objeto temporal para el modal se inicializa copiando el objeto principal
-  tempDatos: PliegoDatos = { ...this.datos };
+  // temporales para modales
+  tempAdmin: any = {};
+  tempComprobacion: any = {};
 
-  openModal() {
-    // Al abrir, se usa una copia del objeto actual para editar
-    this.tempDatos = { ...this.datos }; 
-    this.mostrarModal = true;
-  }
+  // LIQUIDACIÓN (base de conceptos)
+  conceptosBase = ['Hospedaje', 'Alimentación', 'Peaje', 'Combustible', 'Otros gastos', 'Boleto avión'];
+  liquidacion: any[] = [];
+  tempLiquidacion: any[] = [];
 
-  closeModal() {
-    this.mostrarModal = false;
-  }
+  // totales mostrados en pliego
+  totales = {
+    sumas: 0,
+    totalAbonos: 0,
+    saldo: 0,
+    sumaFinal: 0
+  };
 
-  confirmarDatos() {
-    const confirmacion = confirm('¿Son correctos los datos ingresados?');
-    if (confirmacion) {
-      // Solo actualiza los datos si el usuario confirma
-      this.datos = { ...this.tempDatos }; 
-      this.mostrarModal = false;
+  // Datos extendidos ficticios por usuario (para cargar RFC/Curp/tipo/grupo)
+  private EXTENDED_USER_DATA: Record<string, any> = {
+    'A001': {
+      rfc: 'RFCADMIN001',
+      curp: 'CURPADMIN001',
+      empleado_comisionado: 'ADMINISTRADOR GENERAL',
+      tipo_contratacion: 'BASE',
+      matricula_comisionado: 'A001',
+      grupo_jerarquico: 'A1'
+    },
+    'S001': {
+      rfc: 'RFCSUB001',
+      curp: 'CURPSUB001',
+      empleado_comisionado: 'SUBADMIN REGIONAL',
+      tipo_contratacion: 'CONFIANZA',
+      matricula_comisionado: 'S001',
+      grupo_jerarquico: 'B2'
+    },
+    'U001': {
+      rfc: 'RFCUSER001',
+      curp: 'CURPUSER001',
+      empleado_comisionado: 'USUARIO OPERATIVO',
+      tipo_contratacion: 'EVENTUAL',
+      matricula_comisionado: 'U001',
+      grupo_jerarquico: 'C3'
     }
+  };
+
+  constructor(private auth: AuthService) {}
+
+  ngOnInit(): void {
+    // cargar usuario actual y rol desde AuthService (no modificamos AuthService)
+    this.currentUser = this.auth.getCurrentUser();
+    this.role = this.auth.getRole();
+    this.isLoggedIn = this.auth.isLoggedIn();
+    this.isAdminOrSubadmin = this.role === 'ADMIN' || this.role === 'SUBADMIN';
+
+    // inicializar liquidación
+    this.liquidacion = this.conceptosBase.map(c => ({ concepto: c, cargo: 0, abono: 0 }));
+    this.tempLiquidacion = this.conceptosBase.map(c => ({ concepto: c, cargo: 0, abono: 0 }));
+
+    // si hay usuario, cargar datos automáticos ficticios desde EXTENDED_USER_DATA
+    if (this.currentUser) {
+      const ext = this.EXTENDED_USER_DATA[this.currentUser.matricula];
+      if (ext) {
+        this.datos.rfc = ext.rfc;
+        this.datos.curp = ext.curp;
+        this.datos.empleado_comisionado = ext.empleado_comisionado;
+        this.datos.tipo_contratacion = ext.tipo_contratacion;
+        this.datos.matricula_comisionado = ext.matricula_comisionado;
+        this.datos.grupo_jerarquico = ext.grupo_jerarquico;
+      }
+    }
+
+    // calcular totales iniciales
+    this.recalcularTotales();
   }
 
+  // ========================
+  // MODALES: administración
+  // ========================
+  openAdministracionModal() {
+    // SOLO ADMIN o SUBADMIN pueden abrir (comprobación en template también existe)
+    if (!this.isAdminOrSubadmin) return;
+
+    // llenar temporales: los campos editables + los automáticos (readonly)
+    this.tempAdmin = {
+      funcionario_solicitante: this.datos.funcionario_solicitante,
+      cargo_solicitante: this.datos.cargo_solicitante,
+      dependencia: this.datos.dependencia,
+      matricula_solicitante: this.datos.matricula_solicitante,
+      telefono: this.datos.telefono,
+      cuenta: this.datos.cuenta,
+
+      // automáticos (solo lectura en el modal)
+      rfc: this.datos.rfc,
+      curp: this.datos.curp,
+      empleado_comisionado: this.datos.empleado_comisionado,
+      tipo_contratacion: this.datos.tipo_contratacion,
+      grupo_jerarquico: this.datos.grupo_jerarquico,
+      matricula_comisionado: this.datos.matricula_comisionado
+    };
+
+    // abrir modal
+    this.mostrarAdministracionModal = true;
+  }
+
+  closeAdministracionModal() {
+    this.mostrarAdministracionModal = false;
+  }
+
+  guardarAdministracion() {
+    // Guardar lo que el admin/subadmin llenó (y mantener automáticos)
+    this.datos.funcionario_solicitante = this.tempAdmin.funcionario_solicitante;
+    this.datos.cargo_solicitante = this.tempAdmin.cargo_solicitante;
+    this.datos.dependencia = this.tempAdmin.dependencia;
+    this.datos.matricula_solicitante = this.tempAdmin.matricula_solicitante;
+    this.datos.telefono = this.tempAdmin.telefono;
+    this.datos.cuenta = this.tempAdmin.cuenta;
+
+    // También guardamos los automáticos (vienen precargados) para que se reflejen en el pliego
+    this.datos.rfc = this.tempAdmin.rfc;
+    this.datos.curp = this.tempAdmin.curp;
+    this.datos.empleado_comisionado = this.tempAdmin.empleado_comisionado;
+    this.datos.tipo_contratacion = this.tempAdmin.tipo_contratacion;
+    this.datos.grupo_jerarquico = this.tempAdmin.grupo_jerarquico;
+    this.datos.matricula_comisionado = this.tempAdmin.matricula_comisionado;
+
+    this.mostrarAdministracionModal = false;
+  }
+
+  // ========================
+  // MODALES: comprobación
+  // ========================
+  openComprobacionModal() {
+    // todos los roles logueados pueden abrir
+    if (!this.isLoggedIn) return;
+
+    // copia datos actuales para editar sin aplicar hasta guardar
+    this.tempComprobacion = {
+      numero_pliego: this.datos.numero_pliego,
+      fecha: this.fechaHoy,
+      motivo: this.datos.motivo,
+      periodo_solicitado: this.datos.periodo_solicitado,
+      periodo_comprobado: this.datos.periodo_comprobado,
+      lugar_comision: this.datos.lugar_comision,
+      transporte: this.datos.transporte
+    };
+
+    // copia temporal de la liquidación
+    this.tempLiquidacion = this.liquidacion.map(x => ({ ...x }));
+
+    this.mostrarComprobacionModal = true;
+  }
+
+  closeComprobacionModal() {
+    this.mostrarComprobacionModal = false;
+  }
+
+  guardarComprobacion() {
+    // guardar campos de comprobación en pliego
+    this.datos.numero_pliego = this.tempComprobacion.numero_pliego;
+    this.datos.motivo = this.tempComprobacion.motivo;
+    this.datos.periodo_solicitado = this.tempComprobacion.periodo_solicitado;
+    this.datos.periodo_comprobado = this.tempComprobacion.periodo_comprobado;
+    this.datos.lugar_comision = this.tempComprobacion.lugar_comision;
+    this.datos.transporte = this.tempComprobacion.transporte;
+    this.datos.fecha = this.tempComprobacion.fecha;
+
+    // guardar liquidación y recalcular totales
+    this.liquidacion = this.tempLiquidacion.map(x => ({ ...x }));
+    this.recalcularTotales();
+
+    this.mostrarComprobacionModal = false;
+  }
+
+  // ========================
+  // LIQUIDACION: totales
+  // ========================
+  recalcularTotales() {
+    // sumas cargos y abonos
+    const cargos = this.liquidacion.reduce((s, it) => s + Number(it.cargo || 0), 0);
+    const abonos = this.liquidacion.reduce((s, it) => s + Number(it.abono || 0), 0);
+    const boleto = (this.liquidacion.find(i => i.concepto === 'Boleto avión')?.cargo) || 0;
+
+    this.totales.sumas = cargos;
+    this.totales.totalAbonos = abonos;
+    this.totales.saldo = cargos - abonos;
+    this.totales.sumaFinal = (cargos - abonos) + boleto;
+  }
+
+  // ========================
+  // IMPRESIÓN
+  // ========================
   imprimir() {
-    const contenido = document.getElementById('pliego')?.innerHTML;
+    // oculta modales en impresión por CSS (print:hidden)
+    const contenido = document.getElementById('pliego')?.innerHTML || '';
     const ventana = window.open('', '_blank', 'width=900,height=650');
-    
-    // 1. Recopilar todos los estilos de la página actual (¡INCLUIDO TAILWIND!)
-    let styleCSS = '';
-    for (let i = 0; i < document.styleSheets.length; i++) {
-        try {
-            // Recorre todas las hojas de estilo y concatena sus reglas
-            styleCSS += Array.from(document.styleSheets[i].cssRules)
-                .map(rule => rule.cssText)
-                .join('\n');
-        } catch (e) {
-            console.warn("No se pudo leer una hoja de estilo:", e);
-        }
-    }
 
-    // ... dentro de imprimir()
-// ...
-ventana!.document.write(`
-  <html>
-    <head>
-      <title>Pliego de Comisión</title>
-      <style>
-        ${styleCSS}
+    const style = Array.from(document.styleSheets).map(s => {
+      try { return Array.from((s as CSSStyleSheet).cssRules).map(r => r.cssText).join('\n'); }
+      catch { return ''; }
+    }).join('\n');
 
-        /* AJUSTE CLAVE DE ESPACIADO */
-        .pliego-compacto .py-1 { padding-top: 2px !important; padding-bottom: 2px !important; }
-        .pliego-compacto .py-2 { padding-top: 3px !important; padding-bottom: 3px !important; }
-        .pliego-compacto .mb-4 { margin-bottom: 5px !important; }
-        .pliego-compacto .mb-6 { margin-bottom: 8px !important; }
-        /* FIN AJUSTE CLAVE */
-        
-        @media print {
-            .no-break { page-break-inside: avoid !important; }
-            
-            @page { 
-                size: A4; 
-                /* MÁRGENES MUY REDUCIDOS: 10mm en todos lados */
-                margin: 10mm; 
-            } 
-        }
-        
-        body { 
-            margin: 0; 
-            padding: 0; 
-            -webkit-print-color-adjust: exact !important; 
-            print-color-adjust: exact !important;
-        }
-        #pliego {
-            width: 210mm !important; 
-            /* Eliminamos el min-height para que el contenido determine el tamaño */
-            margin: 0 auto !important;
-            box-shadow: none !important; 
-            border: none !important;
-            padding: 10mm !important; /* Reducir el padding interno de la hoja */
-        }
-        button { display: none !important; }
-
-      </style>
-    </head>
-    <body onload="window.print()" class="pliego-compacto">
-      ${contenido}
-    </body>
-  </html>
-`);
-
-    
+    ventana!.document.write(`
+      <html>
+        <head>
+          <title>Pliego</title>
+          <style>
+            ${style}
+            /* Forzar inputs readonly a background blanco en impresión */
+            @media print {
+              input[disabled], .readonly-gray { background: transparent !important; color: inherit !important; }
+            }
+          </style>
+        </head>
+        <body onload="window.print()">
+          ${contenido}
+        </body>
+      </html>
+    `);
     ventana!.document.close();
-    
-    // Retraso para el cierre
-    setTimeout(() => {
-        ventana!.close();
-    }, 500); 
+  }
 }
 
-
-
-
-
-  
-  
-}

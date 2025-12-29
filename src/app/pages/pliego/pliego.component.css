@@ -1,56 +1,129 @@
-/* Usa una fuente que se vea limpia para documentos */
-body {
-  font-family: 'Inter', sans-serif;
-}
+.pliego-document { width: 21cm; margin: 0 auto; padding: 1.5cm; background: #fff; font-family: Arial; font-size: 11px; }
+.pliego-header { display: flex; justify-content: space-between; margin-bottom: 25px; }
+.header-text { text-align: right; font-size: 9px; font-weight: bold; }
+.logo { width: 70px; }
 
-/* Estilo para simular el borde del documento en pantalla */
-.document-page {
-  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1),
-              0 2px 4px -2px rgba(0, 0, 0, 0.1);
-  border: 1px solid black; /* Borde exterior principal */
-}
+.row-meta { display: flex; justify-content: space-between; margin-bottom: 20px; }
+.data-table { width: 90%; margin: 20px auto; border-collapse: collapse; }
+.data-table td { border: 1.5px solid #000; padding: 6px; }
+.bold { font-weight: bold; }
 
-/* Media Query para impresión */
+/* Modal Styles */
+.modal-overlay { position: fixed; top:0; left:0; width:100%; height:100%; background: rgba(0,0,0,0.6); display:flex; justify-content:center; align-items:center; z-index:999; }
+.modal-content { background: #fff; padding: 25px; border-radius: 8px; width: 700px; max-height: 85vh; overflow-y: auto; }
+.form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
+.full { grid-column: span 2; }
+.form-group label { display: block; font-weight: bold; margin-bottom: 4px; }
+.form-group input, textarea { width: 100%; padding: 6px; border: 1px solid #ccc; }
+
+.action-bar { text-align: center; margin: 20px; }
+.btn-edit { background: #004d40; color: white; padding: 10px; border: none; cursor: pointer; margin-right: 10px; }
+.btn-print { background: #000; color: white; padding: 10px; border: none; cursor: pointer; }
+
 @media print {
-  /* REGLAS QUE YA TENÍAS */
-  .print-container {
-      padding: 0 !important;
-      background-color: white !important;
-  }
-  .page-separator {
-      display: none !important;
-  }
-  .document-page {
-      box-shadow: none !important;
-      border: none !important;
-  }
-  .page-break {
-      page-break-after: always;
-  }
-  
-  /* REGLAS AÑADIDAS PARA OCULTAR ELEMENTOS DE LA INTERFAZ 💡 */
+  /* Oculta el modal, botones y el menú lateral por completo */
   .no-print, 
-  .sidebar-container { 
-      display: none !important;
+  .modal-overlay, 
+  .action-bar,
+  .sidebar, 
+  .menu-lateral,
+  aside, 
+  nav,
+  [class*="sidebar"], /* Esto busca cualquier clase que contenga la palabra sidebar */
+  [class*="menu"] { 
+    display: none !important; 
+    height: 0 !important;
+    overflow: hidden !important;
   }
-  
-  /* Asegura que el contenido principal ocupe todo el ancho si usas una estructura de 2 columnas (sidebar + contenido) */
-  .main-content {
-      margin-left: 0 !important;
-      width: 100% !important;
+
+  /* Quita el margen y scroll del cuerpo para que no arrastre elementos del menú */
+  html, body {
+    height: auto !important;
+    overflow: visible !important;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+
+  /* Elimina encabezados y pies de página del navegador (localhost, fecha) */
+  @page {
+    margin: 0;
+  }
+
+  /* Fuerza al documento a ignorar cualquier layout de rejilla (grid/flex) del menú */
+  .pliego-document {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100% !important;
+    margin: 0 !important;
+    padding: 1.5cm !important;
+    background-color: white !important;
+    z-index: 9999;
   }
 }
 
-/* Clase de celda para simular las divisiones internas rígidas */
-.table-cell {
-  border-right: 1px solid black;
-  border-bottom: 1px solid black;
-  padding: 0.25rem 0.5rem; /* p-1 px-2 */
+/* Estilo del botón Actualizar Documento */
+.btn-save {
+  background-color: #218838; /* Color verde de éxito/confirmación */
+  color: #ffffff;            /* Texto blanco */
+  padding: 12px 30px;        /* Espaciado interno más amplio */
+  border: none;              /* Quitar borde por defecto */
+  border-radius: 6px;        /* Bordes ligeramente redondeados */
+  font-size: 14px;           /* Tamaño de fuente legible */
+  font-weight: bold;         /* Texto en negrita */
+  cursor: pointer;           /* Cambiar cursor a mano */
+  transition: background-color 0.3s ease, transform 0.2s ease; /* Animación suave */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Sombra sutil para dar profundidad */
+}
+
+/* Efecto al pasar el mouse */
+.btn-save:hover {
+  background-color: #1e7e34; /* Un verde un poco más oscuro */
+  transform: translateY(-1px); /* Efecto de elevarse mínimamente */
+  box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
+}
+
+/* Efecto al hacer clic */
+.btn-save:active {
+  transform: translateY(1px); /* Efecto de hundirse al presionar */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* Contenedor del botón en el modal */
+.modal-footer {
+  margin-top: 30px;
+  padding-top: 20px;
+  border-top: 1px solid #eeeeee; /* Línea divisoria sutil */
+  text-align: right;             /* Alineado a la derecha como en formularios estándar */
+}
+
+
+/* Contenedor del pie de página */
+.pliego-footer, .footer {
   display: flex;
-  align-items: center;
+  justify-content: space-between; /* Esto empuja la firma a la izquierda y la clave a la derecha */
+  align-items: flex-end;          /* Alinea ambos elementos a la base */
+  width: 100%;
+  margin-top: 50px;               /* Espacio respecto al texto anterior */
 }
 
-/* Estilos específicos para la sección de viáticos */
-.viaticos-row {
-  height: 1.5rem;
+/* Sección de la firma */
+.firma-solicitante, .firma {
+  width: 50%;                     /* Ocupa la mitad izquierda */
+  text-align: center;
+}
+
+.linea-firma, .line {
+  border-top: 1.5px solid #000;
+  width: 100%;
+  margin-bottom: 5px;
+}
+
+/* Sección de la Clave (Corregida al extremo derecho) */
+.clave-oficio, .clave {
+  width: auto;
+  text-align: right;              /* Alinea el texto internamente a la derecha */
+  font-weight: bold;
+  font-size: 11px;
+  white-space: nowrap;            /* Evita que la clave se rompa en dos líneas */
 }

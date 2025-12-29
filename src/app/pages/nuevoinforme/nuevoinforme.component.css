@@ -1,0 +1,61 @@
+/* ========= IMPRESIÓN — TAMAÑO CARTA VERTICAL ========= */
+@media print {
+
+  /* Tamaño carta (vertical) */
+  @page {
+    size: letter portrait;
+    margin: 12mm; /* margen recomendado */
+  }
+
+  /* Reset básico */
+  body {
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+    margin: 0;
+    padding: 0;
+  }
+
+  /* El área que se va a imprimir */
+  #printArea {
+    border: 1px solid black !important;
+    padding: 14px !important;
+    width: 100%;
+    box-sizing: border-box;
+  }
+
+  /* Quitar sombras, bordes o efectos que no se imprimen bien */
+  * {
+    box-shadow: none !important;
+  }
+
+  /* Asegurar que las fuentes se impriman nítidas */
+  p, div, span {
+    line-height: 1.15;
+  }
+
+  /* Mantener tamaño real de imágenes */
+  img {
+    max-width: 100%;
+  }
+
+  /* Alinear el contenido exactamente como en pantalla */
+  html, body {
+    width: 100%;
+    height: auto;
+  }
+
+  /* Evitar cortes incómodos */
+  .avoid-break {
+    page-break-inside: avoid;
+  }
+
+  /* Forzar tabla o bloques a nueva página si es necesario */
+  .page-break {
+    page-break-before: always;
+  }
+
+  /* Ajustes de Tailwind que podrían perderse */
+  .uppercase {
+    text-transform: uppercase !important;
+  }
+}

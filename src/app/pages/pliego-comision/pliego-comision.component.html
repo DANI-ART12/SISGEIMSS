@@ -1,986 +1,554 @@
-<div id="printArea" class="max-w-[816px] mx-auto text-[8.5pt] leading-tight font-[Arial]">
+<!--<div class="max-w-[950px] mx-auto p-8 bg-white text-[10px] uppercase font-sans leading-tight text-black border border-gray-300 shadow-xl my-4">
+  
+  <button (click)="imprimir()" class="fixed top-5 right-5 bg-black text-white px-4 py-2 rounded-md print:hidden hover:bg-gray-800 transition-all font-bold">
+    IMPRIMIR FORMATO
+  </button>
 
-  <div
-  contenteditable="true"
-  class="absolute left-4 top-1/2 -translate-y-1/2 w-36 text-[7pt] font-semibold text-gray-700 rotate-[-90deg] origin-left whitespace-nowrap text-center"
-  (input)="updateFraseIzquierda($event)"
-  [innerText]="fraseIzquierda"
-  spellcheck="false"
-></div>
+  <header class="flex items-start mb-4">
+    <div class="w-20">
+      <img src="assets/logoimss.png" alt="IMSS" class="w-full">
+    </div>
+    <div class="flex-1 text-center pr-20">
+      <h1 class="text-[14px] font-bold">INSTITUTO MEXICANO DEL SEGURO SOCIAL</h1>
+      <div class="mt-2 font-bold text-[11px]">
+        <p>PLIEGO DE COMISIÓN No. <input type="text" [(ngModel)]="datos.numeroComision" class="border-b border-black outline-none w-32 text-center"></p>
+        <p class="mt-1">AUTORIZACIÓN DE COMISIÓN</p>
+      </div>
+    </div>
+  </header>
 
-<div
-  contenteditable="true"
-  class="absolute right-4 top-1/2 -translate-y-1/2 w-36 text-[7pt] font-semibold text-gray-700 rotate-[90deg] origin-right whitespace-nowrap text-center"
-  (input)="updateFraseDerecha($event)"
-  [innerText]="fraseDerecha"
-  spellcheck="false"
-></div>
-
-  <!-- ENCABEZADO -->
-<div class="flex justify-between items-center mb-0 mt-0" style="position: relative; top: -8px; ">
-  <!-- Título principal -->
-  <div class="flex flex-col items-center flex-1">
-    <h1 class="font-bold text-[12pt] uppercase">INSTITUTO MEXICANO DEL SEGURO SOCIAL</h1>
-    <h2 class="font-bold text-[10pt] uppercase underline">PLIEGO DE COMISIÓN</h2>
+  <div class="text-right mb-4 mr-10">
+    <p>Lugar y fecha: <input type="text" [(ngModel)]="datos.lugarFecha" class="border-b border-black outline-none w-64"></p>
   </div>
-  <!-- Folio -->
-  <div class="flex items-center">
-    <span class="mr-1 text-sm">No.</span>
-    <div class="border border-black rounded-full px-4 py-1 font-bold text-sm">
-      {{ numeroFolio }}
+
+  <div class="border-[1.5px] border-black rounded-[35px] p-5 mb-4 space-y-2">
+    <div class="flex justify-between">
+      <div class="flex-1"><strong>FUNCIONARIO SOLICITANTE:</strong> <input type="text" [(ngModel)]="datos.funcionario" class="w-[70%] outline-none border-b border-gray-200"></div>
+      <div class="w-32"><strong>C.P.</strong> <input type="text" [(ngModel)]="datos.cp" class="w-16 outline-none border-b border-gray-200"></div>
+    </div>
+    <div><strong>CATEGORÍA:</strong> <input type="text" [(ngModel)]="datos.categoria" class="w-[85%] outline-none border-b border-gray-200"></div>
+    <div><strong>ÁREA SOLICITANTE:</strong> <input type="text" [(ngModel)]="datos.area" class="w-[82%] outline-none border-b border-gray-200"></div>
+    <div class="flex gap-8">
+      <div class="flex-1"><strong>EMPLEADO:</strong> <input type="text" [(ngModel)]="datos.empleado" class="w-[60%] outline-none border-b border-gray-200"></div>
+      <div><strong>G.J</strong> <input type="text" [(ngModel)]="datos.gj" class="w-8 outline-none border-b border-gray-200 text-center"></div>
+      <div><strong>MAT.</strong> <input type="text" [(ngModel)]="datos.mat" class="w-20 outline-none border-b border-gray-200 text-center"></div>
+      <div><strong>TC</strong> <input type="text" [(ngModel)]="datos.tc" class="w-10 outline-none border-b border-gray-200 text-center"></div>
+    </div>
+    <div class="flex justify-between">
+      <div class="flex-1"><strong>PUESTO:</strong> <input type="text" [(ngModel)]="datos.puesto" class="w-[70%] outline-none border-b border-gray-200"></div>
+      <div class="w-48 text-right"><strong>TEL OFICINA</strong> <input type="text" [(ngModel)]="datos.tel" class="w-24 outline-none border-b border-gray-200 text-center"></div>
+    </div>
+    <div><strong>DEPARTAMENTO:</strong> <input type="text" [(ngModel)]="datos.depto" class="w-[84%] outline-none border-b border-gray-200"></div>
+    <div><strong>OBJETO DE LA COMISIÓN:</strong> <input type="text" [(ngModel)]="datos.objeto" class="w-[80%] outline-none border-b border-gray-200"></div>
+    <div class="flex justify-between">
+      <div class="flex-1"><strong>DESTINO DE LA COMISIÓN:</strong> <input type="text" [(ngModel)]="datos.destino" class="w-[65%] outline-none border-b border-gray-200"></div>
+      <div><strong>DEL</strong> <input type="text" [(ngModel)]="datos.del" class="w-20 outline-none border-b border-gray-200 text-center"></div>
+      <div><strong>AL</strong> <input type="text" [(ngModel)]="datos.al" class="w-20 outline-none border-b border-gray-200 text-center"></div>
+    </div>
+    <div><strong>MEDIO DE TRANSPORTE:</strong> <input type="text" [(ngModel)]="datos.transporte" class="w-[82%] outline-none border-b border-gray-200"></div>
+    <div class="flex gap-10">
+      <div><strong>CHOFER:</strong> <input type="text" [(ngModel)]="datos.chofer" class="w-48 outline-none border-b border-gray-200"></div>
+      <div><strong>ACOMPAÑANTE:</strong> <input type="text" [(ngModel)]="datos.acompanante" class="w-64 outline-none border-b border-gray-200"></div>
     </div>
   </div>
+
+  <div class="mb-4">
+    <table class="w-full border-collapse border-2 border-black">
+      <thead>
+        <tr class="border-b-2 border-black">
+          <th class="border-r-2 border-black p-1 w-[38%] text-center">
+            CONCEPTO DE ANTICIPOS PARA (&nbsp;<input type="text" class="w-6 outline-none text-center">&nbsp;)<br>DÍA(S)
+            <div class="border-t border-black mt-1 py-1 font-bold">
+              DE VIÁTICOS PARA LA COMISIÓN &nbsp; Cuota<br>(&nbsp;<input type="text" class="w-8 outline-none text-center font-normal">&nbsp;)
+            </div>
+          </th>
+          <th class="border-r-2 border-black p-1 w-[22%] text-center font-bold align-top leading-tight">
+            VALE DE TESORERÍA<br>DEL INSTITUTO<br>MEXICANO DEL<br>SEGURO SOCIAL
+          </th>
+          <th class="p-1 w-[40%] text-center font-bold align-top">
+            SELLO DE TESORERÍA
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr class="border-b border-black h-7">
+          <td class="border-r-2 border-black p-0">
+            <div class="flex h-full">
+              <span class="w-[70%] border-r border-black px-2 flex items-center">VIÁTICOS</span>
+              <div class="flex-1 px-1 flex items-center">$ <input type="number" [(ngModel)]="montos.viaticos" class="w-full text-right outline-none bg-transparent"></div>
+            </div>
+          </td>
+          <td class="border-r-2 border-black p-1 text-[8px] align-top" rowspan="3">
+            RECIBÍ LA <div class="border border-black h-5 w-full my-0.5"></div>
+            CANTIDAD DE:$
+          </td>
+          <td class="p-1" rowspan="7"></td>
+        </tr>
+        <tr class="border-b border-black h-7">
+          <td class="border-r-2 border-black p-0">
+            <div class="flex h-full">
+              <span class="w-[70%] border-r border-black px-2 flex items-center">GASOLINA</span>
+              <div class="flex-1 px-1 flex items-center">$ <input type="number" [(ngModel)]="montos.gasolina" class="w-full text-right outline-none bg-transparent"></div>
+            </div>
+          </td>
+        </tr>
+        <tr class="border-b border-black h-7">
+          <td class="border-r-2 border-black p-0">
+            <div class="flex h-full">
+              <span class="w-[70%] border-r border-black px-2 flex items-center">PEAJE</span>
+              <div class="flex-1 px-1 flex items-center">$ <input type="number" [(ngModel)]="montos.peaje" class="w-full text-right outline-none bg-transparent"></div>
+            </div>
+          </td>
+        </tr>
+        <tr class="border-b border-black h-7 font-bold">
+          <td class="border-r-2 border-black p-0">
+            <div class="flex h-full">
+              <span class="w-[70%] border-r border-black px-2 flex items-center">TRANSPORTE TERRESTRE</span>
+              <div class="flex-1 px-1 flex items-center">$ <input type="number" [(ngModel)]="montos.transporteTerrestre" class="w-full text-right outline-none bg-transparent font-normal"></div>
+            </div>
+          </td>
+          <td class="border-r-2 border-black p-1 text-[8px] align-top leading-none" rowspan="2">
+            PARA EL DESEMPEÑO DE<br>ESTA COMISIÓN
+          </td>
+        </tr>
+        <tr class="border-b border-black h-7">
+          <td class="border-r-2 border-black p-0">
+            <div class="flex h-full">
+              <span class="w-[70%] border-r border-black px-2 flex items-center italic">AVIÓN</span>
+              <div class="flex-1 px-1 flex items-center">$ <input type="number" [(ngModel)]="montos.avion" class="w-full text-right outline-none bg-transparent"></div>
+            </div>
+          </td>
+        </tr>
+        <tr class="border-b border-black h-7">
+          <td class="border-r-2 border-black p-0">
+            <div class="flex h-full">
+              <span class="w-[70%] border-r border-black px-2 flex items-center font-bold italic justify-end">SUBTOTAL SIN AVIÓN</span>
+              <div class="flex-1 px-1 flex items-center font-bold text-right justify-end pr-1">{{ subtotalSinAvion | currency:'MXN':'' }}</div>
+            </div>
+          </td>
+          <td class="border-r-2 border-black h-10"></td>
+        </tr>
+        <tr class="h-7 font-bold">
+          <td class="border-r-2 border-black p-0">
+            <div class="flex h-full">
+              <span class="w-[70%] border-r border-black px-2 flex items-center italic justify-end">GASTO TOTAL</span>
+              <div class="flex-1 px-1 flex items-center text-right justify-end pr-1 underline decoration-double">{{ gastoTotal | currency:'MXN':'' }}</div>
+            </div>
+          </td>
+          <td class="border-r-2 border-black p-0 align-bottom italic text-[7px] text-center pb-0.5">
+            FIRMA DEL COMISIONADO
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="mt-2">
+    <p class="font-bold">OBSERVACIONES:</p>
+    <div class="border-b border-black w-full h-4 mb-2"></div>
+    <p class="italic text-[9px] mt-2 ml-4">Vo.Bo.</p>
+
+    <div class="text-center mt-4">
+      <p class="font-bold mb-10 text-[11px]">PERSONA SERVIDORA PÚBLICA QUE AUTORIZA LA COMISIÓN</p>
+      <div class="w-64 mx-auto border-t-[1.5px] border-black"></div>
+    </div>
+
+    <div class="grid grid-cols-3 gap-6 items-end mt-6">
+      <div class="flex flex-col">
+        <span class="font-bold text-[9px] mb-1">LUGAR Y SELLO</span>
+        <div class="border-[1.5px] border-black h-28"></div>
+      </div>
+      
+      <div class="flex flex-col text-center">
+        <span class="font-bold text-[9px] mb-1 leading-none uppercase">Certificación de Tránsito y Permanencia</span>
+        <div class="border-[1.5px] border-black h-28 p-2 flex flex-col justify-between italic text-[9px]">
+          <p>LLEGÓ / SALIÓ</p>
+          <div class="border-b border-gray-300 w-full h-4"></div>
+          <p>FECHA Y HORA</p>
+        </div>
+      </div>
+
+      <div class="flex flex-col">
+        <div class="text-center italic text-[8px] mb-2 border-t border-black pt-1 leading-tight">
+          FIRMA DEL COMISIONADO (A)<br>FIRMA DE CERTIFICACIÓN
+        </div>
+        <div class="border-[1.5px] border-black h-28 relative">
+          <span class="absolute bottom-1 right-2 text-[7px] font-bold uppercase">Nombre y Cargo</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <footer class="mt-8 text-[8px] italic border-t border-gray-400 pt-2 leading-tight">
+    <p>NOTA: AL TÉRMINO DE LA COMISIÓN EL INTERESADO DEBERÁ HACER A LA BREVEDAD SU COMPROBACIÓN PARA EVITAR SER REPORTADO COMO MOROSO.</p>
+    <p>EN CASO DE OBSERVACIONES Y AMPLIACIÓN DE CERTIFICACIÓN HACERLA AL REVERSO.</p>
+    <div class="flex justify-between items-end mt-2">
+      <p class="text-[7px]">v.2024</p>
+      <p class="font-bold text-[10px]">Clave: 1000-009-012</p>
+    </div>
+  </footer>
+</div> -->
+
+
+<!--<div class="max-w-[950px] mx-auto mb-4 flex gap-4 print:hidden p-4 bg-gray-50 border rounded-xl shadow-sm">
+  <button *ngIf="isAdminOrSub" (click)="toggleModalAdmin()" class="bg-blue-800 hover:bg-blue-900 text-white px-4 py-2 rounded font-bold shadow">
+    👤 NUEVO ADMINISTRADOR
+  </button>
+  <button *ngIf="isUser" (click)="toggleModalTraslado()" class="bg-green-700 hover:bg-green-800 text-white px-4 py-2 rounded font-bold shadow">
+    🚚 NUEVO TRASLADO
+  </button>
+  <button (click)="imprimir()" class="ml-auto bg-black text-white px-6 py-2 rounded font-bold">
+    🖨️ IMPRIMIR FORMATO
+  </button>
 </div>
 
-<!-- TABLA AUTORIZACIÓN DE COMISIÓN -->
-<table class="w-full border border-black mb-2 mt-2 text-[9pt] font-[Arial]">
-  <thead>
-    <tr>
-      <th colspan="6" class="bg-gray-300 text-center font-bold uppercase p-1">
-        AUTORIZACIÓN DE COMISIÓN
-      </th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td class="border font-bold uppercase p-1 w-[18%]">Funcionario solicitante</td>
-      <td class="border p-1" colspan="5">
-        <div *ngIf="!modoEdicion">{{ funcionarioSolicitante }}</div>
-        <input *ngIf="modoEdicion" [(ngModel)]="funcionarioSolicitante" class="w-full" />
-      </td>
-    </tr>
-    <tr>
-      <td class="border font-bold uppercase p-1">Categoría</td>
-      <td class="border p-1" colspan="5">
-        <div *ngIf="!modoEdicion">{{ categoria }}</div>
-        <input *ngIf="modoEdicion" [(ngModel)]="categoria" class="w-full" />
-      </td>
-    </tr>
-    <tr>
-      <td class="border font-bold uppercase p-1">Dependencia</td>
-      <td class="border p-1" colspan="5">
-        <div *ngIf="!modoEdicion">{{ dependencia }}</div>
-        <input *ngIf="modoEdicion" [(ngModel)]="dependencia" class="w-full" />
-      </td>
-    </tr>
-
-    <!-- FILA: Nombre comisionado / RFC-CURP / Tipo de contratación -->
-    <tr>
-      <td class="border font-bold uppercase p-1 text-center font-[Arial]">Nombre comisionado</td>
-      <td class="border p-1">
-        <div *ngIf="!modoEdicion">{{ nombreComisionado }}</div>
-        <input *ngIf="modoEdicion" [(ngModel)]="nombreComisionado" class="w-full" />
-      </td>
-
-      <td class="border font-bold uppercase p-1 text-center font-[Arial]">RFC / CURP</td>
-      <td class="border p-1">
-        <div *ngIf="!modoEdicion">
-          <div>{{ rfc }}</div>
-          <div>{{ curp }}</div>
-        </div>
-        <div *ngIf="modoEdicion">
-          <input [(ngModel)]="rfc" placeholder="RFC" class="w-full mb-1" />
-          <input [(ngModel)]="curp" placeholder="CURP" class="w-full" />
-        </div>
-      </td>
-
-      <td class="border font-bold uppercase p-1 text-center font-[Arial]">Tipo de contratación</td>
-      <td class="border p-1 text-center">
-        <div *ngIf="!modoEdicion">
-          <span *ngIf="tipoBase">Base</span>
-          <span *ngIf="tipoConfianza"> / Confianza</span>
-        </div>
-        <div *ngIf="modoEdicion">
-          <label class="mr-3">
-            <input type="checkbox" [(ngModel)]="tipoBase" /> Base
-          </label>
-          <label>
-            <input type="checkbox" [(ngModel)]="tipoConfianza" /> Confianza
-          </label>
-        </div>
-      </td>
-    </tr>
-
-    <!-- Matrícula / Categoría / Teléfono -->
-    <tr>
-      <td class="border font-bold uppercase p-1">Matrícula</td>
-      <td class="border p-1">
-        <div *ngIf="!modoEdicion">{{ matricula }}</div>
-        <input *ngIf="modoEdicion" [(ngModel)]="matricula" class="w-full" />
-      </td>
-
-      <td class="border font-bold uppercase p-1 text-center font-[Arial]">Categoría<br />(Num. y Nombre)</td>
-      <td class="border p-1">
-        <div *ngIf="!modoEdicion">{{ categoriaNumNombre }}</div>
-        <input *ngIf="modoEdicion" [(ngModel)]="categoriaNumNombre" class="w-full" />
-      </td>
-
-      <td class="border font-bold uppercase p-1 text-center font-[Arial]">Teléfono oficina</td>
-      <td class="border p-1">
-        <div *ngIf="!modoEdicion">{{ telefonoOficina }}</div>
-        <input *ngIf="modoEdicion" [(ngModel)]="telefonoOficina" class="w-full" />
-      </td>
-    </tr>
-
-    <!-- Objeto comisión -->
-    <tr>
-      <td class="border font-bold uppercase p-1 font-[Arial]">Objeto de la comisión</td>
-      <td class="border p-1" colspan="5">
-        <div *ngIf="!modoEdicion">{{ objetoComision }}</div>
-        <input *ngIf="modoEdicion" [(ngModel)]="objetoComision" class="w-full" />
-      </td>
-    </tr>
-
-    <!-- Lugares comisión -->
-    <tr>
-      <td class="border font-bold uppercase p-1 font-[Arial]">Lugares de comisión</td>
-      <td class="border p-1" colspan="5">
-        <div *ngIf="!modoEdicion">{{ lugaresComision }}</div>
-        <input *ngIf="modoEdicion" [(ngModel)]="lugaresComision" class="w-full" />
-      </td>
-    </tr>
-
-    <!-- Periodo y total días -->
-    <tr>
-      <td class="border font-bold uppercase p-1">Periodo</td>
-      <td class="border p-1" colspan="3">
-        <div *ngIf="!modoEdicion">{{ periodo }}</div>
-        <input *ngIf="modoEdicion" [(ngModel)]="periodo" class="w-full" />
-      </td>
-
-      <td class="border font-bold uppercase p-1 text-center font-[Arial]">Total días</td>
-      <td class="border p-1 text-center">
-        <div *ngIf="!modoEdicion">
-          {{ totalDias }}<br />
-          <span class="text-xs uppercase">{{ totalDiasTexto }}</span>
-        </div>
-        <div *ngIf="modoEdicion">
-          <input type="number" [(ngModel)]="totalDias" class="w-12 text-center border-b border-black mb-1" />
-          <input type="text" [(ngModel)]="totalDiasTexto" placeholder="(TRES DÍAS)" class="text-center w-full" />
-        </div>
-      </td>
-    </tr>
-
-    <!-- Firmas  -->
-    <tr>
-      <!-- Funcionario solicitante -->
-      <td class="border border-black p-2 text-center font-[Arial]" colspan="3" style="vertical-align: bottom; ">
-        <div class="uppercase font-bold text-xs mb-2">FUNCIONARIO SOLICITANTE</div>
-        <div *ngIf="!modoEdicion">
-          <div class="font-bold text-sm">{{ funcionarioSolicitanteNombre }}</div>
-          <div class="border-t border-black my-1 mx-auto" style="width: 90%;"></div>
-          <div class="text-xs">{{ funcionarioSolicitanteCargo }}</div>
-        </div>
-        <div *ngIf="modoEdicion">
-          <input [(ngModel)]="funcionarioSolicitanteNombre" class="w-full border-b border-black text-center mb-1" />
-          <input [(ngModel)]="funcionarioSolicitanteCargo" class="w-full border-b border-black text-center text-xs" />
-        </div>
-      </td>
-
-      <!-- Funcionario que autoriza -->
-      <td class="border border-black p-2 text-center font-[Arial]" colspan="3" style="vertical-align: bottom;">
-        <div class="uppercase font-bold text-xs mb-2">FUNCIONARIO QUE AUTORIZA</div>
-        <div *ngIf="!modoEdicion">
-          <div class="font-bold text-sm">{{ funcionarioAutorizaNombre }}</div>
-          <div class="border-t border-black my-1 mx-auto" style="width: 90%;"></div>
-          <div class="text-xs">{{ funcionarioAutorizaCargo }}</div>
-        </div>
-        <div *ngIf="modoEdicion">
-          <input [(ngModel)]="funcionarioAutorizaNombre" class="w-full border-b border-black text-center mb-1" />
-          <input [(ngModel)]="funcionarioAutorizaCargo" class="w-full border-b border-black text-center text-xs" />
-        </div>
-      </td>
-    </tr>
-  </tbody>
-</table>
-
-
-<div class="grid grid-cols-1 md:grid-cols-2 gap-2 text-[6pt] font-sans print:grid-cols-2 print:gap-2 font-[Arial]">
-  <!-- Tabla 1: VIÁTICOS Y PASAJES -->
-<table class="w-full border border-black table-fixed h-full">
-  <thead>
-    <tr class="bg-gray-300">
-      <th colspan="2" class="border border-black text-center font-bold p-1 uppercase">
-        AUTORIZACIÓN DEL IMPORTE DE VIÁTICOS Y PASAJES
-      </th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td class="border p-1">CUOTA DIARIA DE VIÁTICOS</td>
-      <td class="border p-1 text-right">
-        <span *ngIf="!modoEdicion">$ {{ cuotaDiariaViaticos }}</span>
-        <input *ngIf="modoEdicion" [(ngModel)]="cuotaDiariaViaticos" class="w-full text-right border-b border-black" />
-      </td>
-    </tr>
-    <tr>
-      <td class="border p-1">ANTICIPO DE VIÁTICOS</td>
-      <td class="border p-1 text-right">
-        <span *ngIf="!modoEdicion">$ {{ anticipoViaticos }}</span>
-        <input *ngIf="modoEdicion" [(ngModel)]="anticipoViaticos" class="w-full text-right border-b border-black" />
-      </td>
-    </tr>
-    <tr>
-      <td class="border p-1">ANTICIPO DE PASAJES</td>
-      <td class="border p-1 text-right">
-        <span *ngIf="!modoEdicion">$ {{ anticipoPasajes }}</span>
-        <input *ngIf="modoEdicion" [(ngModel)]="anticipoPasajes" class="w-full text-right border-b border-black" />
-      </td>
-    </tr>
-    <tr>
-      <td class="border p-1">ANTICIPO GASTOS POR USO VEHÍCULO</td>
-      <td class="border p-1 text-right">
-        <span *ngIf="!modoEdicion">$ {{ anticipoVehiculo }}</span>
-        <input *ngIf="modoEdicion" [(ngModel)]="anticipoVehiculo" class="w-full text-right border-b border-black" />
-      </td>
-    </tr>
-    <tr class="font-bold">
-      <td class="border p-1 text-right">SUMA</td>
-      <td class="border p-1 text-right">
-        <span *ngIf="!modoEdicion">$ {{ sumaTotal }}</span>
-        <input *ngIf="modoEdicion" [(ngModel)]="sumaTotal" class="w-full text-right border-b border-black" />
-      </td>
-    </tr>
-    <tr>
-      <td colspan="2" class="border p-1 text-center font-bold uppercase">MEDIO DE TRANSPORTE</td>
-    </tr>
-    <tr>
-      <td colspan="2" class="border p-1 text-center space-x-2">
-        <label><input type="checkbox" [(ngModel)]="medioAvion"> AVIÓN</label>
-        <label><input type="checkbox" [(ngModel)]="medioAutobus"> AUTOBÚS</label>
-        <label><input type="checkbox" [(ngModel)]="medioVehiculoOficial"> VEHÍCULO OFICIAL</label>
-        <label><input type="checkbox" [(ngModel)]="usoVehiculoInstitucional"> VEHÍCULO INSTITUCIONAL ECCO_____</label>
-      </td>
-    </tr>
-    <tr>
-      <td colspan="2" class="border p-1 text-center font-bold">TESORERÍA GENERAL</td>
-    </tr>
-    <tr>
-      <td colspan="2" class="border h-10 p-1 text-center">
-        <span *ngIf="!modoEdicion">{{ tesoreriaGeneralTexto }}</span>
-        <input *ngIf="modoEdicion" [(ngModel)]="tesoreriaGeneralTexto" class="w-full border-b border-black text-center" />
-      </td>
-    </tr>
-  </tbody>
-</table>
-
-
-
- 
-<!-- Tabla 2: AUTORIZACIONES ESPECÍFICAS -->
-<table class="w-full border border-black table-fixed h-full font-[Arial] ">
-  <thead>
-    <tr class="bg-gray-300">
-      <th class="border border-black text-center font-bold p-1 uppercase">
-        AUTORIZACIONES ESPECÍFICAS
-      </th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td class="border p-1 h-[30px] align-top">POR USO DE VEHÍCULO PROPIO</td>
-    </tr>
-    <tr>
-      <td class="border h-[30px] p-1">
-        <span *ngIf="!modoEdicion">{{ autorizacionVehiculoPropio }}</span>
-        <textarea *ngIf="modoEdicion" [(ngModel)]="autorizacionVehiculoPropio" class="w-full border-b border-black resize-none text-xs"></textarea>
-      </td>
-    </tr>
-
-    <tr>
-      <td class="border p-1 h-[30px] align-top">EN COMISIONES MAYORES A 60 DÍAS</td>
-    </tr>
-    <tr>
-      <td class="border h-[30px] p-1">
-        <span *ngIf="!modoEdicion">{{ autorizacionMas60Dias }}</span>
-        <textarea *ngIf="modoEdicion" [(ngModel)]="autorizacionMas60Dias" class="w-full border-b border-black resize-none text-xs"></textarea>
-      </td>
-    </tr>
-
-    <tr>
-      <td class="border p-1 h-[30px] align-top">POR ARRENDAMIENTO DE VEHÍCULO</td>
-    </tr>
-    <tr>
-      <td class="border h-[30px] p-1">
-        <span *ngIf="!modoEdicion">{{ autorizacionArrendamiento }}</span>
-        <textarea *ngIf="modoEdicion" [(ngModel)]="autorizacionArrendamiento" class="w-full border-b border-black resize-none text-xs"></textarea>
-      </td>
-    </tr>
-
-    <tr>
-      <td class="border p-1 text-center font-bold uppercase">AUTORIZA DISPONIBILIDAD PRESUPUESTAL</td>
-    </tr>
-    <tr>
-      <td class="border p-1 text-center text-xs">
-        <span *ngIf="!modoEdicion"><strong>{{ nombrePresupuestal }}</strong></span>
-        <input *ngIf="modoEdicion" [(ngModel)]="nombrePresupuestal" class="w-full border-b border-black text-center text-xs font-bold" />
-      </td>
-    </tr>
-    <tr>
-      <td class="border p-1 text-center text-xs">
-        <span *ngIf="!modoEdicion">{{ textoPresupuestal }}</span>
-        <input *ngIf="modoEdicion" [(ngModel)]="textoPresupuestal" class="w-full border-b border-black text-center text-xs" />
-      </td>
-    </tr>
-    <tr>
-      <td class="border p-1 text-center text-xs leading-tight">
-        <span *ngIf="!modoEdicion">
-          {{ disponibilidadPresupuestal }}<br>
-          {{ disponibilidadPresupuestalnuevo }}
-        </span>
-    
-        <div *ngIf="modoEdicion" class="flex flex-col">
-          <textarea [(ngModel)]="disponibilidadPresupuestal"
-            class="w-full border-b border-black text-center text-xs resize-none"></textarea>
-          <textarea [(ngModel)]="disponibilidadPresupuestalnuevo"
-            class="w-full border-b border-black text-center text-xs resize-none mt-1"></textarea>
-        </div>
-      </td>
-    </tr>
-    
-
-  </tbody>
-</table>
-
-</div>
-
+<div class="max-w-[950px] mx-auto p-10 bg-white text-[10px] uppercase font-sans leading-tight text-black border border-gray-300 print:border-none my-4">
   
+  <header class="flex items-start mb-4">
+    <div class="w-20"><img src="assets/logoimss.png" alt="IMSS" class="w-full"></div>
+    <div class="flex-1 text-center pr-20">
+      <h1 class="text-[14px] font-bold">INSTITUTO MEXICANO DEL SEGURO SOCIAL</h1>
+      <div class="mt-2 font-bold text-[11px]">
+        <p>PLIEGO DE COMISIÓN No. <span class="border-b border-black px-4">{{ datos.numeroComision }}</span></p>
+        <p class="mt-1 text-[10px]">AUTORIZACIÓN DE COMISIÓN</p>
+      </div>
+    </div>
+  </header>
 
-  <!-- TABLA VALE TESORERÍA -->
-<table class="w-full border border-black mb-2 mt-2">
-  <tbody>
-    <tr>
-      <td class="bg-gray-300 border-b border-black text-center font-bold text-sm" colspan="2">
-        VALE A LA TESORERÍA GENERAL DEL INSTITUTO MEXICANO
-      </td>
-    </tr>
-    <tr>
-      <td colspan="2" class="p-2 text-justify text-[8pt] leading-tight">
-        BUENO POR 
-        <span *ngIf="!modoEdicion">$ {{ valeBuenoPor }}</span>
-        <input *ngIf="modoEdicion" [(ngModel)]="valeBuenoPor" class="inline-block border-b border-black w-20 text-right" />
-
-        RECIBÍ LA CANTIDAD DE 
-        <span *ngIf="!modoEdicion">$ {{ valeRecibiCantidad }}</span>
-        <input *ngIf="modoEdicion" [(ngModel)]="valeRecibiCantidad" class="inline-block border-b border-black w-20 text-right" />
-
-        (
-        <span *ngIf="!modoEdicion">{{ valeCantidadLetra }}</span>
-        <input *ngIf="modoEdicion" [(ngModel)]="valeCantidadLetra" class="inline-block border-b border-black w-[200px]" />
-        )
-
-        CORRESPONDIENTE A (
-        <span *ngIf="!modoEdicion">{{ valeDiasViaticos }}</span>
-        <input *ngIf="modoEdicion" [(ngModel)]="valeDiasViaticos" type="number" class="inline-block border-b border-black w-10 text-center" />
-        ) DÍAS DE VIÁTICOS PARA EL DESEMPEÑO DE ESTA COMISIÓN,
-
-        Y $
-        <span *ngIf="!modoEdicion">{{ valeValorPasajes }}</span>
-        <input *ngIf="modoEdicion" [(ngModel)]="valeValorPasajes" class="inline-block border-b border-black w-20 text-right" />
-
-        (
-        <span *ngIf="!modoEdicion">{{ valeValorPasajesLetra }}</span>
-        <input *ngIf="modoEdicion" [(ngModel)]="valeValorPasajesLetra" class="inline-block border-b border-black w-[200px]" />
-        )
-
-        VALOR DE LOS PASAJES O ANTICIPO DE GASTOS POR USO DE VEHÍCULO PROPIO.
-      </td>
-    </tr>
-
-    <tr>
-      <td class="border p-1 text-center align-top">
-        <div class="font-bold uppercase">Lugar y fecha</div>
-        <div class="mt-1">
-          <span *ngIf="!modoEdicion">{{ valeLugarFecha }}</span>
-          <input *ngIf="modoEdicion"
-                [(ngModel)]="valeLugarFecha"
-                placeholder="Oaxaca de Juárez, Oax. 30 de agosto de 2024"
-                class="w-full text-xs font-normal border-b border-black text-left" />
-        </div>
-      </td>
-      <td class="border p-1 text-center align-top">
-        <div class="font-bold uppercase">Empleado comisionado</div>
-        <div class="mt-1 font-bold uppercase text-center">
-          {{ nombreComisionado }}
-        </div>
-      </td>
-    </tr>
-  </tbody>
-</table>
-<div class="numeros-lados mb-0 mt-0 flex justify-between w-full">
-  <!-- Lado izquierdo -->
-  <div class="flex-1 pr-1">
-    <span *ngIf="!modoEdicion" class="block truncate">{{ numeroIzquierdo }}</span>
-    <input
-      *ngIf="modoEdicion"
-      [(ngModel)]="numeroIzquierdo"
-      [title]="numeroIzquierdo"
-      maxlength="20"
-      class="w-full"
-    />
+  <div class="text-right mb-4 mr-10 italic">
+    LUGAR Y FECHA: <span class="border-b border-black px-2 inline-block min-w-[200px]">{{ datos.lugarFecha }}</span>
   </div>
 
-  <!-- Lado derecho -->
-  <div class="flex-1 pl-1 text-right">
-    <span *ngIf="!modoEdicion" class="block truncate">{{ numeroDerecho }}</span>
-    <input
-      *ngIf="modoEdicion"
-      [(ngModel)]="numeroDerecho"
-      [title]="numeroDerecho"
-      maxlength="20"
-      class="w-full text-right"
-    />
+  <div class="border-[1.5px] border-black rounded-[35px] p-6 mb-4 space-y-2">
+    <div class="flex justify-between">
+      <div class="flex-1"><strong>FUNCIONARIO SOLICITANTE:</strong> <span class="border-b border-gray-200 print:border-none min-w-[300px] inline-block">{{ datos.funcionario }}</span></div>
+      <div class="w-32"><strong>C.P.</strong> <span class="border-b border-gray-200 print:border-none">{{ datos.cp }}</span></div>
+    </div>
+    <div><strong>CATEGORÍA:</strong> <span class="border-b border-gray-200 print:border-none w-[85%] inline-block">{{ datos.categoria }}</span></div>
+    <div><strong>ÁREA SOLICITANTE:</strong> <span class="border-b border-gray-200 print:border-none w-[82%] inline-block">{{ datos.area }}</span></div>
+    <div class="flex gap-8">
+      <div class="flex-1"><strong>EMPLEADO:</strong> {{ datos.empleado }}</div>
+      <div><strong>G.J:</strong> {{ datos.gj }}</div>
+      <div><strong>MAT:</strong> {{ datos.mat }}</div>
+      <div><strong>TC:</strong> {{ datos.tc }}</div>
+    </div>
+    <div class="flex justify-between">
+      <div class="flex-1"><strong>PUESTO:</strong> {{ datos.puesto }}</div>
+      <div class="w-48 text-right"><strong>TEL OFICINA:</strong> <span class="border-b border-gray-200 print:border-none">{{ datos.tel }}</span></div>
+    </div>
+    <div><strong>DEPARTAMENTO:</strong> {{ datos.departamento }}</div>
+    <div><strong>OBJETO DE LA COMISIÓN:</strong> <span class="border-b border-gray-200 print:border-none w-[80%] inline-block">{{ datos.objeto }}</span></div>
+    <div class="flex justify-between">
+      <div class="flex-1"><strong>DESTINO DE LA COMISIÓN:</strong> <span class="border-b border-gray-200 print:border-none inline-block min-w-[200px]">{{ datos.destino }}</span></div>
+      <div><strong>DEL:</strong> <span class="border-b border-gray-200 print:border-none px-2">{{ datos.del }}</span></div>
+      <div><strong>AL:</strong> <span class="border-b border-gray-200 print:border-none px-2">{{ datos.al }}</span></div>
+    </div>
+    <div><strong>MEDIO DE TRANSPORTE:</strong> <span class="border-b border-gray-200 print:border-none inline-block min-w-[200px]">{{ datos.transporte }}</span></div>
+    <div class="flex gap-10">
+      <div><strong>CHOFER:</strong> <span class="border-b border-gray-200 print:border-none min-w-[150px] inline-block">{{ datos.chofer }}</span></div>
+      <div><strong>ACOMPAÑANTE:</strong> <span class="border-b border-gray-200 print:border-none min-w-[200px] inline-block">{{ datos.acompanante }}</span></div>
+    </div>
   </div>
-</div>
 
-  <!-- SALTO DE PÁGINA -->
-  <div class="page-break"></div>
-
-<!-- CERTIFICACIÓN DE TRÁNSITO Y PERMANENCIA -->
-<table class="w-full border border-black mb-4 text-[10pt] border-collapse">
-  <thead>
-    <tr>
-      <th colspan="3" class="border border-black text-center font-bold uppercase bg-gray-300">
-        CERTIFICACIÓN DE TRÁNSITO Y PERMANENCIA
-      </th>
-    </tr>
-    <tr class="text-center font-semibold uppercase bg-gray-200">
-      <th class="border p-1 w-1/3">Lugar y sello</th>
-      <th class="border p-1 w-1/3">Fecha y hora</th>
-      <th class="border p-1 w-1/3">Firma autógrafa de certificación</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr *ngFor="let fila of certificadoFilas">
-      <!-- Lugar y sello -->
-      <td class="border align-top h-[70px]"></td>
-
-      <!-- Llegada / Salida en dos renglones -->
-      <td class="border p-0">
-        <div class="flex flex-col text-center h-full">
-          <div class="border-b border-black py-2">LLEGADA</div>
-          <div class="py-2">SALIDA</div>
-        </div>
-      </td>
-
-      <!-- Firma -->
-      <td class="border align-top h-[70px]"></td>
-    </tr>
-  </tbody>
-</table>
-
-<!-- CERTIFICACIÓN DE REANUDACIÓN DE LABORES -->
-<table class="w-full border-2 border-black mb-6 text-[10pt] border-separate rounded-lg border-spacing-0">
-  <thead>
-    <tr>
-      <th colspan="4" class="text-center font-bold uppercase bg-white p-1 border-0">
-        CERTIFICACIÓN DE REANUDACIÓN DE LABORES
-      </th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr class="text-center">
-      <td class="border-2 border-black w-[15%] align-top p-2 font-semibold uppercase">FECHA</td>
-      <td class="border-2 border-black w-[35%] h-[60px]"></td>
-      <td class="border-2 border-black w-[15%] font-semibold uppercase align-top">FIRMA<br/>AUTÓGRAFA</td>
-      <td class="border-2 border-black w-[35%] h-[60px]"></td>
-    </tr>
-  </tbody>
-</table>
-
-
-
-
-
-  <table class="w-full border border-black mb-2">
+  <table class="w-full border-collapse border-2 border-black mb-4 table-fixed">
     <thead>
-      <tr class="bg-gray-300 border-b border-black text-center font-bold text-sm">
-        <td class="border p-1 w-1/3">Concepto</td>
-        <td class="border p-1 w-1/3">Cargo</td>
-        <td class="border p-1 w-1/3">Abonos</td>
+      <tr class="border-b-2 border-black font-bold h-8">
+        <th class="border-r-2 border-black p-1 w-[38%] text-center">CONCEPTO DE ANTICIPOS</th>
+        <th class="border-r-2 border-black p-1 w-[22%] text-center uppercase">Vale de Tesorería</th>
+        <th class="p-1 w-[40%] text-center uppercase">Sello de Tesorería</th>
       </tr>
     </thead>
     <tbody>
-      <tr>
-        <td class="border p-1">Anticipo de viáticos</td>
-        <td class="border p-1">
-          <span *ngIf="!modoEdicion">{{ anticipoViaticosCargo }}</span>
-          <input *ngIf="modoEdicion" [(ngModel)]="anticipoViaticosCargo" class="w-full border-none" />
-        </td>
-        <td class="border p-1">
-          <span *ngIf="!modoEdicion">{{ anticipoViaticosAbono }}</span>
-          <input *ngIf="modoEdicion" [(ngModel)]="anticipoViaticosAbono" class="w-full border-none" />
-        </td>
+      <tr class="border-b border-black h-7">
+        <td class="border-r-2 border-black p-0 flex justify-between px-2 items-center h-full"><span>VIÁTICOS</span><span>$ {{ montos.viaticos | number:'1.2-2' }}</span></td>
+        <td class="border-r-2 border-black p-1 text-[8px] align-top" rowspan="3">RECIBÍ LA CANTIDAD DE: $</td>
+        <td class="p-1" rowspan="7"></td>
       </tr>
-      <tr>
-        <td class="border p-1">Anticipo de pasajes</td>
-        <td class="border p-1">
-          <span *ngIf="!modoEdicion">{{ anticipoPasajesCargo }}</span>
-          <input *ngIf="modoEdicion" [(ngModel)]="anticipoPasajesCargo" class="w-full border-none" />
-        </td>
-        <td class="border p-1">
-          <span *ngIf="!modoEdicion">{{ anticipoPasajesAbono }}</span>
-          <input *ngIf="modoEdicion" [(ngModel)]="anticipoPasajesAbono" class="w-full border-none" />
-        </td>
+      <tr class="border-b border-black h-7">
+        <td class="border-r-2 border-black p-0 flex justify-between px-2 items-center h-full"><span>GASOLINA</span><span>$ {{ montos.gasolina | number:'1.2-2' }}</span></td>
       </tr>
-      <tr>
-        <td class="border p-1">
-          Certificación de tránsito y permanencia por
-          <span *ngIf="!modoEdicion">{{ numeroDias }}</span>
-          <input *ngIf="modoEdicion" [(ngModel)]="numeroDias" class="w-12 border-b border-black text-center" /> días
-        </td>
-        <td class="border p-1">
-          <span *ngIf="!modoEdicion">{{ liqCertificacionCargo }}</span>
-          <input *ngIf="modoEdicion" [(ngModel)]="liqCertificacionCargo" class="w-full border-none" />
-        </td>
-        <td class="border p-1">
-          <span *ngIf="!modoEdicion">{{ liqCertificacionAbono }}</span>
-          <input *ngIf="modoEdicion" [(ngModel)]="liqCertificacionAbono" class="w-full border-none" />
-        </td>
+      <tr class="border-b border-black h-7">
+        <td class="border-r-2 border-black p-0 flex justify-between px-2 items-center h-full"><span>PEAJE</span><span>$ {{ montos.peaje | number:'1.2-2' }}</span></td>
       </tr>
-      <tr>
-        <td class="border p-1">Comprobantes de pasajes</td>
-        <td class="border p-1">
-          <span *ngIf="!modoEdicion">{{ liqPasajesCargo }}</span>
-          <input *ngIf="modoEdicion" [(ngModel)]="liqPasajesCargo" class="w-full border-none" />
-        </td>
-        <td class="border p-1">
-          <span *ngIf="!modoEdicion">{{ liqPasajesAbono }}</span>
-          <input *ngIf="modoEdicion" [(ngModel)]="liqPasajesAbono" class="w-full border-none" />
-        </td>
+      <tr class="border-b border-black h-7 font-bold">
+        <td class="border-r-2 border-black p-0 flex justify-between px-2 items-center h-full"><span>TRANSPORTE TERRESTRE</span><span>$ {{ montos.transporteTerrestre | number:'1.2-2' }}</span></td>
+        <td class="border-r-2 border-black p-1 text-[7px] align-middle text-center font-bold" rowspan="2">PARA EL DESEMPEÑO DE ESTA COMISIÓN</td>
       </tr>
-      <tr>
-        <td class="border p-1">Comprobante por uso de vehículo propio</td>
-        <td class="border p-1">
-          <span *ngIf="!modoEdicion">{{ liqVehiculoCargo }}</span>
-          <input *ngIf="modoEdicion" [(ngModel)]="liqVehiculoCargo" class="w-full border-none" />
-        </td>
-        <td class="border p-1">
-          <span *ngIf="!modoEdicion">{{ liqVehiculoAbono }}</span>
-          <input *ngIf="modoEdicion" [(ngModel)]="liqVehiculoAbono" class="w-full border-none" />
-        </td>
+      <tr class="border-b border-black h-7 font-bold">
+        <td class="border-r-2 border-black p-0 flex justify-between px-2 items-center h-full"><span>AVIÓN</span><span>$ {{ montos.avion | number:'1.2-2' }}</span></td>
       </tr>
-      <tr>
-        <td class="border p-1">Comprobante de costos de traslado</td>
-        <td class="border p-1">
-          <span *ngIf="!modoEdicion">{{ liqTrasladoCargo }}</span>
-          <input *ngIf="modoEdicion" [(ngModel)]="liqTrasladoCargo" class="w-full border-none" />
-        </td>
-        <td class="border p-1">
-          <span *ngIf="!modoEdicion">{{ liqTrasladoAbono }}</span>
-          <input *ngIf="modoEdicion" [(ngModel)]="liqTrasladoAbono" class="w-full border-none" />
-        </td>
+      <tr class="border-b border-black h-7 font-bold">
+        <td class="border-r-2 border-black p-0 flex justify-between px-2 items-center h-full italic bg-gray-50 print:bg-transparent"><span>SUBTOTAL SIN AVIÓN</span><span>$ {{ subtotalSinAvion | number:'1.2-2' }}</span></td>
+        <td class="border-r-2 border-black"></td>
       </tr>
-      <tr>
-        <td class="border p-1">Comprobante de prima de riesgo de transporte aéreo</td>
-        <td class="border p-1">
-          <span *ngIf="!modoEdicion">{{ liqPrimaCargo }}</span>
-          <input *ngIf="modoEdicion" [(ngModel)]="liqPrimaCargo" class="w-full border-none" />
-        </td>
-        <td class="border p-1">
-          <span *ngIf="!modoEdicion">{{ liqPrimaAbono }}</span>
-          <input *ngIf="modoEdicion" [(ngModel)]="liqPrimaAbono" class="w-full border-none" />
-        </td>
-      </tr>
-      <tr>
-        <td class="border p-1 font-bold text-right">Suma</td>
-        <td class="border p-1 text-right">
-          <span *ngIf="!modoEdicion">{{ liqSumaCargo }}</span>
-          <input *ngIf="modoEdicion" [(ngModel)]="liqSumaCargo" class="w-full border-none text-right" />
-        </td>
-        <td class="border p-1">
-          <span *ngIf="!modoEdicion">{{ liqSumaAbono }}</span>
-          <input *ngIf="modoEdicion" [(ngModel)]="liqSumaAbono" class="w-full border-none" />
-        </td>
-      </tr>
-      <tr>
-        <td class="border p-1 font-bold text-right">Saldo</td>
-        <td class="border p-1 text-right">
-          <span *ngIf="!modoEdicion">{{ liqSaldoCargo }}</span>
-          <input *ngIf="modoEdicion" [(ngModel)]="liqSaldoCargo" class="w-full border-none text-right" />
-        </td>
-        <td class="border p-1">
-          <span *ngIf="!modoEdicion">{{ liqSaldoAbono }}</span>
-          <input *ngIf="modoEdicion" [(ngModel)]="liqSaldoAbono" class="w-full border-none" />
-        </td>
+      <tr class="h-7 font-bold">
+        <td class="border-r-2 border-black p-0 flex justify-between px-2 items-center h-full italic"><span>GASTO TOTAL</span><span class="underline decoration-double">$ {{ gastoTotal | number:'1.2-2' }}</span></td>
+        <td class="border-r-2 border-black text-[7px] text-center align-bottom pb-0.5 italic uppercase h-full">Firma del Comisionado</td>
       </tr>
     </tbody>
   </table>
-  
 
+  <div class="mt-1">
+    <p class="font-bold">OBSERVACIONES:</p>
+    <div class="p-2 border border-gray-300 print:border-none min-h-[40px] mb-4 bg-gray-50/30 print:bg-transparent">
+      {{ datos.observaciones }}
+    </div>
 
-  <div class="border border-black w-full text-xs font-sans">
-    <div class="grid grid-cols-3 divide-x divide-black text-center">
+    <div class="text-center mt-10">
+      <div class="w-72 mx-auto border-t-[1.5px] border-black"></div>
+      <p class="font-bold my-1 text-[10px]">PERSONA SERVIDORA PÚBLICA QUE AUTORIZA LA COMISIÓN</p>
+     
+    </div>
+
+    <div class="grid grid-cols-3 gap-6 mt-6 uppercase">
+      <div class="border-[1.5px] border-black h-32 relative p-2 flex items-start">
+        <span class="font-bold text-[8px]">LUGAR Y SELLO</span>
+      </div>
       
-      <!-- Columna 1: ELABORO -->
-      <div class="p-2">
-        <div class="border-b border-black font-bold">ELABORO</div>
-        <div class="mt-2">
-          <p>M.A. SALOMON JONAS MEDINA GALLEGOS</p>
-          <p class="text-[10px]">JEFE DEPTO SERV. GRALES HGZ. 01</p>
+      <div class="flex flex-col">
+        <span class="font-bold text-[8px] text-center mb-1">Certificación de Tránsito y Permanencia</span>
+        <div class="border-[1.5px] border-black h-28 p-2 flex flex-col justify-around text-center italic text-[9px]">
+          <p>LLEGÓ / SALIÓ</p>
+          <p>FECHA Y HORA</p>
         </div>
       </div>
-  
-      <!-- Columna 2: REVISO -->
-      <div class="p-2">
-        <div class="border-b border-black font-bold">REVISO</div>
-        <div class="mt-2">
-          <p>M.A. SALOMON JONAS MEDINA GALLEGOS</p>
-          <p class="text-[10px]">JEFE DEPTO SERV. GRALES HGZ. 01</p>
+
+      <div class="border-[1.5px] border-black h-32 relative flex flex-col justify-between p-1">
+        <div class="text-center italic text-[7px] leading-tight border-b border-black pb-1">
+          FIRMA DEL COMISIONADO (A)<br>FIRMA DE CERTIFICACIÓN
         </div>
+        <span class="text-[7px] font-bold text-right self-end p-1">NOMBRE Y CARGO</span>
       </div>
-  
-      <!-- Columna 3: LIQUIDACION -->
-      <div class="p-2">
-        <div class="border-b border-black font-bold">
-          CONFORME RESULTADO LIQUIDACIÓN
-        </div>
-        <div class="mt-2">
-          <p class="font-bold">VIRIDIANA EDEN ENRIQUEZ DIAZ</p>
-          <p class="text-[10px] italic">
-            Firma autógrafa empleado comisionado
-          </p>
-        </div>
-      </div>
-  
     </div>
   </div>
-  
 
-
-<!-- RECIBÍ CANTIDAD -->
-<div class="border border-black p-4 mb-4 text-justify text-xs">
-  <span *ngIf="!modoEdicion">{{ textoRecibiCantidad }}</span>
-  <textarea *ngIf="modoEdicion" [(ngModel)]="textoRecibiCantidad" class="w-full text-xs border-none focus:outline-none"></textarea>
-</div>
-
-<!-- AUTORIZACIÓN DE PAGO -->
-<table class="w-full border border-black">
-  <tbody>
-    <tr class="text-center font-bold text-xs">
-      <td class="border p-1">Autorización de saldo</td>
-      <td class="border p-1">Empleado comisionado</td>
-      <td class="border p-1">Fecha</td>
-    </tr>
-    <tr class="text-center text-xs">
-      <td class="border p-2">
-        <div *ngIf="!modoEdicion">
-          {{ autorizacionNombre }}<br />
-          <span class="text-xs">{{ autorizacionCargo }}</span>
-        </div>
-        <div *ngIf="modoEdicion">
-          <input [(ngModel)]="autorizacionNombre" class="w-full border-b border-black text-center mb-1" />
-          <input [(ngModel)]="autorizacionCargo" class="w-full border-b border-black text-center text-xs" />
-        </div>
-      </td>
-      <td class="border p-2">
-        <span *ngIf="!modoEdicion">{{ nombreComisionadoAutorizacion }}</span>
-        <input *ngIf="modoEdicion" [(ngModel)]="nombreComisionadoAutorizacion" class="w-full border-b border-black text-center" />
-      </td>
-      
-      <td class="border p-2">
-        <span *ngIf="!modoEdicion">{{ fechaAutorizacion }}</span>
-        <input *ngIf="modoEdicion" type="date" [(ngModel)]="fechaAutorizacion" class="w-full border-b border-black text-center" />
-      </td>
-    </tr>
-  </tbody>
- </table>
-</div> 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<div class="p-6 bg-white rounded-xl shadow-md font-sans text-sm">
-
-  <!-- BOTONES -->
-  <div class="mb-4 text-center">
-    <button type="button"
-            (click)="toggleFormulario()"
-            class="px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700">
-      {{ mostrarFormulario ? 'Ocultar formulario' : 'Nuevo traslado' }}
-    </button>
-  </div>
-
-
-
-   <!-- MODAL -->
-   <div *ngIf="mostrarFormulario" 
-   class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-
-<div class="bg-white rounded-xl shadow-lg w-full max-w-4xl p-6 relative overflow-y-auto max-h-[90vh]">
-  
-  <!-- BOTÓN CERRAR -->
-  <button (click)="toggleFormulario()" 
-          class="absolute top-3 right-3 text-gray-600 hover:text-gray-900 text-2xl">
-    ✖
+  <footer class="mt-8 text-[8px] italic border-t border-gray-400 pt-2 leading-tight">
+    <p class="font-bold mb-1 text-[7px]">NOTA: AL TÉRMINO DE LA COMISIÓN EL INTERESADO DEBERÁ HACER A LA BREVEDAD SU COMPROBACIÓN PARA EVITAR SER REPORTADO COMO MOROSO.</p>
+    <div class="flex justify-between font-bold uppercase"><span>EN CASO DE OBERVACIONES Y AMPLIACIONES DE CERTIFIACION HACERLA AL REVERSO</span><span>Clave: 1000-009-012</span></div>
+  </footer>
+</div>-->
+<div class="max-w-[950px] mx-auto mb-4 flex gap-4 print:hidden p-4 bg-gray-50 border rounded-xl shadow-sm">
+  <button *ngIf="isAdminOrSub" (click)="toggleModalAdmin()" class="bg-blue-800 hover:bg-blue-900 text-white px-4 py-2 rounded font-bold shadow transition-all active:scale-95">
+    👤 NUEVO ADMINISTRADOR
   </button>
-
-  <!-- TÍTULO -->
-  <h2 class="text-xl font-bold mb-4 text-center">Formulario de Traslado</h2>
-
-  <div class="flex justify-end gap-2 mt-6">
-    <button type="button"
-            (click)="guardarPliego()"
-            class="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700">
-      Guardar
-    </button>
-    <button type="button"
-            (click)="cancelarTraslado()"
-            class="px-4 py-2 bg-gray-500 text-white rounded hover:bg-gray-600">
-      Cancelar
-    </button>
-  </div>
-  <!-- FORMULARIO  RELLAR PACIENTES-->
-  <form *ngIf="mostrarFormulario" class="grid grid-cols-2 gap-4">
-
-    <!-- Número de Folio -->
-    <div>
-      <label class="block font-semibold">Número de Folio:</label>
-      <input type="text" [(ngModel)]="pliego.numeroFolio" name="folio"
-             class="w-full border rounded p-2" />
-    </div>
-<!-- paciente -->
-<div>
-  <label class="block font-semibold">usuario:</label>
-  <input type="text" [(ngModel)]="pliego.paciente" name="paciente"
-         class="w-full border rounded p-2" />
-</div>
-
-
-<!-- paciente B -->
-<select (change)="onOtroPacienteChange($event)">
-  <option value="true">Sí</option>
-  <option value="false">No</option>
-</select>
-
-<!-- Bloque de datos del paciente B -->
-<div *ngIf="otroPaciente === true" class="mt-4 p-4 border rounded bg-gray-50">
-  <h3 class="font-bold mb-2">Datos del Paciente B</h3>
-  <div class="mb-2">
-    <label>Nombre:</label>
-    <input type="text" [(ngModel)]="pacienteB.nombre" class="border p-1 w-full" />
-  </div>
-  <div class="mb-2">
-    <label>NSS:</label>
-    <input type="text" [(ngModel)]="pacienteB.nss" class="border p-1 w-full" />
-  </div>
-  <div class="mb-2">
-    <label>Lugar de comisión:</label>
-    <input type="text" [(ngModel)]="pacienteB.lugarComision" class="border p-1 w-full" />
-  </div>
-  <div class="mb-2">
-    <label>Objeto de comisión:</label>
-    <input type="text" [(ngModel)]="pacienteB.objetoComision" class="border p-1 w-full" />
-  </div>
-</div>
-<!-- paciente -->
-<div>
-  <label class="block font-semibold">NSS:</label>
-  <input type="text" [(ngModel)]="pliego.pacientenss" name="NSS"
-         class="w-full border rounded p-2" />
-</div>
-
-    <!-- Usuario -->
-    <div>
-      <label class="block font-semibold">paciente:</label>
-      <input type="text" [(ngModel)]="pliego.usuario" name="usuario"
-             class="w-full border rounded p-2" />
-    </div>
-
-    <!-- Objeto de Comisión -->
-    <div>
-      <label class="block font-semibold">objeto de comision</label>
-      <select [(ngModel)]="pliego.objetoComision" name="operador1"
-              class="w-full border rounded p-2">
-        <option value="trasladop">traslado de paciente</option>
-        <option value="trasladof">traslado de funcionario</option>
-        <option value="otros">otros</option>
-      </select>
-    </div>
-
-
-    <!-- Lugares de Comisión -->
-    <div>
-      <label class="block font-semibold">lugares de comision</label>
-      <select [(ngModel)]="pliego.lugaresComision" name="operador1"
-              class="w-full border rounded p-2">
-        <option value="trasladop">hospital A</option>
-        <option value="trasladof">hospital B</option>
-        <option value="trasladof">traumas</option>
-        <option value="otros">otros</option>
-      </select>
-    </div>
-
-    <!-- Periodo -->
-    <div>
-      <label class="block font-semibold">Periodo del :</label>
-      <input type="date" [(ngModel)]="pliego.periodo" name="periodo"
-             class="w-full border rounded p-2" />
-    </div>
-    <div>
-      <label class="block font-semibold">Al periodo :</label>
-      <input type="date" [(ngModel)]="pliego.periodo" name="periodo"
-             class="w-full border rounded p-2" />
-    </div>
-
-    <!-- Total de Días -->
-    <div>
-      <label class="block font-semibold">Total de Días:</label>
-      <input type="number" [(ngModel)]="pliego.totalDias" name="dias"
-             class="w-full border rounded p-2" />
-    </div>
-
-
-    <!-- Certificación por Días -->
-<div class="col-span-2 mt-6">
-  <h3 class="font-bold text-gray-800 mb-2">Certificación por Días</h3>
-  <div class="grid grid-cols-6 gap-4">
-    
-    <!-- KM -->
-    <div>
-      <label class="block font-semibold">Ingresar KM</label>
-      <input type="number" [(ngModel)]="pliego.montoDiario" name="montoDiario"
-             (input)="calcularCertificacion()"
-             class="w-full border rounded p-2" />
-    </div>
-
-    <!-- Operador 1 -->
-    <div>
-      <label class="block font-semibold">Operador</label>
-      <select [(ngModel)]="pliego.operador1" name="operador1"
-              (change)="calcularCertificacion()"
-              class="w-full border rounded p-2">
-        <option value="+">+</option>
-        <option value="-">-</option>
-        <option value="*">*</option>
-        <option value="/">/</option>
-      </select>
-    </div>
-
-    <!-- Divisor -->
-    <div>
-      <label class="block font-semibold">Cantidad Divisoria</label>
-      <input type="number" [(ngModel)]="pliego.totalDias" name="diasCert"
-             (input)="calcularCertificacion()"
-             class="w-full border rounded p-2" />
-    </div>
-
-    <!-- Operador 2 -->
-    <div>
-      <label class="block font-semibold">Operador</label>
-      <select [(ngModel)]="pliego.operador2" name="operador2"
-              (change)="calcularCertificacion()"
-              class="w-full border rounded p-2">
-        <option value="+">+</option>
-        <option value="-">-</option>
-        <option value="*">*</option>
-        <option value="/">/</option>
-      </select>
-    </div>
-
-    <!-- Factor -->
-    <div>
-      <label class="block font-semibold">Factor</label>
-      <input type="number" [(ngModel)]="pliego.constanteCertificacion" name="constante"
-             (input)="calcularCertificacion()"
-             class="w-full border rounded p-2" />
-    </div>
-
-    <!-- Operador 3 -->
-    <div>
-      <label class="block font-semibold">Operador</label>
-      <select [(ngModel)]="pliego.operador3" name="operador3"
-              (change)="calcularCertificacion()"
-              class="w-full border rounded p-2">
-        <option value="+">+</option>
-        <option value="-">-</option>
-        <option value="*">*</option>
-        <option value="/">/</option>
-      </select>
-    </div>
-
-    <!-- Cantidad base -->
-    <div>
-      <label class="block font-semibold">Cantidad Base</label>
-      <input type="number" [(ngModel)]="pliego.cantidadBCertificacion" name="cantidadBase"
-             (input)="calcularCertificacion()"
-             class="w-full border rounded p-2" />
-    </div>
-
-    <!-- Resultado -->
-    <div>
-      <label class="block font-semibold">Resultado</label>
-      <input type="text" [value]="pliego.resultadoCertificacion"
-             readonly
-             class="w-full border rounded p-2 bg-gray-100" />
-    </div>
-  </div>
-</div>
-
-    <!-- Funcionario Solicitante -->
-    <div>
-      <label class="block font-semibold">Funcionario Solicitante:</label>
-      <input type="text" [(ngModel)]="pliego.funcionarioSolicitante" name="solicitante"
-             class="w-full border rounded p-2" />
-    </div>
-
-    <!-- Categoría -->
-    <div>
-      <label class="block font-semibold">Categoría:</label>
-      <input type="text" [(ngModel)]="pliego.categoria" name="categoria"
-             class="w-full border rounded p-2" />
-    </div>
-
-    <!-- Funcionario que Autoriza -->
-    <div class="col-span-2">
-      <label class="block font-semibold">Funcionario que Autoriza:</label>
-      <input type="text" [(ngModel)]="pliego.funcionarioAutoriza" name="autoriza"
-             class="w-full border rounded p-2" />
-    </div>
-
-    <!-- BOTÓN CALCULAR -->
-    <div class="col-span-2 text-center mt-6">
-      <button type="button" (click)="calcularCertificacion()"
-              class="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700">
-        Calcular
-      </button>
-    </div>
-
-  </form>
-</div>
-
-
-
-
-
-<!-- Botones de acción -->
-<div class="print:hidden text-center mt-4 flex justify-center gap-4">
-  <!-- Botón para alternar edición -->
-  <button (click)="toggleEdicion()" 
-          class="px-6 py-2 bg-blue-700 text-white rounded text-sm shadow">
-    {{ modoEdicion ? 'Guardar Cambios' : 'Editar Pliego' }}
+  <button *ngIf="isUser" (click)="toggleModalTraslado()" class="bg-green-700 hover:bg-green-800 text-white px-4 py-2 rounded font-bold shadow transition-all active:scale-95">
+    🚚 NUEVO TRASLADO
   </button>
-
-  <!-- Botón impresión -->
-  <button (click)="forzarImpresion()" 
-          [disabled]="modoEdicion" 
-          class="px-6 py-2 bg-green-700 text-white rounded text-sm shadow">
-    Imprimir Pliego
+  <button (click)="imprimir()" class="ml-auto bg-black text-white px-6 py-2 rounded font-bold hover:bg-gray-800 transition-colors">
+    🖨️ IMPRIMIR FORMATO
   </button>
 </div>
 
+<div class="max-w-[950px] mx-auto bg-white text-[10px] uppercase font-sans leading-tight text-black border border-gray-300 print:border-none flex flex-col print:h-[275mm] print:my-0 p-10 overflow-hidden shadow-lg print:shadow-none">
+  
+  <header class="flex items-start mb-4">
+    <div class="w-20"><img src="assets/logoimss.png" alt="IMSS" class="w-full"></div>
+    <div class="flex-1 text-center pr-20">
+      <h1 class="text-[14px] font-bold">INSTITUTO MEXICANO DEL SEGURO SOCIAL</h1>
+      <div class="mt-2 font-bold text-[11px]">
+        <p>PLIEGO DE COMISIÓN No. <span class="border-b border-black px-4">{{ datos.numeroComision }}</span></p>
+        <p class="mt-1 text-[10px]">AUTORIZACIÓN DE COMISIÓN</p>
+      </div>
+    </div>
+  </header>
+
+  <div class="text-right mb-4 italic">
+    LUGAR Y FECHA: <span class="border-b border-black px-2 inline-block min-w-[200px]">{{ datos.lugarFecha }}</span>
+  </div>
+
+  <div class="border-[1.5px] border-black rounded-[35px] p-6 mb-4 space-y-2">
+    <div class="flex justify-between">
+      <div class="flex-1"><strong>FUNCIONARIO SOLICITANTE:</strong> {{ datos.funcionario }}</div>
+      <div class="w-32 text-right"><strong>C.P.</strong> {{ datos.cp }}</div>
+    </div>
+    <div><strong>CATEGORÍA:</strong> {{ datos.categoria }}</div>
+    <div><strong>ÁREA SOLICITANTE:</strong> {{ datos.area }}</div>
+    <div class="flex gap-8">
+      <div class="flex-1"><strong>EMPLEADO:</strong> {{ datos.empleado }}</div>
+      <div><strong>G.J:</strong> {{ datos.gj }}</div>
+      <div><strong>MAT:</strong> {{ datos.mat }}</div>
+      <div><strong>TC:</strong> {{ datos.tc }}</div>
+    </div>
+    <div class="flex justify-between">
+      <div class="flex-1"><strong>PUESTO:</strong> {{ datos.puesto }}</div>
+      <div class="w-48 text-right"><strong>TEL OFICINA:</strong> {{ datos.tel }}</div>
+    </div>
+    <div><strong>DEPARTAMENTO:</strong> {{ datos.departamento }}</div>
+    <div><strong>OBJETO DE LA COMISIÓN:</strong> {{ datos.objeto }}</div>
+    <div class="flex justify-between">
+      <div class="flex-1"><strong>DESTINO DE LA COMISIÓN:</strong> {{ datos.destino }}</div>
+      <div><strong>DEL:</strong> <span class="font-bold">{{ datos.del }}</span> <strong>AL:</strong> <span class="font-bold">{{ datos.al }}</span></div>
+    </div>
+    <div class="flex gap-10">
+      <div><strong>MEDIO DE TRANSPORTE:</strong> {{ datos.transporte }}</div>
+      <div><strong>CHOFER:</strong> {{ datos.chofer }}</div>
+      <div><strong>ACOMPAÑANTE:</strong> {{ datos.acompanante }}</div>
+    </div>
+  </div>
+
+  <table class="w-full border-collapse border-2 border-black mb-4 table-fixed text-[9px]">
+    <thead>
+      <tr class="border-b-2 border-black font-bold h-7">
+        <th class="border-r-2 border-black w-[38%] p-2 text-left align-top leading-tight uppercase text-[9px]">
+      CONCEPTO DE ANTICIPOS PARA ( <span class="underline">{{ calcularDias }}</span> ) 
+      DÍA(S) DE VIÁTICOS PARA LA COMISIÓN 
+      CUOTA ( <span class="underline">${{ datos.cuota || 0 | number:'1.2-2' }}</span> )
+    </th>
+        <th class="border-r-2 border-black w-[22%] text-center">VALE DE TESORERÍA DEL INSTITUO MEXICANO DEL SEGURO SOCIAL</th>
+        <th class="w-[40%] text-center">SELLO DE TESORERÍA</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr class="border-b border-black h-7">
+        <td class="border-r-2 border-black px-3 flex justify-between items-center h-7"><span>VIÁTICOS</span><span>$ {{ montos.viaticos | number:'1.2-2' }}</span></td>
+        <td class="border-r-2 border-black p-1 text-[7px]" rowspan="3">RECIBÍ LA CANTIDAD DE: $</td>
+        <td class="p-1" rowspan="7"></td>
+      </tr>
+      <tr class="border-b border-black h-7">
+        <td class="border-r-2 border-black px-3 flex justify-between items-center h-7"><span>GASOLINA</span><span>$ {{ montos.gasolina | number:'1.2-2' }}</span></td>
+      </tr>
+      <tr class="border-b border-black h-7">
+        <td class="border-r-2 border-black px-3 flex justify-between items-center h-7"><span>PEAJE</span><span>$ {{ montos.peaje | number:'1.2-2' }}</span></td>
+      </tr>
+      <tr class="border-b border-black h-7 font-bold">
+        <td class="border-r-2 border-black px-3 flex justify-between items-center h-7 text-[9px]"><span>TRANSPORTE TERRESTRE</span><span>$ {{ montos.transporteTerrestre | number:'1.2-2' }}</span></td>
+        <td class="border-r-2 border-black p-1 text-[7px] text-center font-bold" rowspan="2">PARA EL DESEMPEÑO DE ESTA COMISIÓN</td>
+      </tr>
+      <tr class="border-b border-black h-7 font-bold">
+        <td class="border-r-2 border-black px-3 flex justify-between items-center h-7"><span>AVIÓN</span><span>$ {{ montos.avion | number:'1.2-2' }}</span></td>
+      </tr>
+      <tr class="border-b border-black h-7 font-bold italic">
+        <td class="border-r-2 border-black px-3 flex justify-between items-center h-7"><span>SUBTOTAL SIN AVIÓN</span><span>$ {{ subtotalSinAvion | number:'1.2-2' }}</span></td>
+        <td class="border-r-2 border-black"></td>
+      </tr>
+      <tr class="h-8 font-bold italic text-[10px]">
+        <td class="border-r-2 border-black px-3 flex justify-between items-center h-8"><span>GASTO TOTAL</span><span class="underline decoration-double">$ {{ gastoTotal | number:'1.2-2' }}</span></td>
+        <td class="border-r-2 border-black text-[7px] text-center align-bottom pb-1 uppercase">Firma del Comisionado</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="mb-4">
+    <p class="font-bold mb-1">OBSERVACIONES:</p>
+    <div class="min-h-[40px] text-[9px] normal-case">{{ datos.observaciones }}</div>
+  </div>
+
+  <div class="text-center mb-6 mt-2">
+    <div class="w-80 mx-auto border-t-[1.5px] border-black"></div>
+    <p class="font-bold mt-1 text-[10px]">PERSONA SERVIDORA PÚBLICA QUE AUTORIZA LA COMISIÓN</p>
+  </div>
+
+  <div class="grid grid-cols-3 gap-6 uppercase">
+    <div class="border-[1.5px] border-black h-28 p-2"><span class="font-bold text-[8px]">LUGAR Y SELLO</span></div>
+    <div class="flex flex-col">
+      <span class="font-bold text-[8px] text-center mb-1">Certificación de Tránsito y Permanencia</span>
+      <div class="border-[1.5px] border-black h-24 p-2 flex flex-col justify-around text-center italic text-[9px]">
+        <p>LLEGÓ / SALIÓ</p><p>FECHA Y HORA</p>
+      </div>
+    </div>
+    <div class="border-[1.5px] border-black h-28 flex flex-col justify-between p-2">
+      <div class="text-center italic text-[7px] leading-tight border-b border-black pb-1">FIRMA DEL COMISIONADO (A)<br>FIRMA DE CERTIFICACIÓN</div>
+      <span class="text-[7px] font-bold text-right uppercase mt-auto">NOMBRE Y CARGO</span>
+    </div>
+  </div>
+
+  <footer class="mt-auto pt-2 text-[8px] italic border-t border-black">
+    <p class="font-bold mb-1">NOTA: AL TÉRMINO DE LA COMISIÓN EL INTERESADO DEBERÁ HACER SU COMPROBACIÓN.</p>
+    <div class="flex justify-between font-bold uppercase items-end">
+      <span>EN CASO DE OBSERVACIONES Y AMPLEACION  DE CERTIFICACION  HACERLA AL REVERSO </span>
+      <span class="text-[10px]">Clave: 1000-009-012</span>
+    </div>
+  </footer>
+</div>
+
+<div *ngIf="showModalAdmin" class="fixed inset-0 z-[9999] flex items-center justify-center bg-black/60 backdrop-blur-sm print:hidden">
+  <div class="bg-white p-6 rounded-2xl shadow-2xl w-full max-w-md border border-gray-200">
+    <div class="flex justify-between items-center mb-4 border-b pb-2">
+      <h3 class="text-lg font-bold text-blue-900">👤 DATOS ADMINISTRATIVOS</h3>
+      <button (click)="toggleModalAdmin()" class="text-gray-400 hover:text-red-500 text-3xl">&times;</button>
+    </div>
+    <div class="space-y-3">
+      <div>
+        <label class="block text-[10px] font-bold text-gray-600">FUNCIONARIO SOLICITANTE</label>
+        <input [(ngModel)]="datos.funcionario" type="text" class="w-full border p-2 rounded text-sm focus:ring-2 focus:ring-blue-500">
+      </div>
+      <div class="flex gap-2">
+        <div class="flex-1">
+          <label class="block text-[10px] font-bold text-gray-600">C.P.</label>
+          <input [(ngModel)]="datos.cp" type="text" class="w-full border p-2 rounded text-sm">
+        </div>
+        <div class="flex-[2]">
+          <label class="block text-[10px] font-bold text-gray-600">TELÉFONO</label>
+          <input [(ngModel)]="datos.tel" type="text" class="w-full border p-2 rounded text-sm">
+        </div>
+      </div>
+      <div>
+        <label class="block text-[10px] font-bold text-gray-600">CATEGORÍA</label>
+        <input [(ngModel)]="datos.categoria" type="text" class="w-full border p-2 rounded text-sm">
+      </div>
+    </div>
+    <div class="flex justify-end gap-3 mt-6">
+       <button (click)="toggleModalAdmin()" class="px-5 py-2 text-gray-500 font-bold hover:bg-gray-100 rounded">CERRAR</button>
+    </div>
+  </div>
+</div>
+
+<div *ngIf="showModalTraslado" class="fixed inset-0 z-[9999] flex items-center justify-center bg-black/60 backdrop-blur-sm print:hidden">
+  <div class="bg-white p-6 rounded-2xl shadow-2xl w-full max-w-2xl border border-gray-200">
+    <div class="flex justify-between items-center mb-4 border-b pb-2">
+      <h3 class="text-lg font-bold text-green-800">🚚 DATOS DEL TRASLADO / COMISIÓN</h3>
+      <button (click)="toggleModalTraslado()" class="text-gray-400 hover:text-red-500 text-3xl">&times;</button>
+    </div>
+    <div class="grid grid-cols-2 gap-4 py-4">
+       <div class="col-span-2">
+         <label class="block text-[10px] font-bold">OBJETO DE LA COMISIÓN</label>
+         <input [(ngModel)]="datos.objeto" type="text" class="w-full border p-2 rounded text-sm">
+       </div>
+       <div class="col-span-1">
+         <label class="block text-[10px] font-bold text-gray-700">ACOMPAÑANTE</label>
+         <input [(ngModel)]="datos.acompanante" type="text" placeholder="Nombre completo" class="w-full border p-2 rounded text-sm focus:ring-2 focus:ring-green-500 outline-none bg-gray-50">
+       </div>
+       <div>
+    <label class="block text-[10px] font-bold text-blue-700 underline">CUOTA DIARIA ($)</label>
+    <input [(ngModel)]="datos.cuota" type="number" placeholder="Ej: 500" class="w-full border border-blue-300 p-2 rounded text-sm bg-blue-50">
+  </div>
+       <div class="col-span-1">
+  <label class="block text-[10px] font-bold text-gray-700">NOMBRE DEL CHOFER</label>
+  
+  <input 
+    [(ngModel)]="datos.chofer" 
+    type="text" 
+    list="choferesList" 
+    placeholder="Escribe para buscar..." 
+    class="w-full border p-2 rounded text-sm focus:ring-2 focus:ring-green-500 outline-none bg-gray-50"
+  >
+
+  <datalist id="choferesList">
+    <option *ngFor="let nombre of listaChoferes" [value]="nombre"></option>
+  </datalist>
+</div>
+       <div>
+         <label class="block text-[10px] font-bold">DESTINO</label>
+         <input [(ngModel)]="datos.destino" type="text" class="w-full border p-2 rounded text-sm">
+       </div>
+       <div class="flex gap-2">
+         <div class="flex-1">
+           <label class="block text-[10px] font-bold">DEL</label>
+           <input [(ngModel)]="datos.del" type="text" class="w-full border p-2 rounded text-sm" placeholder="DD/MM/AAAA">
+         </div>
+         <div class="flex-1">
+           <label class="block text-[10px] font-bold">AL</label>
+           <input [(ngModel)]="datos.al" type="text" class="w-full border p-2 rounded text-sm" placeholder="DD/MM/AAAA">
+         </div>
+       </div>
+       
+       <div class="col-span-2">
+         <label class="block text-[10px] font-bold">OBSERVACIONES</label>
+         <textarea [(ngModel)]="datos.observaciones" class="w-full border p-2 rounded text-sm h-20"></textarea>
+       </div>
+    </div>
+    <div class="flex justify-end gap-3">
+       <button (click)="toggleModalTraslado()" class="px-5 py-2 text-gray-500 font-bold hover:bg-gray-100 rounded">CERRAR</button>
+    </div>
+  </div>
+</div>

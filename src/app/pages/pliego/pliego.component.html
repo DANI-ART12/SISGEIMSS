@@ -1,429 +1,99 @@
-<script src="https://cdn.tailwindcss.com"></script>
-
-
-<div class="max-w-4xl mx-auto mb-4 text-right no-print">
-    <button (click)="imprimirContenido()" 
-            class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-lg transition duration-150 shadow-md">
-        Imprimir Documento
-    </button>
+<div class="no-print action-bar">
+  <button (click)="abrirFormulario()" class="btn-edit">📝 Editar Datos</button>
+  <button (click)="imprimir()" class="btn-print">🖨️ Imprimir</button>
 </div>
 
-<div id="printArea">
-    
-    <div class="print-container p-4 sm:p-6 md:p-8 bg-gray-100 min-h-screen text-gray-900">
-
-        <div class="max-w-4xl mx-auto bg-white document-page text-xs mb-8 page-break">
-
-            <div class="py-1 text-center text-sm font-bold border-b border-black">
-                PLIEGO
-            </div>
-
-            <div class="flex items-stretch  border-r border-black ">
-                <div class=" flex items-center justify-center w-36 flex-shrink-0 p-2">
-                    <img src="./assets/logoimss.png" alt="Logo IMSS" class="w-20 h-10 object-contain">
-                </div>
-                
-                <div class="flex-grow flex flex-col border-r border-black">
-                    <div class=" flex items-stretch border-r border-black">
-                        <div class="py-1 px-2 flex-grow text-center text-base font-bold flex items-center justify-center">
-                            INSTITUTO MEXICANO DEL SEGURO SOCIAL
-                        </div>
-                        <div class="py-1 px-2  flex-shrink-0 w-32 font-bold flex items-center">
-                            <span class="flex-grow text-right pr-1">No.</span>
-                            <span class=" border border-black p-0.5 text-center flex-shrink-0">
-                                175/2025
-                            </span>
-                        </div>
-                    </div>
-                    
-                    <div class="flex flex-col">
-                        <div class="flex">
-                            <div class="py-1 px-2 w-1/2 text-center flex-shrink-0">
-                                <span class="font-bold">RFC:</span> MAJJ930521FFF5
-                            </div>
-                            <div class="py-1 px-2 w-1/2 text-center flex-shrink-0">
-                                <span class="font-bold">CURP:</span> MAJJ930521HDFRMS04
-                            </div>
-                        </div>
-                        
-                        <div class="text-center font-bold mt-2 pb-1 ">
-                            AUTORIZACION DE PLIEGO DE COMISIÓN
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="grid grid-cols-10 border-b border-black">
-                <div class="col-span-2 border-r border-black py-1 px-2 font-bold">FUNCIONARIO SOLICITANTE</div>
-                <div class="col-span-8 py-1 px-2 font-bold">DRA.TANIA GONZALEZ GUZMAN</div>
-            </div>
-            <div class="grid grid-cols-10 border-b border-black">
-                <div class="col-span-2 border-r border-black py-1 px-2 font-bold">CATEGORIA</div>
-                <div class="col-span-8 py-1 px-2">DIRECTORA DEL H.G.Z No.1</div>
-            </div>
-            <div class="grid grid-cols-10 border-b border-black">
-                <div class="col-span-2 border-r border-black py-1 px-2 font-bold">DEPENDENCIA</div>
-                <div class="col-span-8 py-1 px-2">HOSPITAL GENERAL DE ZONA No. 1</div>
-            </div>
-            
-            <div class="flex border-b border-black">
+@if (mostrarFormulario) {
+  <div class="modal-overlay">
+    <div class="modal-content">
+      <h3>Editar Información del Pliego</h3>
+      <div class="form-grid">
+        <div class="form-group"><label>Oficio No.</label><input [(ngModel)]="datosPliego.oficioNumero"></div>
+        <div class="form-group"><label>Lugar y Fecha</label><input [(ngModel)]="datosPliego.lugarFecha"></div>
+        <div class="form-group full"><label>Destinatario</label><input [(ngModel)]="datosPliego.nombreCargoDestinatario"></div>
         
-                <div class="w-1/5 flex flex-col border-r border-black">
-                    <div class="py-1 px-2 h-8 text-xs flex items-center border-b border-black">NOMBRE COMISIONADO</div>
-                    <div class="py-1 px-2 h-8 text-xs flex items-center">MATRICULA</div>
-                </div>
-                
-                <div class="flex-grow flex flex-col">
-                    
-                    <div class="flex border-b border-black">
-                        
-                        <div class="py-1 px-2 h-8 font-bold flex-grow">MARTINEZ JIMENEZ JOSHUA</div>
-                        
-                        <div class="flex-shrink-0 flex text-[10px] h-8 border-l border-black">
-                            <div class="w-[60px] py-1 px-1 border-r border-black flex items-center justify-center">BASE</div>
-                            <div class="w-[40px] py-1 px-1 border-r border-black flex items-center justify-center">XX</div>
-                            <div class="w-[80px] py-1 px-1 flex items-center justify-center">CONFIANZA</div>
-                        </div>
-                        
-                    </div>
-                    
-                    <div class="flex h-8">
-                        
-                        <div class="w-1/4 py-1 px-2 border-r border-black font-bold flex items-center">97210948</div>
-                        
-                        <div class="w-[10%] py-1 px-2 border-r border-black text-xs flex items-center">CATEGORIA</div>
-                        
-                        <div class="w-1/4 py-1 px-2 border-r border-black font-bold flex items-center">CHOFER 80</div>
-                        
-                        <div class="w-[10%] border-r border-black text-[10px] flex flex-col">
-                            <div class="py-0.5 px-1 border-b border-black text-xs">TELEFONO</div>
-                            <div class="py-0.5 px-1 text-xs">OFICINA</div>
-                        </div>
+        <div class="form-group"><label>Comisionado</label><input [(ngModel)]="datosPliego.nombreComisionado"></div>
+        <div class="form-group"><label>Matrícula</label><input [(ngModel)]="datosPliego.matricula"></div>
+        <div class="form-group"><label>Adscripción</label><input [(ngModel)]="datosPliego.adscripcion"></div>
+        <div class="form-group"><label>Destino</label><input [(ngModel)]="datosPliego.destino"></div>
+        <div class="form-group"><label>Dias de comision</label><input [(ngModel)]="datosPliego.diasComision"></div>
+        <div class="form-group"><label>Fecha de Comision</label><input [(ngModel)]="datosPliego.fechaComision"></div>
+        <div class="form-group"><label>Objeto de Comision</label><input [(ngModel)]="datosPliego.objetoComision"></div>
+        <div class="form-group"><label>Medio de Transporte</label><input [(ngModel)]="datosPliego.medioTransporte"></div>
+        <div class="form-group"><label>Unidad de Informacion</label><input [(ngModel)]="datosPliego.unidadInformacion"></div>
+        <div class="form-group"><label>Centro de Costos</label><input [(ngModel)]="datosPliego.centroCostos"></div>
+
+
+
+
+
+
+
+
         
-                        <div class="w-[10%] py-1 px-2 border-r border-black flex items-center text-sm">5152033</div>
-                        
-                        <div class="flex-grow py-1 px-2 font-bold flex items-center justify-end pr-4">EXT 61468</div>
-                        
-                    </div>
-                </div>
-            </div>
-            
-            <div class="grid grid-cols-10 border-b border-black">
-                <div class="col-span-2 border-r border-black py-1 px-2 font-bold">OBJETO DE COMISIÓN</div>
-                <div class="col-span-8 py-1 px-2">
-                    TRASLADO DE PACIENTES HERNANDEZ ORTIZ AMELIA NSS.05229817334F1969/OR/CRUZ GUERRERO OMAR ONEY NSS.02197646331M760R
-                </div>
-            </div>
-            <div class="grid grid-cols-10 border-b border-black">
-                <div class="col-span-2 border-r border-black py-1 px-2 font-bold">LUGARES DE COMISIÓN</div>
-                <div class="col-span-8 py-1 px-2 font-bold">H. DE ESPECIALIDADES PUEBLA, PUEBLA</div>
-            </div>
-            <div class="grid grid-cols-10 border-b border-black">
-                <div class="col-span-2 border-r border-black py-1 px-2 font-bold">PERIODO</div>
-                <div class="col-span-8 py-1 px-2 flex justify-between items-center">
-                    <span class="font-bold">DEL 04 AL 06 DE ABRIL DEL 2025</span>
-                    <span class="text-[10px] flex-shrink-0">
-                        <span class="font-bold">TOTAL DÍAS</span>
-                        <span class="font-bold ml-2">3 DÍAS</span>
-                    </span>
-                </div>
-            </div>
-
-            <div class="flex border-b border-black">
-                <div class="w-1/2 border-r border-black flex flex-col text-center">
-                    <div class="py-1 px-2 border-b border-black text-[10px]">FUNCIONARIO SOLICITANTE</div>
-                    <div class="flex-grow flex flex-col justify-end p-2 h-20">
-                        <p class="font-bold text-sm">DRA. TANIA GONZALEZ GUZMAN</p>
-                        <p class="text-xs">DIRECTORA DEL H.G.Z No.1</p>
-                        <div class="w-full h-px bg-black my-2"></div>
-                        <p class="text-[10px] font-bold">FIRMA AUTOGRAFA</p>
-                    </div>
-                </div>
-                <div class="flex-grow flex flex-col text-center">
-                    <div class="py-1 px-2 border-b border-black text-[10px]">FUNCIONARIO QUE AUTORIZA</div>
-                    <div class="flex-grow flex flex-col justify-end p-2 h-20">
-                        <p class="font-bold text-sm">C.P. ERIKA ELIZABETH MARTINEZ VARGAS</p>
-                        <p class="text-xs">SUBDIRECTOR ADMINISTRATIVO H.G.Z No.1</p>
-                        <div class="w-full h-px bg-black my-2"></div>
-                        <p class="text-[10px] font-bold">NOMBRE Y FIRMA AUTOGRAFA</p>
-                    </div>
-                </div>
-            </div>
-
-
-            <div class="border border-black text-[10px] leading-tight font-sans">
-            
-                <div class="h-1 bg-white"></div>
-            
-                <div class="flex px-1">
-            
-                    <div class="w-[49%] border border-black flex flex-col">
-                        <div class="h-0 bg-white border-b border-black"></div>
-            
-                        <div class="text-center font-bold border-b border-black py-1">
-                            AUTORIZACIÓN DEL IMPORTE DE<br>VIÁTICOS Y PASAJES
-                        </div>
-            
-                        <div class="grid grid-cols-3 border-b border-black">
-                            <div class="col-span-2 border-r border-black py-1 px-2">CUOTA DE VIÁTICOS</div>
-                            <div class="col-span-1 py-1 px-2 font-bold text-right">$2,514.00</div>
-            
-                            <div class="col-span-2 border-t border-r border-black py-1 px-2">ANTICIPO DE VIÁTICOS</div>
-                            <div class="col-span-1 border-t py-1 px-2"></div>
-            
-                            <div class="col-span-2 border-t border-r border-black py-1 px-2">ANTICIPO DE PASAJES</div>
-                            <div class="col-span-1 border-t py-1 px-2"></div>
-            
-                            <div class="col-span-2 border-t border-r border-black py-1 px-2 text-[9px]">ANTICIPO GASTOS POR USO VEHÍCULO</div>
-                            <div class="col-span-1 border-t py-1 px-2"></div>
-            
-                            <div class="col-span-2 border-t border-r border-black py-1 px-2 font-bold">SUMA</div>
-                            <div class="col-span-1 border-t py-1 px-2"></div>
-                        </div>
-            
-                        <div class="text-center font-bold border-b border-black py-1">
-                            MEDIO DE TRANSPORTE
-                        </div>
-            
-                        <div class="grid grid-cols-2 border-b border-black text-[9px]">
-                            <div class="flex items-center border-r border-black py-1 px-2">
-                                AVIÓN <input type="checkbox" class="ml-2 w-3 h-3 border border-black">
-                            </div>
-                            <div class="flex items-center py-1 px-2">
-                                AUTOBÚS <input type="checkbox" class="ml-2 w-3 h-3 border border-black">
-                            </div>
-                            <div class="flex items-center border-t border-r border-black py-1 px-2">
-                                FERROCARRIL <input type="checkbox" class="ml-2 w-3 h-3 border border-black">
-                            </div>
-                            <div class="flex items-center border-t py-1 px-2">
-                                VEHÍCULO OFICIAL <input type="checkbox" class="ml-2 w-3 h-3 border border-black" checked>
-                            </div>
-                        </div>
-            
-                        <div class="text-center font-bold py-1">
-                            TESORERÍA GENERAL
-                        </div>
-            
-                        <div class="h-4 bg-white border-t border-black"></div>
-                    </div>
-            
-                    <div class="w-[2%] bg-white"></div>
-
-            
-                    <div class="w-[49%] border border-black flex flex-col">
-                    
-                        <div class="min-h-[30px] bg-white border-b border-black"></div>
-                    
-                        <div class="text-center font-bold border-b border-black py-1 text-sm">
-                            POR USO DE VEHÍCULO PROPIO
-                        </div>
-                    
-                        <div class=" text-center py-1 text-[9px] leading-snug">
-                            <p class="font-bold">CON DISPONIBILIDAD PRESUPUESTAL</p>
-                            <p>U.I. 210101 C.C. 142901 CUENTA: 5137 1007</p>
-                        </div>
-                    
-                        <div class="border-b border-black text-center py-1 text-[9px] leading-snug">
-                            <p class="font-bold">MTRO. SALOMON JONAS MEDINA GALLEGOS</p>
-                            <p>JEFE DEPTO. SERVS. GENERALES HGZ 1</p>
-                        </div>
-                    
-                        <div class="border-b border-black text-center font-bold py-1 text-[9px]">
-                            EN COMISIONES MAYORES A 60 DÍAS
-                        </div>
-                    
-                        <div class="border-b border-black py-2">
-                            <div class="py-1 bg-white"></div>
-                        </div>
-                        <div class="border-b border-black text-center font-bold py-2 text-[9px]">
-                            POR ARRENDAMIENTO DE VEHÍCULO
-                        </div>
-                    
-                        <div class="flex-grow bg-white"></div>
-                    </div>
-            
-                </div>
-
-            </div>
-            
-            <div class="border-b border-black text-center py-1 px-2 font-bold">
-                VALE A LA TESORERIA GENERAL DEL INSTITUTO MEXICANO DEL SEGURO SOCIAL
-            </div>
-
-            <div class="py-3 px-2 flex justify-between items-center text-sm">
-                <div class="flex w-3/4 mr-4">
-                    <span class="font-bold mr-2 whitespace-nowrap">RECIBI LA CANTIDAD DE</span>
-                    <div class="border-b border-black flex-grow h-5"></div>
-                </div>
-                <div class="flex w-1/4">
-                    <span class="font-bold mr-2 whitespace-nowrap">BUENO POR</span>
-                    </div>
-            </div>
-
-            <div class="border-b border-black py-3 px-2 text-sm flex items-center">
-                <span class="font-bold mr-2 whitespace-nowrap">CORRESPONDIENTE A</span>
-                <input type="text" class="border-b border-black w-20 text-center mx-1" value="XX">
-                <span class="font-bold ml-2">DÍAS DE VIATICOS ANTICIPADOS PARA ESTA COMISION</span>
-            </div>
-
-            <div class="flex">
-                <div class="w-1/2 border-r border-black flex flex-col text-center">
-                    <div class="py-1 px-2 border-b border-black text-[10px]">LUGAR Y FECHA</div>
-                    <div class="flex-grow py-2 px-2 font-bold text-sm">OAXACA, OAX. A 16 de July de 2025</div>
-                </div>
-                <div class="flex-grow flex flex-col text-center">
-                    <div class="py-1 px-2 border-b border-black text-[10px]">EMPLEADO COMISIONADO</div>
-                    <div class="flex-grow py-2 px-2 font-bold text-sm flex items-center justify-center">
-                        <span class="mr-2">C.</span> MARTINEZ JIMENEZ JOSHUA
-                    </div>
-                </div>
-            </div>
-
-            <div class="text-center text-[10px] py-1 border-t border-black">Página 0</div>
-
-            </div>
-
-        <div class="page-separator mt-16 pt-16 border-t-2 border-dashed border-gray-400"></div>
-
-        <div class="max-w-4xl mx-auto bg-white document-page text-xs mt-8">
-            
-            <div class="flex justify-between items-center px-4 pt-2">
-                <div class="font-bold text-sm">PLIEGO</div>
-                <div class="flex items-center font-bold text-sm">
-                    No. 
-                    <span class="bg-yellow-300 border border-black p-0.5 ml-1 text-center">175/2025</span>
-                </div>
-            </div>
-            
-            <div class="p-4 pt-2">
-                <div class="text-center font-bold text-sm mb-1">CERTIFICACIÓN DE SERVICIOS</div>
-                <div class="grid grid-cols-[1fr_1fr_1fr] border border-black text-center font-bold">
-                    <div class="col-span-1 border-r border-black p-1">LUGAR Y SELLO</div>
-                    <div class="col-span-1 border-r border-black p-1">FECHA Y HORA</div>
-                    <div class="col-span-1 p-1">FIRMA AUTÓGRAFA DE CERTIFICACIÓN</div>
-                    
-                    <div class="col-span-1 border-r border-black border-t border-black row-span-2 h-10"></div>
-                    <div class="col-span-1 border-r border-black border-t border-black p-1 h-5 flex items-center justify-center">LLEGADA:</div>
-                    <div class="col-span-1 border-t border-black row-span-2 h-10"></div>
-                    <div class="col-span-1 border-r border-black border-t border-black p-1 h-5 flex items-center justify-center">SALIDA:</div>
-
-                    <div class="col-span-1 border-r border-black border-t border-black row-span-2 h-10"></div>
-                    <div class="col-span-1 border-r border-black border-t border-black p-1 h-5 flex items-center justify-center">LLEGADA:</div>
-                    <div class="col-span-1 border-t border-black row-span-2 h-10"></div>
-                    <div class="col-span-1 border-r border-black border-t border-black p-1 h-5 flex items-center justify-center">SALIDA:</div>
-
-                    <div class="col-span-1 border-r border-black border-t border-black row-span-2 h-10"></div>
-                    <div class="col-span-1 border-r border-black border-t border-black p-1 h-5 flex items-center justify-center">LLEGADA:</div>
-                    <div class="col-span-1 border-t border-black row-span-2 h-10"></div>
-                    <div class="col-span-1 border-r border-black border-t border-black p-1 h-5 flex items-center justify-center">SALIDA:</div>
-
-                    <div class="col-span-1 border-r border-black border-t border-black row-span-2 h-10"></div>
-                    <div class="col-span-1 border-r border-black border-t border-black p-1 h-5 flex items-center justify-center">LLEGADA:</div>
-                    <div class="col-span-1 border-t border-black row-span-2 h-10"></div>
-                    <div class="col-span-1 border-r border-black border-t border-black p-1 h-5 flex items-center justify-center opacity-0"></div> </div>
-            </div>
-
-            <div class="text-center font-bold text-sm border-b border-t border-black mx-4 py-1">
-                CERTIFICACION DE REANUDACION DE LABORES
-            </div>
-
-            <div class="flex items-center border-b border-black mx-4 text-[10px] h-10">
-                <div class="w-1/3 border-r border-black p-1">
-                    <span class="font-bold">FECHA:</span> 7 de April de 2025
-                </div>
-                <div class="w-1/3 border-r border-black p-1 text-center font-bold">
-                    FIRMA AUTOGRAFA
-                </div>
-                <div class="w-1/3 p-1 text-center">
-                    <span class="font-bold">MTRO.SALOMON JONAS MEDINA GALLEGOS</span>
-                    <br>
-                    JEFE DEPTO.SERVICIOS GENERALES HGZ1
-                </div>
-            </div>
-
-            <div class="text-center font-bold text-sm border-b border-black mx-4 py-1">
-                LIQUIDACION
-            </div>
-            
-            <div class="grid grid-cols-4 border-b border-black mx-4 text-[10px] font-bold">
-                <div class="col-span-2 border-r border-black p-1 text-center">CONCEPTO</div>
-                <div class="col-span-2 p-1 text-center">ABONOS</div>
-            </div>
-
-            <div class="grid grid-cols-4 border-b border-black mx-4 h-5"><div class="col-span-2 border-r border-black px-1 flex items-center">ANTICIPO DE VIATICOS</div><div class="col-span-2 px-1"></div></div>
-            <div class="grid grid-cols-4 border-b border-black mx-4 h-5"><div class="col-span-2 border-r border-black px-1 flex items-center">ANTICIPO DE PASAJES</div><div class="col-span-2 px-1"></div></div>
-            <div class="grid grid-cols-4 border-b border-black mx-4 h-5"><div class="col-span-2 border-r border-black px-1 flex items-center">CERTIFICACION DE TRANSITO Y PERMANENCIA POR <span class="ml-1 font-bold">DÍAS</span></div><div class="col-span-2 px-1"></div></div>
-            <div class="grid grid-cols-4 border-b border-black mx-4 h-5"><div class="col-span-2 border-r border-black px-1 flex items-center">COMPROBANTE DE PASAJES</div><div class="col-span-2 px-1"></div></div>
-            <div class="grid grid-cols-4 border-b border-black mx-4 h-5"><div class="col-span-2 border-r border-black px-1 flex items-center">COMPROBANTE POR USO DE VEHICULO PROPIO</div><div class="col-span-2 px-1"></div></div>
-            <div class="grid grid-cols-4 border-b border-black mx-4 h-5"><div class="col-span-2 border-r border-black px-1 flex items-center">COMPROBANTE DE COSTO DE TRASLADO</div><div class="col-span-2 px-1"></div></div>
-            <div class="grid grid-cols-4 border-b border-black mx-4 h-5"><div class="col-span-2 border-r border-black px-1 flex items-center">COMPROBANTE DE PRIMA DE RIESGO DE TRANSPORTE AEREO</div><div class="col-span-2 px-1"></div></div>
-
-            <div class="grid grid-cols-4 border-b border-black mx-4 text-[10px] font-bold">
-                <div class="col-span-2 border-r border-black p-1">SUMAS</div>
-                <div class="col-span-2 p-1"></div>
-            </div>
-            <div class="grid grid-cols-4 border-b border-black mx-4 text-[10px] font-bold">
-                <div class="col-span-2 border-r border-black p-1">SALDO</div>
-                <div class="col-span-2 p-1"></div>
-            </div>
-
-            <div class="grid grid-cols-3 border-b border-black mx-4 text-[10px] font-bold text-center">
-                <div class="col-span-1 border-r border-black p-1">ELABORO</div>
-                <div class="col-span-1 border-r border-black p-1">REVISO</div>
-                <div class="col-span-1 p-1">CONFORME RESULTADO LIQUIDACION</div>
-                
-                <div class="col-span-1 border-r border-black p-2 h-16 flex flex-col justify-end">
-                    MTRO.SALOMON JONAS MEDINA GALLEGOS
-                    <div class="w-full h-px bg-black my-1"></div>
-                    <p>JEFE DEPTO.SERV.S. GENERALES HGZ 1</p>
-                </div>
-                <div class="col-span-1 border-r border-black p-2 h-16 flex flex-col justify-end">
-                    MTRO.SALOMON JONAS MEDINA GALLEGOS
-                    <div class="w-full h-px bg-black my-1"></div>
-                    <p>JEFE DEPTO.SERV.S. GENERALES HGZ 1</p>
-                </div>
-                <div class="col-span-1 p-2 h-16 flex flex-col justify-end">
-                    <span class="underline">MARTINEZ JIMENEZ JOSHUA</span>
-                    <div class="w-full h-px bg-black my-1"></div>
-                    <p>FIRMA EMPLEADO COMISIONADO</p>
-                </div>
-            </div>
-
-            <div class="border-b border-black mx-4 py-1 px-1 text-[10px] font-bold">
-                RECIBI LA CANTIDAD DE $
-                <div class="w-full h-px bg-black my-1"></div>
-                POR CONCEPTO DE SALDO A MI FAVOR COMO RESULTADO DE LA LIQUIDACION
-            </div>
-
-            <div class="grid grid-cols-3 border-b border-black mx-4 text-[10px] font-bold text-center">
-                
-                <div class="col-span-1 border-r border-black p-2 h-16 flex flex-col justify-end">
-                    C.P.ERIKA ELIZABETH MARTINEZ VARGAS
-                    <div class="w-full h-px bg-black my-1"></div>
-                    <p>SUBDIRECTOR ADMINISTRATIVO H.G.Z.1</p>
-                </div>
-                <div class="col-span-1 border-r border-black p-2 h-16 flex flex-col justify-end">
-                    MARTINEZ JIMENEZ JOSHUA
-                    <div class="w-full h-px bg-black my-1"></div>
-                    <p>EMPLEADO COMISIONADO</p>
-                </div>
-                <div class="col-span-1 p-2 h-16 flex flex-col justify-end">
-                    <div class="w-full h-px bg-black my-1"></div>
-                    <p>FECHA</p>
-                </div>
-                
-                <div class="col-span-3 text-left p-1 text-[8px] font-normal">
-                    AUTORIZACIÓN PAGO DEL SALDO
-                </div>
-                
-            </div>
-            
-            <div class="text-center text-[10px] py-1 border-t border-black">
-                Página 1
-            </div>
-            
-            </div>
-        
+        <div class="form-group full"><label>Justificación Inhábiles</label><textarea [(ngModel)]="datosPliego.justificacionInhabiles"></textarea></div>
+        <div class="form-group full"><label>Firma Solicitante</label><input [(ngModel)]="datosPliego.personaSolicita"></div>
+      </div>
+      <div class="modal-footer">
+        <button (click)="cerrarFormulario()" class="btn-save">Actualizar Documento</button>
+      </div>
     </div>
-</div>
+  </div>
+}
 
+<div class="pliego-document">
+  <header class="pliego-header">
+    <img src="assets/logoimss.png" class="logo">
+    <div class="header-text">
+      <p>DIRECCIÓN, OOAD, UMAE O CENTROS VACACIONALES DEL IMSS</p>
+      <p>Unidad, Jefatura o Gerencia General</p>
+      <p>Coordinación, Departamento, o Gerencia</p>
+      <p>Coordinación Técnica, Oficina o Subgerencia</p>
+    </div>
+  </header>
+
+  <div class="row-meta">
+    <p>Oficio número: <strong>{{datosPliego.oficioNumero}}</strong></p>
+    <p class="text-right"><strong>{{datosPliego.lugarFecha}}</strong></p>
+  </div>
+
+  <div class="destinatario">
+    <p><strong>{{datosPliego.nombreCargoDestinatario}}</strong></p>
+    <p>Funcionario responsable de la autorización de la comisión oficial</p>
+  </div>
+
+  <p class="intro">
+    En relación con las diversas actividades que se tienen asignadas solicito a usted gire sus apreciables instrucciones a quien corresponda con la finalidad de que sea tramitada la solicitud de viaticos y pasaje como  se menciona a continuacion
+  </p>
+
+  <table class="data-table">
+    <tbody>
+      <tr><td class="bold">Nombre y cargo del comisionado</td><td>{{datosPliego.nombreComisionado}}</td></tr>
+      <tr><td class="bold">Matrícula</td><td>{{datosPliego.matricula}}</td></tr>
+      <tr><td class="bold">Tipo de Contrtacion</td><td>{{datosPliego.tipoContratacion}}</td></tr>
+      <tr><td class="bold">Adscripción del trabajador</td><td>{{datosPliego.adscripcion}}</td></tr>
+      <tr><td class="bold">Destino de la comisión</td><td>{{datosPliego.destino}}</td></tr>
+      <tr><td class="bold">Dias de comision</td><td>{{datosPliego.diasComision}}</td></tr>
+      <tr><td class="bold">Fecha de Comision</td><td>{{datosPliego.fechaComision}}</td></tr>
+      <tr><td class="bold">Objeto de la comisión</td><td>{{datosPliego.objetoComision}}</td></tr>
+      <tr><td class="bold">Medio de Transporte</td><td>{{datosPliego.medioTransporte}}</td></tr>
+      <tr><td class="bold">Unidad de Información</td><td>{{datosPliego.unidadInformacion}}</td></tr>
+      <tr><td class="bold">Centro de Costos</td><td>{{datosPliego.centroCostos}}</td></tr>
+
+    </tbody>
+  </table>
+
+  <div class="justificaciones">
+    <p> {{datosPliego.justificacionInhabiles}}</p>
+    <p> {{datosPliego.justificacionModificacion}}</p>
+  </div>
+
+  <footer class="footer">
+    <div class="firma">
+      <div class="line"></div>
+      <p>{{datosPliego.personaSolicita}}</p>
+      <p>Nombre y firma de la persona que solicita la comisión oficial</p>
+    </div>
+    <div class="clave">Clave: 1000-009-014</div>
+  </footer>
+</div>

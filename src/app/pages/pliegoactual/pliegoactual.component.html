@@ -1,341 +1,584 @@
-<div id="printArea" class="max-w-[816px] mx-auto border p-2 bg-white text-[8.5pt] leading-tight space-y-2 print:overflow-visible">
-
-<!-- Opción alternativa con alineación más precisa -->
-<div class="flex justify-between mb-2" style="align-items: flex-start;">
-  <!-- Logo + Texto -->
-  <div class="flex items-start w-[85%] space-x-4">
-    <img src="assets/logoimss.png" alt="Logo IMSS" class="h-[50px] object-contain" />
-    <div class="text-left leading-tight">
-      <h1 class="font-bold text-[11pt] uppercase">Instituto Mexicano del Seguro Social</h1>
-      <h2 class="font-bold text-[10pt] underline mt-1">PLIEGO DE COMISIÓN</h2>
-      <p class="text-[8pt] mt-1">
-        <strong>RFC:</strong> OEGP811027BQ5 |
-        <strong>CURP:</strong> OEGP811027MOCRRL08
-      </p>
-    </div>
-  </div>
-
-  <!-- No. de Pliego -->
-  <div class="border border-black p-2 w-[100px] text-right text-[8pt]" style="margin-top: 0;">
-    <p class="border-b border-black font-bold">No. PLIEGO</p>
-    <p class="mt-1">1234/2024</p>
-    <p class="text-[7pt] mt-1">21 de mayo 2024</p>
-  </div>
-</div>
-
+<!--<div class="max-w-[1000px] mx-auto p-8 bg-white text-[11px] font-sans uppercase leading-tight text-black">
   
-  <!-- Autorización de Comisión -->
-  <p class="text-center font-bold uppercase underline mb-1 mt-2 text-[7pt]">Autorización de Comisión</p>
+  <button (click)="imprimir()" class="fixed top-4 right-4 bg-green-700 text-white px-6 py-2 rounded shadow-md hover:bg-green-800 print:hidden font-bold transition-all">
+    IMPRIMIR PLIEGO
+  </button>
 
-  <div class="grid grid-cols-2 gap-2">
-    <p><strong>Funcionario solicitante:</strong>
-      <span *ngIf="!modoEdicion">{{ funcionarioSolicitante }}</span>
-      <input *ngIf="modoEdicion" [(ngModel)]="funcionarioSolicitante" class="w-full border-b border-black" />
-    </p>
-    <p><strong>Matrícula:</strong>
-      <span *ngIf="!modoEdicion">{{ matriculaSolicitante }}</span>
-      <input *ngIf="modoEdicion" [(ngModel)]="matriculaSolicitante" class="w-full border-b border-black" />
-    </p>
-    <p><strong>Cargo:</strong>
-      <span *ngIf="!modoEdicion">{{ cargoSolicitante }}</span>
-      <input *ngIf="modoEdicion" [(ngModel)]="cargoSolicitante" class="w-full border-b border-black" />
-    </p>
-    <p><strong>Dependencia:</strong>
-      <span *ngIf="!modoEdicion">{{ dependencia }}</span>
-      <input *ngIf="modoEdicion" [(ngModel)]="dependencia" class="w-full border-b border-black" />
-    </p>
-    <p><strong>Empleado comisionado:</strong>
-      <span *ngIf="!modoEdicion">{{ comisionado }}</span>
-      <input *ngIf="modoEdicion" [(ngModel)]="comisionado" class="w-full border-b border-black" />
-    </p>
-    <p><strong>Tipo contratación:</strong>
-      <span *ngIf="!modoEdicion">{{ tipoContratacion }}</span>
-      <input *ngIf="modoEdicion" [(ngModel)]="tipoContratacion" class="w-full border-b border-black" />
-    </p>
-    <p><strong>Matrícula:</strong>
-      <span *ngIf="!modoEdicion">{{ matriculaComisionado }}</span>
-      <input *ngIf="modoEdicion" [(ngModel)]="matriculaComisionado" class="w-full border-b border-black" />
-    </p>
-    <p><strong>Grupo jerárquico:</strong>
-      <span *ngIf="!modoEdicion">{{ grupoJerarquico }}</span>
-      <input *ngIf="modoEdicion" [(ngModel)]="grupoJerarquico" class="w-full border-b border-black" />
-    </p>
-    <p><strong>Teléfono:</strong>
-      <span *ngIf="!modoEdicion">{{ telefono }}</span>
-      <input *ngIf="modoEdicion" [(ngModel)]="telefono" class="w-full border-b border-black" />
-    </p>
-  </div>
-
-  <p><strong>Motivo:</strong>
-    <span *ngIf="!modoEdicion">{{ motivo }}</span>
-    <input *ngIf="modoEdicion" [(ngModel)]="motivo" class="w-full border-b border-black" />
-  </p>
-
-  <div class="grid grid-cols-3 gap-2">
-    <p><strong>Lugar:</strong>
-      <span *ngIf="!modoEdicion">{{ lugar }}</span>
-      <input *ngIf="modoEdicion" [(ngModel)]="lugar" class="w-full border-b border-black" />
-    </p>
-    <p><strong>Periodo:</strong>
-      <span *ngIf="!modoEdicion">{{ periodo }}</span>
-      <input *ngIf="modoEdicion" [(ngModel)]="periodo" class="w-full border-b border-black" />
-    </p>
-    <p><strong>Total días:</strong>
-      <span *ngIf="!modoEdicion">{{ totalDias }}</span>
-      <input *ngIf="modoEdicion" [(ngModel)]="totalDias" class="w-full border-b border-black" />
-    </p>
-  </div>
-
-  <p><strong>Medio de transporte:</strong>
-    <span *ngIf="!modoEdicion">{{ transporte }}</span>
-    <input *ngIf="modoEdicion" [(ngModel)]="transporte" class="w-full border-b border-black" />
-  </p>
-
-  
- <!-- Firmas -->
-<div class="grid grid-cols-2 text-center mt-2 border-t pt-2">
-  <div>
-    <p class="font-bold uppercase">Funcionario solicitante</p>
-    <p class="mt-1">
-      <span *ngIf="!modoEdicion">{{ funcionarioSolicitante }}</span>
-      <input *ngIf="modoEdicion" [(ngModel)]="funcionarioSolicitante" 
-             class="w-full border-b border-black text-center bg-transparent" 
-             placeholder="Nombre del funcionario" />
-    </p>
-    <p class="text-[7pt]">
-      <span *ngIf="!modoEdicion">{{ cargoSolicitante }}</span>
-      <input *ngIf="modoEdicion" [(ngModel)]="cargoSolicitante" 
-             class="w-full border-b border-black text-center bg-transparent text-[7pt]" 
-             placeholder="Cargo" />
-    </p>
-  </div>
-  <div>
-    <p class="font-bold uppercase">Funcionario que autoriza</p>
-    <p class="mt-1">
-      <span *ngIf="!modoEdicion">{{ funcionarioAutorizaFirma }}</span>
-      <input *ngIf="modoEdicion" [(ngModel)]="funcionarioAutorizaFirma" 
-             class="w-full border-b border-black text-center bg-transparent" 
-             placeholder="Nombre del funcionario" />
-    </p>
-    <p class="text-[7pt]">
-      <span *ngIf="!modoEdicion">{{ cargoAutoriza }}</span>
-      <input *ngIf="modoEdicion" [(ngModel)]="cargoAutoriza" 
-             class="w-full border-b border-black text-center bg-transparent text-[7pt]" 
-             placeholder="Cargo" />
-    </p>
-  </div>
-</div>
-
-  <!-- Autorización del importe -->
-  <div class="border-t pt-2 text-gray-900">
-    <p class="text-center font-bold uppercase underline mb-1 mt-2">Autorización del Importe de Viáticos y Pasajes</p>
-    <p class="uppercase mb-2 text-center">Cuota diaria de viáticos: 
-      <span *ngIf="!modoEdicion">${{ cuotaDiaria }}</span>
-      <input *ngIf="modoEdicion" [(ngModel)]="cuotaDiaria" class="border-b border-black" />
-    </p>
-
-    <div class="grid grid-cols-2 gap-4">
-      <div class="space-y-1">
-        <div class="flex justify-between border-b pb-0.5">
-          <span>Anticipo de gastos de peaje</span>
-          <span *ngIf="!modoEdicion">${{ anticipoPeaje }}</span>
-          <input *ngIf="modoEdicion" [(ngModel)]="anticipoPeaje" class="w-24 text-right border-b border-black" />
-        </div>
-        <div class="flex justify-between border-b pb-0.5">
-          <span>Subtotal viáticos, pasajes y uso de vehículo</span>
-          <span *ngIf="!modoEdicion">${{ subtotalViaticos }}</span>
-          <input *ngIf="modoEdicion" [(ngModel)]="subtotalViaticos" class="w-24 text-right border-b border-black" />
-        </div>
-        <div class="flex justify-between border-b pb-0.5">
-          <span>Boleto de avión</span>
-          <span *ngIf="!modoEdicion">${{ boletoAvion }}</span>
-          <input *ngIf="modoEdicion" [(ngModel)]="boletoAvion" class="w-24 text-right border-b border-black" />
-        </div>
-      </div>
-      <div class="space-y-1">
-        <div class="flex justify-between border-b pb-0.5">
-          <span>Anticipo de viáticos</span>
-          <span *ngIf="!modoEdicion">${{ anticipoViaticos }}</span>
-          <input *ngIf="modoEdicion" [(ngModel)]="anticipoViaticos" class="w-24 text-right border-b border-black" />
-        </div>
-        <div class="flex justify-between border-b pb-0.5">
-          <span>Anticipo de gastos por uso de vehículo</span>
-          <span *ngIf="!modoEdicion">${{ anticipoVehiculo }}</span>
-          <input *ngIf="modoEdicion" [(ngModel)]="anticipoVehiculo" class="w-24 text-right border-b border-black" />
-        </div>
-        <div class="flex justify-between border-b pb-0.5">
-          <span>Anticipo de pasajes</span>
-          <span *ngIf="!modoEdicion">${{ anticipoPasajes }}</span>
-          <input *ngIf="modoEdicion" [(ngModel)]="anticipoPasajes" class="w-24 text-right border-b border-black" />
-        </div>
+  <header class="flex items-start mb-4">
+    <div class="w-24">
+      <img src="assets/logoimss.png" alt="IMSS" class="w-full">
+    </div>
+    <div class="flex-1 text-center pr-24">
+      <h1 class="text-[14px] font-bold">INSTITUTO MEXICANO DEL SEGURO SOCIAL</h1>
+      <div class="mt-4 font-bold text-[12px]">
+        <p>PLIEGO DE COMISIÓN No. ________________</p>
+        <p>AUTORIZACIÓN DE COMISIÓN</p>
       </div>
     </div>
+  </header>
 
-    <div class="mt-2 border-t pt-1 text-right font-semibold">
-      GASTOS TOTAL: 
-      <span *ngIf="!modoEdicion">${{ gastosTotal }}</span>
-      <input *ngIf="modoEdicion" [(ngModel)]="gastosTotal" class="w-24 text-right border-b border-black" />
+  <div class="text-center mb-6">
+    <p class="font-bold">Lugar y fecha: <span class="font-normal underline decoration-dotted">________________________________________________________________</span></p>
+  </div>
+
+  <div class="border-[1.5px] border-black rounded-[45px] p-6 mb-6 space-y-3">
+    <div class="flex justify-between items-baseline">
+      <div class="flex-1"><strong>FUNCIONARIO SOLICITANTE:</strong> ________________________________________________________________</div>
+      <div class="w-32 pl-4"><strong>C.P.</strong> ________</div>
     </div>
+    <div><strong>CATEGORÍA:</strong> ________________________________________________________________________________________</div>
+    <div><strong>ÁREA SOLICITANTE:</strong> __________________________________________________________________________________</div>
+    <div class="flex gap-16">
+      <div class="flex-1"><strong>EMPLEADO:</strong> ________________________________</div>
+      <div><strong>MAT.</strong> ________________</div>
+      <div><strong>TC:</strong> ________________</div>
+    </div>
+    <div><strong>PUESTO:</strong> __________________________________________________________________________________________</div>
+    <div><strong>DEPARTAMENTO:</strong> ____________________________________________________________________________________</div>
+    <div><strong>OBJETO DE LA COMISIÓN:</strong> ____________________________________________________________________________</div>
+    <div class="flex justify-between">
+      <div class="flex-1"><strong>DESTINO DE LA COMISIÓN:</strong> ________________________________________________</div>
+      <div class="w-40 pl-4"><strong>DEL:</strong> ____________</div>
+      <div class="w-40"><strong>AL:</strong> ____________</div>
+    </div>
+    <div><strong>MEDIO DE TRANSPORTE:</strong> ______________________________________________________________________________</div>
+  </div>
 
-    <div class="grid grid-cols-2 mt-1 text-[8pt]">
-      <div><strong>Disponibilidad presupuestal:</strong>
-        <span *ngIf="!modoEdicion">{{ disponibilidadPresupuestal }}</span>
-        <input *ngIf="modoEdicion" [(ngModel)]="disponibilidadPresupuestal" class="w-full border-b border-black" />
-      </div>
-      <div class="text-right"><strong>Clave presupuestal:</strong>
-        <span *ngIf="!modoEdicion">{{ clavePresupuestal }}</span>
-        <input *ngIf="modoEdicion" [(ngModel)]="clavePresupuestal" class="w-full border-b border-black" />
-      </div>
+  <div class="flex justify-center mb-6">
+    <table class="w-[85%] border-collapse border-2 border-black">
+      <thead>
+        <tr class="border-b-2 border-black font-bold">
+          <th class="border-r-2 border-black p-1 text-center w-[70%]">CONCEPTO DE ANTICIPOS PARA LA COMISIÓN</th>
+          <th class="p-1 text-left px-4">CUOTA ( &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; )</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr class="border-b border-black">
+          <td class="border-r-2 border-black p-1">
+            <div class="flex justify-between px-2 italic font-semibold">
+              <span>ANTICIPO PARA</span>
+              <span>DÍA(S) DE VIÁTICOS</span>
+              <span>IMPORTE</span>
+            </div>
+          </td>
+          <td class="p-1"></td>
+        </tr>
+        <tr class="border-b border-black">
+          <td class="border-r-2 border-black p-1">
+            <div class="flex justify-between px-2 italic font-semibold">
+              <span>ANTICIPO PARA</span>
+              <span>IMPORTE</span>
+            </div>
+          </td>
+          <td class="p-1"></td>
+        </tr>
+        <tr class="border-b border-black font-bold">
+          <td class="border-r-2 border-black p-1 px-4">SUBTOTAL</td>
+          <td class="p-1"></td>
+        </tr>
+        <tr class="border-b border-black font-bold">
+          <td class="border-r-2 border-black p-1 px-4">BOLETO DE AVIÓN</td>
+          <td class="p-1"></td>
+        </tr>
+        <tr class="font-bold">
+          <td class="border-r-2 border-black p-1 px-4">TOTAL</td>
+          <td class="p-1"></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="border-[1.5px] border-black p-3 mb-6 leading-relaxed">
+    <div class="flex justify-between mb-2">
+      <span>IMPORTE LÍQUIDO DEPOSITADO EN LA CUENTA No. ________________________</span>
+      <span>DEL BANCO ________________________</span>
+    </div>
+    <div class="mb-2">
+      RECIBÍ LA CANTIDAD DE $ ________________ ( ________________________________________________________________ 00/100 M.N.)
+    </div>
+    <div>
+      CORRESPONDIENTES A ANTICIPOS DE VIÁTICOS Y PASAJES POR ____ DÍA(S) PARA EL DESEMPEÑO DE ESTA COMISIÓN.
     </div>
   </div>
 
-  <!-- Certificación (NO editable) -->
-<p class="text-center font-bold uppercase underline mb-1 mt-3">Certificación de Tránsito y Permanencia</p>
+  <div class="mt-4">
+    <p class="font-bold">OBSERVACIONES:</p>
+    <p class="mt-4 italic">Vo.Bo.</p>
 
-<div class="border grid grid-cols-3 text-[8pt] text-center">
-  <!-- Lugar y sello -->
-  <div class="border-r p-1 flex flex-col justify-between h-[120px]">
-    <strong class="mb-1">LUGAR Y SELLO</strong>
-    <div class="border-t border-black mt-1 h-full"></div>
-  </div>
+    <div class="text-center mt-4 mb-8">
+      <p class="font-bold mb-12 uppercase">PERSONA SERVIDORA PÚBLICA QUE AUTORIZA LA COMISIÓN</p>
+      <div class="w-72 mx-auto border-t border-black"></div>
+    </div>
 
-  <!-- Fecha y hora -->
-  <div class="border-r p-1 flex flex-col justify-between h-[120px]">
-    <strong class="mb-1">FECHA Y HORA</strong>
-    <div class="border-t border-black mt-1 h-full"></div>
-  </div>
-
-  <!-- Nombre y firma -->
-  <div class="p-1 flex flex-col justify-between h-[120px]">
-    <strong class="mb-1">NOMBRE Y FIRMA AUTÓGRAFA</strong>
-    <div class="border-t border-black mt-1 h-full"></div>
-  </div>
-</div>
-
-  <!-- Vale -->
-  <div class="break-inside-avoid mt-4">
-    <h3 class="text-center font-bold uppercase underline">Vale a la Tesorería del Instituto Mexicano del Seguro Social</h3>
-    <div class="text-[9pt] space-y-1">
-      <div class="text-right"><strong>Bueno por:</strong>
-        <span *ngIf="!modoEdicion">${{ buenoPor }}</span>
-        <input *ngIf="modoEdicion" [(ngModel)]="buenoPor" class="border-b border-black w-24 text-right" />
-      </div>
-      <p>
-        Recibí la cantidad de ${{ cantidadRecibida }} (PESOS 00/100 M.N.) correspondiente al anticipo de 
-        <span *ngIf="!modoEdicion">{{ diasVale }}</span>
-        <input *ngIf="modoEdicion" [(ngModel)]="diasVale" class="w-16 border-b border-black text-center" />
-        días de viáticos.
-      </p>
-      <p>${{ valorPasajes }} (PESOS 00/100 M.N.) valor de los pasajes o anticipos de otros gastos.</p>
-
-      <div class="text-right mt-6">
-        <div class="border-t border-black inline-block pt-1">
-          <p class="text-sm">Firma del empleado comisionado</p>
-          <p class="font-semibold uppercase">{{ firmaComisionado }}</p>
-        </div>
-      </div>
-
-      <p class="text-[8pt] mt-2">
-        <strong>Nota:</strong>
-        <span *ngIf="!modoEdicion">{{ textoNota }}</span>
-        <input *ngIf="modoEdicion" [(ngModel)]="textoNota" class="border" />
-      </p>
-
+    <div class="grid grid-cols-3 gap-4 items-end">
       
-      <p class="text-right text-[7pt] mt-1">
-        <strong></strong>
-        <span *ngIf="!modoEdicion">{{ codigoFormato }}</span>
-        <input *ngIf="modoEdicion" [(ngModel)]="codigoFormato" class="border" />
-      </p>
+      <div class="flex flex-col">
+        <span class="font-bold text-[10px] mb-1">LUGAR Y SELLO</span>
+        <div class="border-[1.5px] border-black h-32 w-full"></div>
+      </div>
+      
+      <div class="flex flex-col text-center">
+        <span class="font-bold text-[10px] mb-1 uppercase leading-none">Certificación de Tránsito y Permanencia</span>
+        <div class="border-[1.5px] border-black h-32 w-full p-2 flex flex-col justify-between italic text-[10px]">
+          <p>LLEGÓ / SALIÓ</p>
+          <p>FECHA Y HORA</p>
+        </div>
+      </div>
+
+      <div class="flex flex-col">
+        <div class="text-center italic text-[9px] mb-2 border-t border-black pt-1 uppercase">
+          Firma del Comisionado (A)<br>Firma de Certificación
+        </div>
+        <div class="border-[1.5px] border-black h-32 w-full relative">
+          <span class="absolute bottom-1 right-2 text-[8px] font-bold uppercase">Nombre y Cargo</span>
+        </div>
+      </div>
+
     </div>
   </div>
 
+  <footer class="mt-10 text-[9px] italic border-t border-gray-400 pt-4 leading-tight">
+    <p>NOTA: AL TÉRMINO DE LA COMISIÓN EL INTERESADO DEBERÁ HACER A LA BREVEDAD SU COMPROBACIÓN PARA EVITAR SER REPORTADO COMO MOROSO.</p>
+    <p>EN CASO DE OBSERVACIONES Y AMPLIACIÓN DE CERTIFICACIÓN HACERLA AL REVERSO.</p>
+    <p class="text-right font-bold text-[11px] mt-2">Clave: 1000-009-011</p>
+  </footer>
 </div>
+-->
 
-<!-- modal y formulario para llenado -->
- <!-- Botón Traslado Nuevo -->
-<div class="flex justify-center mb-4">
-  <button (click)="abrirModal()" 
-          class="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition">
-    Traslado Nuevo
+
+
+
+
+
+
+
+
+
+
+
+
+<!--<div class="fixed top-4 right-4 flex gap-2 print:hidden z-50">
+  <button *ngIf="tienePermiso(['ADMIN'])" (click)="toggleModalAdmin()" 
+    class="bg-blue-800 text-white px-4 py-2 rounded shadow-lg hover:bg-blue-900 font-bold text-[10px] transition-transform active:scale-95">
+    ⚙️ DATOS ADMIN
+  </button>
+  <button *ngIf="tienePermiso(['ADMIN', 'TESORERIA'])" (click)="toggleModalTraslado()" 
+    class="bg-emerald-700 text-white px-4 py-2 rounded shadow-lg hover:bg-emerald-800 font-bold text-[10px] transition-transform active:scale-95">
+    ➕ NUEVO TRASLADO
+  </button>
+  <button (click)="imprimir()" 
+    class="bg-gray-800 text-white px-4 py-2 rounded shadow-lg hover:bg-black font-bold text-[10px] transition-transform active:scale-95">
+    🖨️ IMPRIMIR
   </button>
 </div>
 
-<!-- Modal emergente -->
-<div *ngIf="mostrarModal" 
-     class="fixed inset-0 bg-white/50  flex items-center justify-center z-50 print:hidden"
-     tabindex="0">
-  <div class="bg-white w-[95%] max-w-[1200px] p-6 rounded shadow-lg relative overflow-auto max-h-[90vh]">
+<div class="max-w-[850px] mx-auto bg-white text-[10.5px] font-sans uppercase leading-tight text-black p-10 print:p-0 shadow-sm border border-gray-100 print:border-none">
+  
+  <header class="flex items-start mb-4">
+    <div class="w-16"><img src="assets/logoimss.png" alt="IMSS" class="w-full"></div>
+    <div class="flex-1 text-center pr-16">
+      <h1 class="text-[12px] font-bold">INSTITUTO MEXICANO DEL SEGURO SOCIAL</h1>
+      <p class="font-bold text-[10px] mt-1">PLIEGO DE COMISIÓN No. <span class="border-b border-black px-2">{{ pliego.numeroComision }}</span></p>
+      <p class="font-bold text-[10px]">AUTORIZACIÓN DE COMISIÓN</p>
+    </div>
+  </header>
 
-    <!-- Botón cerrar -->
-    <button (click)="cerrarModal()" 
-            class="absolute top-2 right-2 text-gray-700 hover:text-gray-900 font-bold">
-      X
-    </button>
+  <div class="flex justify-end mb-6 italic text-[9.5px]">
+    LUGAR Y FECHA: <span class="border-b border-black px-4 min-w-[240px] text-center inline-block">{{ pliego.lugarFecha }}</span>
+  </div>
 
-    <h2 class="text-center text-lg font-bold mb-4">Nuevo Traslado</h2>
-
-    <div class="grid grid-cols-2 gap-6 text-sm">
-      <!-- Columna izquierda -->
-      <div class="space-y-2">
-        <p><strong>Funcionario solicitante:</strong></p>
-        <input type="text" [(ngModel)]="modalFuncionarioSolicitante" class="w-full border-b border-black px-1 py-1" />
-
-        <p><strong>Matrícula:</strong></p>
-        <input type="text" [(ngModel)]="modalMatriculaSolicitante" class="w-full border-b border-black px-1 py-1" />
-
-        <p><strong>Cargo:</strong></p>
-        <input type="text" [(ngModel)]="modalCargoSolicitante" class="w-full border-b border-black px-1 py-1" />
-
-        <p><strong>Dependencia:</strong></p>
-        <input type="text" [(ngModel)]="modalDependencia" class="w-full border-b border-black px-1 py-1" />
-      </div>
-
-      <!-- Columna derecha -->
-      <div class="space-y-2">
-        <p><strong>Funcionario que autoriza:</strong></p>
-        <input type="text" [(ngModel)]="modalFuncionarioAutoriza" class="w-full border-b border-black px-1 py-1" />
-
-        <p><strong>Motivo:</strong></p>
-        <input type="text" [(ngModel)]="modalMotivo" class="w-full border-b border-black px-1 py-1" />
-
-        <p><strong>Lugar:</strong></p>
-        <input type="text" [(ngModel)]="modalLugar" class="w-full border-b border-black px-1 py-1" />
-
-        <p><strong>Periodo:</strong></p>
-        <input type="text" [(ngModel)]="modalPeriodo" class="w-full border-b border-black px-1 py-1" />
-
-        <p><strong>Total días:</strong></p>
-        <input type="text" [(ngModel)]="modalTotalDias" class="w-full border-b border-black px-1 py-1" />
-
-        <p><strong>Transporte:</strong></p>
-        <input type="text" [(ngModel)]="modalTransporte" class="w-full border-b border-black px-1 py-1" />
+  <div class="border-[1.5px] border-black rounded-[25px] p-6 mb-6 space-y-2.5">
+    <div class="flex justify-between items-baseline">
+      <div class="flex-1"><strong>FUNCIONARIO SOLICITANTE:</strong> {{ pliego.funcionario }}</div>
+      <div class="w-32 text-right"><strong>C.P.</strong> {{ pliego.cp }}</div>
+    </div>
+    <div><strong>CATEGORÍA:</strong> {{ pliego.categoria }}</div>
+    <div><strong>ÁREA SOLICITANTE:</strong> {{ pliego.areaSolicitante }}</div>
+    <div class="flex justify-between border-t border-gray-100 pt-1">
+      <div><strong>EMPLEADO:</strong> {{ pliego.empleado }}</div>
+      <div class="flex gap-10">
+        <div><strong>MAT.</strong> {{ pliego.matricula }}</div>
+        <div><strong>TC:</strong> {{ pliego.tc }}</div>
       </div>
     </div>
+    <div><strong>PUESTO:</strong> {{ pliego.puesto }}</div>
+    <div><strong>DEPARTAMENTO:</strong> {{ pliego.departamento }}</div>
+    <div><strong>OBJETO DE LA COMISIÓN:</strong> {{ pliego.objetoComision }}</div>
+    <div class="flex justify-between border-t border-gray-100 pt-1">
+      <div class="flex-1"><strong>DESTINO DE LA COMISIÓN:</strong> {{ pliego.destino }}</div>
+      <div class="flex gap-4">
+        <div><strong>DEL:</strong> {{ pliego.fechaInicio | date:'dd/MM/yyyy' }}</div>
+        <div><strong>AL:</strong> {{ pliego.fechaFin | date:'dd/MM/yyyy' }}</div>
+      </div>
+    </div>
+    <div><strong>MEDIO DE TRANSPORTE:</strong> {{ pliego.medioTransporte }}</div>
+  </div>
 
-    <!-- Botones de acción -->
-    <div class="flex justify-end gap-2 mt-6">
-      <button (click)="cerrarModal()" 
-              class="px-4 py-2 bg-gray-300 rounded hover:bg-gray-400 transition">
-        Cancelar
-      </button>
-      <button (click)="enviarFormularioModal()" 
-              class="px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700 transition">
-        Confirmar
-      </button>
+  <div class="w-[92%] mx-auto mb-6">
+    <table class="w-full border-collapse border-[1.5px] border-black">
+      <thead>
+        <tr class="border-b-[1.5px] border-black font-bold">
+          <th class="p-2 text-center w-[70%] border-r-transparent">CONCEPTO DE ANTICIPOS PARA LA COMISIÓN</th>
+          <th class="p-2 text-center border-l-[1.5px] border-black">CUOTA ( ${{ pliego.cuota | number:'1.2-2' }} )</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr class="border-b border-black h-8">
+          <td class="px-4 italic flex justify-between items-center border-r-transparent">
+            <span>ANTICIPO PARA {{ calcularDias }} DÍA(S) DE VIÁTICOS</span>
+            <span class="font-bold">IMPORTE $ {{ subtotal | number:'1.2-2' }}</span>
+          </td>
+          <td class="border-l-[1.5px] border-black"></td>
+        </tr>
+        <tr class="border-b border-black h-8">
+          <td class="px-4 italic flex justify-between items-center border-r-transparent">
+            <span>ANTICIPO PARA </span>
+            <span class="font-bold">IMPORTE $ {{ subtotal | number:'1.2-2' }}</span>
+          </td>
+          <td class="border-l-[1.5px] border-black"></td>
+        </tr>
+        <tr class="border-b border-black h-8 font-bold">
+          <td class="px-4 flex justify-between items-center border-r-transparent">
+            <span>SUBTOTAL</span>
+            <span>$ {{ subtotal | number:'1.2-2' }}</span>
+          </td>
+          <td class="border-l-[1.5px] border-black"></td>
+        </tr>
+        <tr class="border-b border-black h-8">
+          <td class="px-4 flex justify-between items-center border-r-transparent">
+            <span class="font-normal">BOLETO DE AVIÓN</span>
+            <span class="font-bold">$ {{ pliego.boletoAvion | number:'1.2-2' }}</span>
+          </td>
+          <td class="border-l-[1.5px] border-black"></td>
+        </tr>
+        <tr class="font-bold h-10 bg-gray-50/30">
+          <td class="px-4 flex justify-between items-center border-r-transparent">
+            <span>TOTAL</span>
+            <span class="border-b-2 border-double border-black">$ {{ totalGeneral | number:'1.2-2' }}</span>
+          </td>
+          <td class="border-l-[1.5px] border-black"></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="border-[1.5px] border-black rounded-[25px] p-6 mb-6 leading-relaxed">
+    <div class="flex justify-between mb-1">
+      <span>IMPORTE LÍQUIDO DEPOSITADO EN LA CUENTA No. <strong>{{ pliego.cuentaBancaria }}</strong></span>
+      <span>DEL BANCO <strong>{{ pliego.banco }}</strong></span>
+    </div>
+    <div class="mb-1">
+      RECIBÍ LA CANTIDAD DE $ <strong>{{ totalGeneral | number:'1.2-2' }}</strong> ( <strong>{{ pliego.importeLetra }}</strong> )
+    </div>
+    <div class="mt-1">
+      CORRESPONDIENTES A ANTICIPOS DE VIÁTICOS Y PASAJES POR <strong>{{ calcularDias }}</strong> DÍA(S) PARA EL DESEMPEÑO DE ESTA COMISIÓN.
+    </div>
+  </div>
+
+  <div class="space-y-6">
+    <p class="font-bold">OBSERVACIONES: <span class="font-normal normal-case italic">{{ pliego.observaciones }}</span></p>
+    
+    <div class="text-center pt-2">
+      <p class="font-bold mb-10 text-[9px]">PERSONA SERVIDORA PÚBLICA QUE AUTORIZA LA COMISIÓN</p>
+      
+    </div>
+
+    <div class="grid grid-cols-3 gap-4 items-end">
+      
+      <div class="flex flex-col">
+        <span class="font-bold text-[10px] mb-1">LUGAR Y SELLO</span>
+        <div class="border-[1.5px] border-black h-32 w-full"></div>
+      </div>
+      
+      <div class="flex flex-col text-center">
+        <span class="font-bold text-[10px] mb-1 uppercase leading-none">Certificación de Tránsito y Permanencia</span>
+        <div class="border-[1.5px] border-black h-32 w-full p-2 flex flex-col justify-between italic text-[10px]">
+          <p>LLEGÓ / SALIÓ</p>
+          <p>FECHA Y HORA</p>
+        </div>
+      </div>
+
+      <div class="flex flex-col">
+        <div class="text-center italic text-[9px] mb-2 border-t border-black pt-1 uppercase">
+          Firma del Comisionado (A)<br>Firma de Certificación
+        </div>
+        <div class="border-[1.5px] border-black h-32 w-full relative">
+          <span class="absolute bottom-1 right-2 text-[8px] font-bold uppercase">Nombre y Cargo</span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <footer class="mt-auto pt-2 text-[8px] italic border-t border-black">
+    <p class="font-bold mb-1">NOTA: AL TÉRMINO DE LA COMISIÓN EL INTERESADO DEBERÁ HACER SU COMPROBACIÓN.</p>
+    <div class="flex justify-between font-bold uppercase items-end">
+      <span>EN CASO DE OBSERVACIONES HACERLA AL REVERSO</span>
+      <span class="text-[10px]">Clave: 1000-009-011</span>
+    </div>
+  </footer>
+</div>
+
+<div *ngIf="showModalTraslado" class="fixed inset-0 bg-black/60 flex justify-center items-center z-[100] p-4 backdrop-blur-sm">
+  <div class="bg-white rounded-xl w-full max-w-2xl shadow-2xl overflow-hidden animate-in fade-in zoom-in duration-200">
+    <div class="bg-emerald-700 p-4 text-white font-bold flex justify-between items-center">
+      <span class="flex items-center gap-2">➕ GESTIÓN DE TRASLADO / TESORERÍA</span>
+      <button (click)="toggleModalTraslado()" class="hover:bg-emerald-800 p-1 rounded-full px-3">✕</button>
+    </div>
+    <div class="p-6 grid grid-cols-2 gap-4 max-h-[80vh] overflow-y-auto">
+      <div class="col-span-2"><label class="text-[10px] font-bold text-gray-500">OBJETO DE LA COMISIÓN</label>
+      <input [(ngModel)]="pliego.objetoComision" class="w-full border p-2 rounded focus:ring-2 ring-emerald-500 outline-none"></div>
+      
+      <div><label class="text-[10px] font-bold text-gray-500">DESTINO</label>
+      <input [(ngModel)]="pliego.destino" class="w-full border p-2 rounded"></div>
+      
+      <div><label class="text-[10px] font-bold text-gray-500">MEDIO TRANSPORTE</label>
+      <input [(ngModel)]="pliego.medioTransporte" class="w-full border p-2 rounded"></div>
+      
+      <div><label class="text-[10px] font-bold text-gray-500">FECHA INICIO</label>
+      <input [(ngModel)]="pliego.fechaInicio" type="date" class="w-full border p-2 rounded"></div>
+      
+      <div><label class="text-[10px] font-bold text-gray-500">FECHA FIN</label>
+      <input [(ngModel)]="pliego.fechaFin" type="date" class="w-full border p-2 rounded"></div>
+      
+      <div><label class="text-[10px] font-bold text-gray-500">CUOTA DIARIA ($)</label>
+      <input [(ngModel)]="pliego.cuota" type="number" class="w-full border p-2 rounded"></div>
+      
+      <div><label class="text-[10px] font-bold text-gray-500">BOLETO AVIÓN ($)</label>
+      <input [(ngModel)]="pliego.boletoAvion" type="number" class="w-full border p-2 rounded"></div>
+      
+      <div><label class="text-[10px] font-bold text-gray-500">BANCO</label>
+      <input [(ngModel)]="pliego.banco" class="w-full border p-2 rounded"></div>
+      
+      <div><label class="text-[10px] font-bold text-gray-500">CUENTA BANCARIA</label>
+      <input [(ngModel)]="pliego.cuentaBancaria" class="w-full border p-2 rounded"></div>
+      
+      <div class="col-span-2"><label class="text-[10px] font-bold text-gray-500">IMPORTE EN LETRA</label>
+      <input [(ngModel)]="pliego.importeLetra" class="w-full border p-2 rounded"></div>
+      
+      <div class="col-span-2"><label class="text-[10px] font-bold text-gray-500">OBSERVACIONES</label>
+      <textarea [(ngModel)]="pliego.observaciones" class="w-full border p-2 rounded h-20"></textarea></div>
+      
+      <button (click)="toggleModalTraslado()" class="col-span-2 bg-emerald-700 text-white p-3 rounded-lg font-bold hover:bg-emerald-800 shadow-lg">ACTUALIZAR DATOS</button>
     </div>
   </div>
 </div>
-<!-- Botones -->
-<div class="print:hidden flex justify-center gap-4 mt-2">
-  <button (click)="toggleEdicion()" class="px-4 py-2 bg-blue-700 text-white text-sm rounded shadow">
-    {{ modoEdicion ? 'Guardar Cambios' : 'Editar Pliego' }}
+
+<div *ngIf="showModalAdmin" class="fixed inset-0 bg-black/60 flex justify-center items-center z-[100] p-4 backdrop-blur-sm">
+  <div class="bg-white rounded-xl w-full max-w-lg shadow-2xl overflow-hidden animate-in fade-in zoom-in duration-200">
+    <div class="bg-blue-800 p-4 text-white font-bold flex justify-between">
+      <span>⚙️ CONFIGURACIÓN ADMINISTRATIVA</span>
+      <button (click)="toggleModalAdmin()" class="hover:bg-blue-900 px-3 rounded-full">✕</button>
+    </div>
+    <div class="p-6 grid gap-4">
+      <input [(ngModel)]="pliego.funcionario" placeholder="Nombre Funcionario Solicitante" class="w-full border p-2 rounded">
+      <input [(ngModel)]="pliego.cp" placeholder="Código Postal" class="w-full border p-2 rounded">
+      <input [(ngModel)]="pliego.categoria" placeholder="Categoría" class="w-full border p-2 rounded">
+      <input [(ngModel)]="pliego.areaSolicitante" placeholder="Área Solicitante" class="w-full border p-2 rounded">
+      <button (click)="toggleModalAdmin()" class="bg-blue-800 text-white p-3 rounded-lg font-bold hover:bg-blue-900 shadow-lg">GUARDAR CAMBIOS</button>
+    </div>
+  </div>
+</div>-->
+<div class="fixed top-4 right-4 flex gap-2 print:hidden z-50">
+  <button *ngIf="tienePermiso(['ADMIN'])" (click)="toggleModalAdmin()" 
+    class="bg-blue-800 text-white px-4 py-2 rounded shadow-lg hover:bg-blue-900 font-bold text-[10px]">
+    ⚙️ DATOS ADMIN
   </button>
-  <button 
-  (click)="imprimirContenido()" 
-  class="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700 transition no-imprimir"
-  type="button">
-  <i class="fas fa-print mr-2"></i>
-  Imprimir
-</button>
+  <button *ngIf="tienePermiso(['ADMIN', 'TESORERIA'])" (click)="toggleModalTraslado()" 
+    class="bg-emerald-700 text-white px-4 py-2 rounded shadow-lg hover:bg-emerald-800 font-bold text-[10px]">
+    ➕ NUEVO TRASLADO
+  </button>
+  <button (click)="imprimir()" 
+    class="bg-gray-800 text-white px-4 py-2 rounded shadow-lg hover:bg-black font-bold text-[10px]">
+    🖨️ IMPRIMIR
+  </button>
+</div>
+
+<div class="max-w-[900px] mx-auto bg-white text-[10.5px] font-sans uppercase leading-tight text-black p-6 print:p-0 shadow-sm border border-gray-100 print:border-none">
+  
+  <header class="flex items-start mb-4">
+    <div class="w-16"><img src="assets/logoimss.png" alt="IMSS" class="w-full"></div>
+    <div class="flex-1 text-center pr-16">
+      <h1 class="text-[12px] font-bold">INSTITUTO MEXICANO DEL SEGURO SOCIAL</h1>
+      <p class="font-bold text-[10px] mt-1">PLIEGO DE COMISIÓN No. <span class="border-b border-black px-2">{{ pliego.numeroComision }}</span></p>
+      <p class="font-bold text-[10px]">AUTORIZACIÓN DE COMISIÓN</p>
+    </div>
+  </header>
+
+  <div class="flex justify-end mb-4 italic text-[9.5px]">
+    LUGAR Y FECHA: <span class="border-b border-black px-4 min-w-[240px] text-center inline-block">{{ pliego.lugarFecha }}</span>
+  </div>
+
+  <div class="border-[1.5px] border-black rounded-[25px] p-5 mb-5 space-y-2">
+    <div class="flex justify-between items-baseline">
+      <div class="flex-1"><strong>FUNCIONARIO SOLICITANTE:</strong> {{ pliego.funcionario }}</div>
+      <div class="w-32 text-right"><strong>C.P.</strong> {{ pliego.cp }}</div>
+    </div>
+    <div><strong>CATEGORÍA:</strong> {{ pliego.categoria }}</div>
+    <div><strong>ÁREA SOLICITANTE:</strong> {{ pliego.areaSolicitante }}</div>
+    
+    <div class="flex justify-between border-t border-gray-100 pt-1">
+      <div><strong>EMPLEADO:</strong> {{ pliego.empleado }}</div>
+      <div class="flex gap-10">
+        <div><strong>MAT.</strong> {{ pliego.matricula }}</div>
+        <div><strong>TC:</strong> {{ pliego.tc }}</div>
+      </div>
+    </div>
+    
+    <div><strong>PUESTO:</strong> {{ pliego.puesto }}</div>
+    <div><strong>DEPARTAMENTO:</strong> {{ pliego.departamento }}</div>
+    <div><strong>OBJETO DE LA COMISIÓN:</strong> {{ pliego.objetoComision }}</div>
+    
+    <div class="flex justify-between border-t border-gray-100 pt-1">
+      <div class="flex-1"><strong>DESTINO DE LA COMISIÓN:</strong> {{ pliego.destino }}</div>
+      <div class="flex gap-4">
+        <div><strong>DEL:</strong> {{ pliego.fechaInicio | date:'dd/MM/yyyy' }}</div>
+        <div><strong>AL:</strong> {{ pliego.fechaFin | date:'dd/MM/yyyy' }}</div>
+      </div>
+    </div>
+    <div><strong>MEDIO DE TRANSPORTE:</strong> {{ pliego.medioTransporte }}</div>
+  </div>
+
+  <div class="w-[94%] mx-auto mb-5">
+    <table class="w-full border-collapse border-[1.5px] border-black">
+      <thead>
+        <tr class="border-b-[1.5px] border-black font-bold">
+          <th class="p-1.5 border-r-[1.5px] border-black text-center w-[75%]">CONCEPTO DE ANTICIPOS PARA LA COMISIÓN</th>
+          <th class="p-1.5 text-center lowercase italic font-normal">cuota ( $ {{ pliego.cuota | number:'1.2-2' }} )</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr class="border-b border-black h-7">
+          <td class="px-3 border-r-[1.5px] border-black italic flex justify-between items-center">
+            <span>ANTICIPO PARA <span class="px-1 underline">{{ calcularDias }}</span> DÍA(S) DE VIÁTICOS</span>
+            <span class="font-bold">IMPORTE $ {{ subtotal | number:'1.2-2' }}</span>
+          </td>
+          <td></td>
+        </tr>
+        <tr class="border-b border-black h-7">
+          <td class="px-3 border-r-[1.5px] border-black italic flex justify-between items-center">
+            <span>ANTICIPO PARA</span>
+            <span class="font-bold">IMPORTE $ 0.00</span>
+          </td>
+          <td></td>
+        </tr>
+        <tr class="border-b border-black h-7 font-bold">
+          <td class="px-3 border-r-[1.5px] border-black flex justify-between items-center">
+            <span>SUBTOTAL</span>
+            <span>$ {{ subtotal | number:'1.2-2' }}</span>
+          </td>
+          <td></td>
+        </tr>
+        <tr class="border-b border-black h-7">
+          <td class="px-3 border-r-[1.5px] border-black flex justify-between items-center">
+            <span class="font-normal">BOLETO DE AVIÓN</span>
+            <span class="font-bold">$ {{ pliego.boletoAvion | number:'1.2-2' }}</span>
+          </td>
+          <td></td>
+        </tr>
+        <tr class="font-bold h-8">
+          <td class="px-3 border-r-[1.5px] border-black flex justify-between items-center">
+            <span>TOTAL</span>
+            <span class="border-b-2 border-double border-black">$ {{ totalGeneral | number:'1.2-2' }}</span>
+          </td>
+          <td></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="border-[1.5px] border-black rounded-[25px] p-5 mb-5 leading-normal">
+    <div class="flex justify-between mb-1">
+      <span>IMPORTE LÍQUIDO DEPOSITADO EN LA CUENTA No. <strong>{{ pliego.cuentaBancaria }}</strong></span>
+      <span>DEL BANCO <strong>{{ pliego.banco }}</strong></span>
+    </div>
+    <div class="mb-1">
+      RECIBÍ LA CANTIDAD DE $ <strong>{{ totalGeneral | number:'1.2-2' }}</strong> ( <strong>{{ pliego.importeLetra }}</strong> )
+    </div>
+    <div class="mt-1">
+      CORRESPONDIENTES A ANTICIPOS DE VIÁTICOS Y PASAJES POR <strong>{{ calcularDias }}</strong> DÍA(S) PARA EL DESEMPEÑO DE ESTA COMISIÓN.
+    </div>
+  </div>
+
+  <div class="space-y-5">
+    <p class="font-bold">OBSERVACIONES: <span class="font-normal normal-case italic">{{ pliego.observaciones }}</span></p>
+    
+    <div class="text-center pt-2">
+      <p class="font-bold mb-12 text-[9px]">PERSONA SERVIDORA PÚBLICA QUE AUTORIZA LA COMISIÓN</p>
+    </div>
+
+    <div class="grid grid-cols-3 gap-4 items-end">
+      <div class="flex flex-col">
+        <span class="font-bold text-[10px] mb-1">LUGAR Y SELLO</span>
+        <div class="border-[1.5px] border-black h-28 w-full"></div>
+      </div>
+      
+      <div class="flex flex-col text-center">
+        <span class="font-bold text-[9px] mb-1 uppercase leading-none">Certificación de Tránsito y Permanencia</span>
+        <div class="border-[1.5px] border-black h-28 w-full p-2 flex flex-col justify-between italic text-[9px]">
+          <p>LLEGÓ / SALIÓ</p>
+          <p>FECHA Y HORA</p>
+        </div>
+      </div>
+
+      <div class="flex flex-col">
+        <div class="text-center italic text-[9px] mb-1 border-t border-black pt-1 uppercase">
+          Firma del Comisionado (A)<br>Firma de Certificación
+        </div>
+        <div class="border-[1.5px] border-black h-28 w-full relative">
+          <span class="absolute bottom-1 right-2 text-[8px] font-bold uppercase">Nombre y Cargo</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <footer class="mt-5 pt-1 text-[8px] italic border-t border-black">
+    <p class="font-bold mb-0.5 uppercase">Nota: Al término de la comisión el interesado deberá hacer su comprobación.</p>
+    <div class="flex justify-between font-bold uppercase items-end">
+      <span>EN CASO DE OBSERVACIONES Y AMPLEACION  DE CERTIFICACION  HACERLA AL REVERSO</span>
+      <span class="text-[9px]">Clave: 1000-009-011</span>
+    </div>
+  </footer>
+</div>
+
+<div *ngIf="showModalTraslado" class="fixed inset-0 bg-black/60 flex justify-center items-center z-[100] p-4 backdrop-blur-sm">
+  <div class="bg-white rounded-xl w-full max-w-2xl shadow-2xl overflow-hidden">
+    <div class="bg-emerald-700 p-4 text-white font-bold flex justify-between items-center">
+      <span>➕ GESTIÓN DE TRASLADO</span>
+      <button (click)="toggleModalTraslado()" class="hover:bg-emerald-800 px-3 rounded">✕</button>
+    </div>
+    <div class="p-6 grid grid-cols-2 gap-4 max-h-[80vh] overflow-y-auto text-black text-xs">
+      <div class="col-span-2">
+        <label class="font-bold text-gray-500">OBJETO DE LA COMISIÓN</label>
+        <input [(ngModel)]="pliego.objetoComision" class="w-full border p-2 rounded">
+      </div>
+      <div><label class="font-bold text-gray-500">DESTINO</label><input [(ngModel)]="pliego.destino" class="w-full border p-2 rounded"></div>
+      <div><label class="font-bold text-gray-500">TRANSPORTE</label><input [(ngModel)]="pliego.medioTransporte" class="w-full border p-2 rounded"></div>
+      <div><label class="font-bold text-gray-500">FECHA INICIO</label><input [(ngModel)]="pliego.fechaInicio" type="date" class="w-full border p-2 rounded"></div>
+      <div><label class="font-bold text-gray-500">FECHA FIN</label><input [(ngModel)]="pliego.fechaFin" type="date" class="w-full border p-2 rounded"></div>
+      <div><label class="font-bold text-gray-500">CUOTA ($)</label><input [(ngModel)]="pliego.cuota" type="number" class="w-full border p-2 rounded"></div>
+      <div><label class="font-bold text-gray-500">AVIÓN ($)</label><input [(ngModel)]="pliego.boletoAvion" type="number" class="w-full border p-2 rounded"></div>
+      <div><label class="font-bold text-gray-500">BANCO</label><input [(ngModel)]="pliego.banco" class="w-full border p-2 rounded"></div>
+      <div><label class="font-bold text-gray-500">CUENTA</label><input [(ngModel)]="pliego.cuentaBancaria" class="w-full border p-2 rounded"></div>
+      <div class="col-span-2"><label class="font-bold text-gray-500">IMPORTE EN LETRA</label><input [(ngModel)]="pliego.importeLetra" class="w-full border p-2 rounded"></div>
+      <div class="col-span-2"><label class="font-bold text-gray-500">OBSERVACIONES</label><textarea [(ngModel)]="pliego.observaciones" class="w-full border p-2 rounded h-16"></textarea></div>
+      <button (click)="toggleModalTraslado()" class="col-span-2 bg-emerald-700 text-white p-3 rounded font-bold uppercase">Actualizar Datos</button>
+    </div>
+  </div>
+</div>
+
+<div *ngIf="showModalAdmin" class="fixed inset-0 bg-black/60 flex justify-center items-center z-[100] p-4">
+  <div class="bg-white rounded-xl w-full max-w-lg shadow-2xl overflow-hidden">
+    <div class="bg-blue-800 p-4 text-white font-bold flex justify-between">
+      <span>⚙️ CONFIGURACIÓN ADMIN</span>
+      <button (click)="toggleModalAdmin()" class="px-3 rounded">✕</button>
+    </div>
+    <div class="p-6 grid gap-4 text-black text-xs">
+      <div><label class="font-bold text-gray-500">FUNCIONARIO SOLICITANTE</label><input [(ngModel)]="pliego.funcionario" class="w-full border p-2 rounded"></div>
+      <div><label class="font-bold text-gray-500">C.P.</label><input [(ngModel)]="pliego.cp" class="w-full border p-2 rounded"></div>
+      <div><label class="font-bold text-gray-500">CATEGORÍA</label><input [(ngModel)]="pliego.categoria" class="w-full border p-2 rounded"></div>
+      <div><label class="font-bold text-gray-500">ÁREA SOLICITANTE</label><input [(ngModel)]="pliego.areaSolicitante" class="w-full border p-2 rounded"></div>
+      <button (click)="toggleModalAdmin()" class="bg-blue-800 text-white p-3 rounded font-bold uppercase">Guardar Cambios</button>
+    </div>
+  </div>
 </div>
